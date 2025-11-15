@@ -1,5 +1,7 @@
+
 import { motion } from "framer-motion";
 import { FaEye, FaGlasses, FaShieldAlt, FaStar, FaMapMarkerAlt, FaClock, FaPhone, FaEnvelope } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function DivinaVision() {
   const services = [
@@ -113,16 +115,19 @@ function DivinaVision() {
           >
             Tu salud visual en manos de expertos. Tecnología de vanguardia y atención personalizada.
           </motion.p>
-          <motion.a
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            href="#citas"
-            className="inline-block px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] hover:scale-105"
-            style={{ backgroundColor: "#D4AF37", color: "#000" }}
           >
-            Agendar Consulta
-          </motion.a>
+            <Link
+              to="/citas"
+              className="inline-block px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] hover:scale-105"
+              style={{ backgroundColor: "#D4AF37", color: "#000" }}
+            >
+              Agendar Consulta
+            </Link>
+          </motion.div>
         </div>
       </section>
 
@@ -330,13 +335,13 @@ function DivinaVision() {
             <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
               Agenda tu cita hoy y descubre la diferencia de un cuidado visual de clase mundial
             </p>
-            <a
-              href="#citas"
+            <Link
+              to="/citas"
               className="inline-block px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] hover:scale-105"
               style={{ backgroundColor: "#D4AF37", color: "#000" }}
             >
               Agendar Ahora
-            </a>
+            </Link>
           </motion.div>
         </section>
       </div>
