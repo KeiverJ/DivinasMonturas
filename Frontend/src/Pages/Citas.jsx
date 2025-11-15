@@ -7,7 +7,13 @@ function Citas() {
   const [selectedTime, setSelectedTime] = useState("");
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
+        name: "",
+        email: "",
+        phone: "",
+        service: "",
+        firstVisit: false,
+        symptoms: "",
+        insurance: "",
     phone: "",
     service: "",
     firstVisit: false,
@@ -31,7 +37,7 @@ function Citas() {
     e.preventDefault();
     setIsSubmitted(true);
   };
-
+        <div id="citas" className="min-h-screen pt-32 md:pt-36 pb-20 bg-white">
   if (isSubmitted) {
     return (
       <div id="citas" className="min-h-screen pt-24 pb-20 flex items-center justify-center">

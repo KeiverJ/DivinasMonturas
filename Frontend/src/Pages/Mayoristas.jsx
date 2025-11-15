@@ -25,7 +25,7 @@ function Mayoristas() {
     },
     {
       icon: FaHeadphones,
-      title: "Soporte Dedicado",
+      title: "Atención Personalizada",
       description: "Ejecutivo de cuenta exclusivo y atención personalizada",
     },
     {

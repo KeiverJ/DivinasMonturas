@@ -29,7 +29,7 @@ function Reserva() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-12">
+      <div className="min-h-screen pt-32 md:pt-36 pb-20 bg-white max-w-2xl mx-auto px-4">
       <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Reserva tu cita</h2>
 
       <form

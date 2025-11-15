@@ -118,7 +118,7 @@ function Catalogo() {
   }, 0);
 
   return (
-    <div id="catalogo" className="min-h-screen pt-24 pb-20">
+    <div id="catalogo" className="min-h-screen pt-32 md:pt-36 pb-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div

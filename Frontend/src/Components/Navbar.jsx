@@ -84,14 +84,16 @@ function Navbar({ cartCount = 0 }) {
                 />
               </Link>
             ))}
-            {/* Redes sociales */}
-            <a href="https://www.instagram.com/divinasmonturas/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-[#D4AF37] transition-colors text-xl">
+            {/* Redes sociales principales de Divinas Monturas */}
+            {/* IG principal: Divinas Monturas. Facebook y TikTok: Divina Visión (agregado) */}
+            <a href="https://www.instagram.com/divinasmonturas/" target="_blank" rel="noopener noreferrer" aria-label="Instagram Divinas Monturas" className="hover:text-[#D4AF37] transition-colors text-xl">
               <FaInstagram />
             </a>
-            <a href="https://web.facebook.com/divinavisioncucuta1/?locale=es_LA&_rdc=1&_rdr#" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-[#D4AF37] transition-colors text-xl">
+            {/* Facebook y TikTok de Divina Visión, solo como agregado */}
+            <a href="https://web.facebook.com/divinavisioncucuta1/?locale=es_LA&_rdc=1&_rdr#" target="_blank" rel="noopener noreferrer" aria-label="Facebook Divina Visión" className="hover:text-[#D4AF37] transition-colors text-xl">
               <FaFacebook />
             </a>
-            <a href="https://www.tiktok.com/@divinavisioncucuta" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="hover:text-[#D4AF37] transition-colors text-xl">
+            <a href="https://www.tiktok.com/@divinavisioncucuta" target="_blank" rel="noopener noreferrer" aria-label="TikTok Divina Visión" className="hover:text-[#D4AF37] transition-colors text-xl">
               <FaTiktok />
             </a>
           </div>
@@ -142,13 +144,14 @@ function Navbar({ cartCount = 0 }) {
               </Link>
             ))}
             <div className="flex items-center justify-center space-x-4 mt-4">
-              <a href="https://www.instagram.com/divinasmonturas/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="hover:text-[#D4AF37] transition-colors text-2xl">
+              <a href="https://www.instagram.com/divinasmonturas/" target="_blank" rel="noopener noreferrer" aria-label="Instagram Divinas Monturas" className="hover:text-[#D4AF37] transition-colors text-2xl">
                 <FaInstagram />
               </a>
-              <a href="https://web.facebook.com/divinavisioncucuta1/?locale=es_LA&_rdc=1&_rdr#" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="hover:text-[#D4AF37] transition-colors text-2xl">
+              {/* Facebook y TikTok de Divina Visión, solo como agregado */}
+              <a href="https://web.facebook.com/divinavisioncucuta1/?locale=es_LA&_rdc=1&_rdr#" target="_blank" rel="noopener noreferrer" aria-label="Facebook Divina Visión" className="hover:text-[#D4AF37] transition-colors text-2xl">
                 <FaFacebook />
               </a>
-              <a href="https://www.tiktok.com/@divinavisioncucuta" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="hover:text-[#D4AF37] transition-colors text-2xl">
+              <a href="https://www.tiktok.com/@divinavisioncucuta" target="_blank" rel="noopener noreferrer" aria-label="TikTok Divina Visión" className="hover:text-[#D4AF37] transition-colors text-2xl">
                 <FaTiktok />
               </a>
             </div>
