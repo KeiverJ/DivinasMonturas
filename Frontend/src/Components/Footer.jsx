@@ -8,7 +8,7 @@ function Footer() {
   };
   return (
     <footer className="relative bg-black text-white mt-8">
-      {/* Wave Divider */}
+      
       <div className="absolute top-0 left-0 right-0 overflow-hidden leading-none">
         <svg
           className="relative block w-full h-12"
@@ -25,7 +25,7 @@ function Footer() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-          {/* Brand Column */}
+          
           <div>
             <h3 className="font-serif mb-4" style={{ color: "#D4AF37" }}>
               DIVINAS MONTURAS
@@ -46,7 +46,7 @@ function Footer() {
             </div>
           </div>
 
-          {/* Links Column */}
+          
           <div>
             <h4 className="mb-4" style={{ color: "#D4AF37" }}>
               Enlaces Rápidos
@@ -66,7 +66,7 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Contact Column */}
+          
           <div>
             <h4 className="mb-4" style={{ color: "#D4AF37" }}>
               Contacto
@@ -90,7 +90,7 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Hours Column */}
+          
           <div>
             <h4 className="mb-4" style={{ color: "#D4AF37" }}>
               Horarios

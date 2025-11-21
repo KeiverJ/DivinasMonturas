@@ -74,7 +74,6 @@ function Mayoristas() {
 
   return (
     <div id="mayoristas" className="min-h-screen pt-24 pb-20">
-      {/* Hero Section */}
       <section className="relative h-[60vh] flex items-center justify-center overflow-hidden mb-20">
         <div
           className="absolute inset-0 z-0"
@@ -118,7 +117,6 @@ function Mayoristas() {
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Benefits Grid */}
         <section className="mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -157,7 +155,6 @@ function Mayoristas() {
           </div>
         </section>
 
-        {/* Discount Table */}
         <section className="mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -202,7 +199,6 @@ function Mayoristas() {
           </div>
         </section>
 
-        {/* Requirements */}
         <section className="mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -233,7 +229,6 @@ function Mayoristas() {
           </motion.div>
         </section>
 
-        {/* Process Steps */}
         <section className="mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -273,7 +268,7 @@ function Mayoristas() {
           </div>
         </section>
 
-        {/* CTA Section */}
+
         <section id="formulario-mayorista" className="text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

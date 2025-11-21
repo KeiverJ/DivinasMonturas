@@ -10,7 +10,7 @@ function Navbar({ cartCount = 0 }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const location = useLocation();
-  // Determinar el link activo según la ruta
+  
   const pathToId = {
     "/": "inicio",
     "/catalogo": "catalogo",
@@ -18,7 +18,7 @@ function Navbar({ cartCount = 0 }) {
     "/mayoristas": "mayoristas",
     "/divinavision": "divina-vision",
     "/citas": "citas",
-    "/nosotros": "acerca", // opcional, si tienes /nosotros
+    "/nosotros": "acerca",
   };
   const activeLink = pathToId[location.pathname] || "inicio";
 
@@ -54,7 +54,7 @@ function Navbar({ cartCount = 0 }) {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
+          
           <Link
             to="/"
             className="flex items-center space-x-2 group"

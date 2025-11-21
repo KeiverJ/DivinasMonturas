@@ -196,7 +196,7 @@ function Catalogo() {
                       <input
                         type="checkbox"
                         className="w-4 h-4 rounded border-gray-300 text-[#D4AF37] focus:ring-[#D4AF37]"
-                        // Falta lógica de filtro
+                        
                       />
                       <span className="text-gray-700 group-hover:text-[#D4AF37] transition-colors">
                         {shape}

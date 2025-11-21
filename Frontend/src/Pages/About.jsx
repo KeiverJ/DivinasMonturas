@@ -36,7 +36,7 @@ export function About() {
 
   return (
     <div id="acerca" className="min-h-screen pt-24 bg-white">
-      {/* Hero Section */}
+      
       <section className="relative min-h-[340px] md:min-h-[420px] flex items-center justify-center overflow-hidden mb-20">
         <div
           className="absolute inset-0 z-0"
@@ -73,7 +73,6 @@ export function About() {
       </section>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Brand Story */}
         <section className="mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -103,7 +102,6 @@ export function About() {
           </motion.div>
         </section>
 
-        {/* Values */}
         <section className="mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -140,7 +138,6 @@ export function About() {
           </div>
         </section>
 
-        {/* Timeline */}
         <section className="mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -178,7 +175,6 @@ export function About() {
           </div>
         </section>
 
-        {/* Trust Badges */}
         <section className="mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -214,7 +210,7 @@ export function About() {
           </motion.div>
         </section>
 
-        {/* CTA */}
+
         <section className="text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

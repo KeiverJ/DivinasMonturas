@@ -5,7 +5,6 @@ import ProductCard from "../Components/ProductCard";
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Productos destacados
   const products = [
     {
       id: 1,
@@ -33,7 +32,6 @@ export default function Home() {
     },
   ];
 
-  // Testimonios
   const testimonials = [
     {
       id: 1,
@@ -61,7 +59,6 @@ export default function Home() {
     },
   ];
 
-  // Imágenes tipo Instagram
   const instagramImages = [
     "https://images.unsplash.com/photo-1762706334838-ea8425b43116?w=400",
     "https://images.unsplash.com/photo-1671960610018-f2fdebbe5b47?w=400",
@@ -80,9 +77,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
       <section id="inicio" className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Parallax Background */}
         <div
           className="absolute inset-0 z-0"
           style={{
@@ -95,7 +90,6 @@ export default function Home() {
         >
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
         </div>
-        {/* Hero Content */}
         <div className="relative z-20 text-center px-4 animate-fade-in-up">
           <h1
             className="font-serif text-white mb-6"
@@ -125,7 +119,6 @@ export default function Home() {
             </a>
           </div>
         </div>
-        {/* Scroll Indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 animate-bounce">
           <div className="w-6 h-10 rounded-full border-2 border-[#D4AF37] flex items-start justify-center p-2">
             <div className="w-1 h-2 rounded-full bg-[#D4AF37]" />
@@ -133,7 +126,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Products Carousel */}
       <section className="py-20 bg-[#F5F5DC]/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -161,7 +153,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials Carousel */}
       <section className="py-20 bg-black text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -219,7 +210,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Instagram Grid */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
