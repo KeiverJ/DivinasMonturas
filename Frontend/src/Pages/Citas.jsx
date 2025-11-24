@@ -12,7 +12,6 @@ function Citas() {
     service: "",
     firstVisit: false,
     symptoms: "",
-    insurance: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -29,12 +28,11 @@ function Citas() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitted(true);
   };
 
   if (isSubmitted) {
     return (
-      <div id="citas" className="min-h-screen pt-24 pb-20 flex items-center justify-center">
+      <div id="citas" className="min-h-screen pt-32 md:pt-36 pb-20 bg-white flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -74,7 +72,6 @@ function Citas() {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Paciente:</span>
-                <span className="text-black">{formData.name}</span>
               </div>
             </div>
           </div>
@@ -120,7 +117,7 @@ function Citas() {
   }
 
   return (
-    <div id="citas" className="min-h-screen pt-24 pb-20">
+    <div id="citas" className="min-h-screen pt-32 md:pt-36 pb-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -171,11 +168,10 @@ function Citas() {
                       key={time}
                       type="button"
                       onClick={() => setSelectedTime(time)}
-                      className={`px-4 py-3 rounded-lg border-2 transition-all duration-300 ${
-                        selectedTime === time
+                      className={`px-4 py-3 rounded-lg border-2 transition-all duration-300 ${selectedTime === time
                           ? "border-[#D4AF37] bg-[#D4AF37] text-black"
                           : "border-gray-200 hover:border-[#D4AF37] hover:bg-[#D4AF37]/10"
-                      }`}
+                        }`}
                     >
                       {time}
                     </button>
