@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { FaChevronLeft, FaChevronRight, FaStar, FaQuoteLeft } from "react-icons/fa";
 import ProductCard from "../Components/ProductCard";
 
@@ -59,13 +61,13 @@ export default function Home() {
     },
   ];
 
-  const instagramImages = [
-    "https://images.unsplash.com/photo-1762706334838-ea8425b43116?w=400",
-    "https://images.unsplash.com/photo-1671960610018-f2fdebbe5b47?w=400",
-    "https://images.unsplash.com/photo-1760337871482-9dd93e75fa88?w=400",
-    "https://images.unsplash.com/photo-1682664175900-7771b38e1585?w=400",
-    "https://images.unsplash.com/photo-1689152496131-9cecc95cde25?w=400",
-    "https://images.unsplash.com/photo-1631507623112-0092cef9c70d?w=400",
+  const instagramPosts = [
+    "https://www.instagram.com/p/DPwKeS2juWM/",
+    "https://www.instagram.com/reel/DNWDsezu2Gv/",
+    "https://www.instagram.com/p/DQ9j8vKlXJD/",
+    "https://www.instagram.com/p/DRDd4Q4jiCr/",
+    "https://www.instagram.com/reel/DPRQXvgD1kh/",
+    "https://www.instagram.com/p/DQwpXzaDsp7/",
   ];
 
   useEffect(() => {
@@ -75,6 +77,23 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [testimonials.length]);
 
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://www.instagram.com/embed.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    script.onload = () => {
+      if (window.instgrm) {
+        window.instgrm.Embeds.process();
+      }
+    };
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen">
       <section id="inicio" className="relative h-screen flex items-center justify-center overflow-hidden">
@@ -82,7 +101,7 @@ export default function Home() {
           className="absolute inset-0 z-0"
           style={{
             backgroundImage:
-              "url('https://images.unsplash.com/photo-1671960610018-f2fdebbe5b47?w=1920')",
+              "url('/DivinasMonturasLocal.jpg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundAttachment: "fixed",
@@ -101,22 +120,22 @@ export default function Home() {
             className="text-white/90 mb-8 max-w-2xl mx-auto"
             style={{ fontSize: "clamp(1rem, 2vw, 1.5rem)" }}
           >
-            Donde la elegancia se encuentra con la visión. Descubre nuestra colección exclusiva de monturas de lujo.
+            Donde la elegancia se encuentra con la visión. Descubre nuestra colección de monturas.
           </p>
           <div className="flex gap-4 justify-center flex-wrap">
-            <a
-              href="#catalogo"
+            <Link
+              to="/catalogo"
               className="px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] hover:scale-105"
               style={{ backgroundColor: "#D4AF37", color: "#000" }}
             >
               Explorar Catálogo
-            </a>
-            <a
-              href="#divina-vision"
+            </Link>
+            <Link
+              to="/citas"
               className="px-8 py-4 rounded-lg border-2 border-white text-white backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-black"
             >
               Agendar Cita
-            </a>
+            </Link>
           </div>
         </div>
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 animate-bounce">
@@ -133,7 +152,7 @@ export default function Home() {
               Colección <span style={{ color: "#D4AF37" }}>Destacada</span>
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Descubre nuestras monturas más exclusivas, diseñadas para quienes aprecian la verdadera elegancia.
+              Descubre nuestras monturas, diseñadas para quienes aprecian la verdadera elegancia.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -142,13 +161,13 @@ export default function Home() {
             ))}
           </div>
           <div className="text-center mt-12">
-            <a
-              href="#catalogo"
+            <Link
+              to="/catalogo"
               className="inline-block px-8 py-4 rounded-lg border-2 transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:scale-105"
               style={{ borderColor: "#D4AF37", color: "#D4AF37" }}
             >
               Ver Colección Completa
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -210,31 +229,59 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="py-20 bg-[#F5F5DC]/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="font-serif text-black mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>
               Síguenos en <span style={{ color: "#D4AF37" }}>Instagram</span>
             </h2>
-            <p className="text-gray-600">@divinasmonturas</p>
+            <a
+              href="https://www.instagram.com/divinasmonturas/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-[#D4AF37] transition-colors duration-300 text-lg font-medium"
+            >
+              @divinasmonturas
+            </a>
+            <p className="text-gray-600 mt-3">Descubre nuestra colección exclusiva</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {instagramImages.map((image, index) => (
-              <a
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            {instagramPosts.map((postUrl, index) => (
+              <motion.div
                 key={index}
-                href="#"
-                className="relative aspect-square overflow-hidden rounded-lg group"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="flex justify-center"
               >
-                <img
-                  src={image}
-                  alt={`Instagram ${index + 1}`}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                <iframe
+                  src={`${postUrl}embed/`}
+                  className="border-0 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+                  style={{
+                    width: '100%',
+                    maxWidth: '540px',
+                    minHeight: '600px',
+                    height: 'auto'
+                  }}
+                  scrolling="no"
+                  allowTransparency="true"
+                  allow="encrypted-media"
+                  title={`Instagram Post ${index + 1}`}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4">
-                  <span className="text-white">Ver en Instagram</span>
-                </div>
-              </a>
+              </motion.div>
             ))}
+          </div>
+          <div className="text-center mt-10">
+            <a
+              href="https://www.instagram.com/divinasmonturas/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl"
+              style={{ backgroundColor: "#D4AF37", color: "#000" }}
+            >
+              Seguir en Instagram
+            </a>
           </div>
         </div>
       </section>

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run dev:*)",
+      "Bash(cat:*)",
+      "Bash(node -e:*)",
+      "Bash(node --require dotenv/config -e \"console.log(''MONGODB_URI:'', process.env.MONGODB_URI)\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

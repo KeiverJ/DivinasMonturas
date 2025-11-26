@@ -1,18 +1,16 @@
 // src/app.js
 // Configuración central de Express con ES Modules
 
-import 'dotenv/config.js';
-
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 
 import { errorHandler } from './middleware/errorHandler.js';
-import config from './config/config.js';
 
 // Importar rutas
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+import citaRoutes from './routes/citaRoutes.js';
 
 const app = express();
 
@@ -22,7 +20,7 @@ const app = express();
 
 // CORS - Permite solicitudes desde el frontend
 app.use(cors({
-  origin: config.cors.origin,
+  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
   credentials: true,
   optionsSuccessStatus: 200
 }));
@@ -54,6 +52,9 @@ app.use('/api/auth', authRoutes);
 
 // Rutas de productos (públicas y privadas)
 app.use('/api/productos', productRoutes);
+
+// Rutas de citas
+app.use('/api/citas', citaRoutes);
 
 /**
  * MANEJO DE RUTAS NO ENCONTRADAS

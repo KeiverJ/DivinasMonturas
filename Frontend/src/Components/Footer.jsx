@@ -1,8 +1,6 @@
-import { useState } from "react";
-import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa";
 
 function Footer() {
-  const [email, setEmail] = useState("");
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -31,17 +29,17 @@ function Footer() {
               DIVINAS MONTURAS
             </h3>
             <p className="text-gray-400 mb-6">
-              Elegancia y sofisticación en cada montura. Descubre el lujo que mereces.
+              Elegancia en cada montura. Descubre el lujo que mereces.
             </p>
             <div className="flex space-x-4">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#D4AF37] transition-all duration-300 group">
+              <a href="https://www.facebook.com/divinavisioncucuta1/?ref=_xav_ig_profile_page_web#" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#D4AF37] transition-all duration-300 group">
                 <FaFacebookF className="w-5 h-5 text-white" />
               </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#D4AF37] transition-all duration-300 group">
+              <a href="https://www.instagram.com/divinavisioncucuta1/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#D4AF37] transition-all duration-300 group">
                 <FaInstagram className="w-5 h-5 text-white" />
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#D4AF37] transition-all duration-300 group">
-                <FaTwitter className="w-5 h-5 text-white" />
+              <a href="https://www.tiktok.com/@divinavisioncucuta" target="_blank" rel="noopener noreferrer" aria-label="TikTok" className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#D4AF37] transition-all duration-300 group">
+                <FaTiktok className="w-5 h-5 text-white" />
               </a>
             </div>
           </div>
@@ -74,18 +72,20 @@ function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start space-x-3">
                 <span className="w-5 h-5 text-[#D4AF37] mt-0.5">✉️</span>
-                <div>
-                  <p className="text-gray-400">info@divinasmonturas.com</p>
-                  <p className="text-gray-400">mayoristas@divinasmonturas.com</p>
-                </div>
+                <p className="text-gray-400">divinavision@gmail.com</p>
               </li>
               <li className="flex items-start space-x-3">
                 <span className="w-5 h-5 text-[#D4AF37] mt-0.5">📞</span>
-                <p className="text-gray-400">+1 (555) 123-4567</p>
+                <a href="https://wa.me/573134095006" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#D4AF37] transition-colors">
+                  +57 313 409 5006
+                </a>
               </li>
               <li className="flex items-start space-x-3">
                 <span className="w-5 h-5 text-[#D4AF37] mt-0.5">📍</span>
-                <p className="text-gray-400">123 Luxury Ave, Fashion District</p>
+                <div>
+                  <p className="text-gray-400">C.C. Alejandría Local 1-3-4A</p>
+                  <p className="text-gray-400">Calle 9 Entrada 1, Cúcuta</p>
+                </div>
               </li>
             </ul>
           </div>
@@ -97,56 +97,25 @@ function Footer() {
             </h4>
             <div className="space-y-4">
               <div>
-                <p className="text-white mb-2">Boutique</p>
-                <p className="text-gray-400">Lun - Sáb: 10AM - 8PM</p>
-                <p className="text-gray-400">Dom: 12PM - 6PM</p>
+                <p className="text-white mb-2">Tienda</p>
+                <p className="text-gray-400">Lun - Sáb: 8:00 AM - 6:30 PM</p>
+                <p className="text-gray-400 text-sm">(Jornada continua)</p>
               </div>
               <div>
-                <p className="text-white mb-2">Divina Visión</p>
-                <p className="text-gray-400">Lun - Vie: 9AM - 7PM</p>
-                <p className="text-gray-400">Sáb: 10AM - 4PM</p>
-              </div>
-              <div>
-                <p className="text-white mb-2">Mayoristas</p>
-                <p className="text-gray-400">Lun - Vie: 9AM - 6PM</p>
+                <p className="text-white mb-2">Examen Visual</p>
+                <p className="text-gray-400">Lun - Vie: 9:00 AM - 12:00 PM</p>
+                <p className="text-gray-400 ml-12">2:30 PM - 6:00 PM</p>
+                <p className="text-gray-400 mt-1">Sáb: 9:00 AM - 4:00 PM</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Newsletter */}
-        <div className="border-t border-white/10 pt-8 mb-8">
-          <div className="max-w-md mx-auto text-center">
-            <h4 className="mb-4" style={{ color: "#D4AF37" }}>
-              Suscríbete a nuestro Newsletter
-            </h4>
-            <div className="flex gap-2">
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="Tu correo electrónico"
-                className="flex-1 px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder-gray-400 focus:outline-none focus:border-[#D4AF37] transition-colors"
-              />
-              <button
-                className="px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.5)] hover:scale-105"
-                style={{ backgroundColor: "#D4AF37", color: "#000" }}
-              >
-                Suscribir
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Payment Icons & Copyright */}
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+        {/* Copyright */}
+        <div className="border-t border-white/10 pt-8 text-center">
           <p className="text-gray-400">
             © 2025 Divinas Monturas. Todos los derechos reservados.
           </p>
-          <div className="flex items-center space-x-4 text-gray-400">
-            <span>💳</span>
-            <span>🔒 Pago Seguro</span>
-          </div>
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FaCalendarAlt, FaClock, FaCheckCircle, FaMapMarkerAlt, FaFileAlt, FaUpload } from "react-icons/fa";
 
@@ -9,25 +9,97 @@ function Citas() {
     name: "",
     email: "",
     phone: "",
-    service: "",
     firstVisit: false,
-    symptoms: "",
+    symptoms: ""
   });
+  const [file, setFile] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [horariosOcupados, setHorariosOcupados] = useState([]);
 
-  const timeSlots = [
-    "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM"
-  ];
-  const services = [
-    "Examen Visual Completo",
-    "Prescripción de Lentes",
-    "Adaptación de Lentes de Contacto",
-    "Seguimiento",
-    "Monturas + Lentes",
-  ];
+  // Consultar horarios ocupados cuando cambia la fecha
+  React.useEffect(() => {
+    const fetchOcupados = async () => {
+      const fechaStr = selectedDate.toISOString().split('T')[0];
+      try {
+        const res = await fetch(`/api/citas/ocupados?date=${fechaStr}`);
+        if (res.ok) {
+          const data = await res.json();
+          setHorariosOcupados(data.horarios || []);
+        } else {
+          setHorariosOcupados([]);
+        }
+      } catch {
+        setHorariosOcupados([]);
+      }
+    };
+    fetchOcupados();
+  }, [selectedDate]);
 
-  const handleSubmit = (e) => {
+  // Genera los slots de horario según el día seleccionado
+  function getTimeSlots(date) {
+    if (!date) return [];
+    const day = date.getDay(); // 0=Dom, 1=Lun, ..., 6=Sáb
+    let slots = [];
+    if (day >= 1 && day <= 5) {
+      // Lun-Vie: 9:00-12:00, 2:30-6:00
+      slots = [
+        ...generateSlots("09:00", "12:00"),
+        ...generateSlots("14:30", "18:00")
+      ];
+    } else if (day === 6) {
+      // Sáb: 9:00-4:00
+      slots = generateSlots("09:00", "16:00");
+    }
+    return slots;
+  }
+
+  function generateSlots(start, end) {
+    // start/end formato "HH:mm"
+    const slots = [];
+    let [h, m] = start.split(":").map(Number);
+    let [eh, em] = end.split(":").map(Number);
+    while (h < eh || (h === eh && m <= em)) {
+      const ampm = h < 12 ? "AM" : "PM";
+      let displayH = h % 12 === 0 ? 12 : h % 12;
+      slots.push(`${displayH}:${m.toString().padStart(2, "0")} ${ampm}`);
+      m += 30;
+      if (m >= 60) { h++; m = 0; }
+      if (h > eh || (h === eh && m > em)) break;
+    }
+    return slots;
+  }
+
+  const timeSlots = getTimeSlots(selectedDate);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const form = new FormData();
+    form.append("name", formData.name);
+    form.append("email", formData.email);
+    form.append("phone", formData.phone);
+    form.append("firstVisit", formData.firstVisit);
+    form.append("symptoms", formData.symptoms);
+    form.append("date", selectedDate.toISOString().split('T')[0]);
+    form.append("time", selectedTime);
+    if (file) form.append("prescription", file);
+
+    try {
+      const res = await fetch("/api/citas", {
+        method: "POST",
+        body: form
+      });
+      if (res.ok) {
+        setIsSubmitted(true);
+      } else {
+        alert("Error al agendar la cita. Intenta de nuevo.");
+      }
+    } catch (err) {
+      alert("Error de red al agendar la cita.");
+    }
   };
 
   if (isSubmitted) {
@@ -163,19 +235,25 @@ function Citas() {
                   Horarios Disponibles
                 </h3>
                 <div className="grid grid-cols-3 gap-3">
-                  {timeSlots.map((time) => (
-                    <button
-                      key={time}
-                      type="button"
-                      onClick={() => setSelectedTime(time)}
-                      className={`px-4 py-3 rounded-lg border-2 transition-all duration-300 ${selectedTime === time
-                          ? "border-[#D4AF37] bg-[#D4AF37] text-black"
-                          : "border-gray-200 hover:border-[#D4AF37] hover:bg-[#D4AF37]/10"
-                        }`}
-                    >
-                      {time}
-                    </button>
-                  ))}
+                  {timeSlots.map((time) => {
+                    const ocupado = horariosOcupados.includes(time);
+                    return (
+                      <button
+                        key={time}
+                        type="button"
+                        onClick={() => !ocupado && setSelectedTime(time)}
+                        className={`px-4 py-3 rounded-lg border-2 transition-all duration-300 ${ocupado
+                          ? "border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed"
+                          : selectedTime === time
+                            ? "border-[#D4AF37] bg-[#D4AF37] text-black"
+                            : "border-gray-200 hover:border-[#D4AF37] hover:bg-[#D4AF37]/10"}`}
+                        disabled={ocupado}
+                      >
+                        {time}
+                        {ocupado && <span className="ml-1 text-xs">(Ocupado)</span>}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </motion.div>
@@ -232,21 +310,7 @@ function Citas() {
                   />
                 </div>
 
-                <div>
-                  <label htmlFor="service" className="block text-gray-700 mb-2">Tipo de Servicio *</label>
-                  <select
-                    id="service"
-                    required
-                    value={formData.service}
-                    onChange={e => setFormData({ ...formData, service: e.target.value })}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#D4AF37] transition-colors"
-                  >
-                    <option value="">Selecciona un servicio</option>
-                    {services.map((service) => (
-                      <option key={service} value={service}>{service}</option>
-                    ))}
-                  </select>
-                </div>
+                {/* Eliminado campo de tipo de servicio */}
 
                 <div>
                   <label className="flex items-center gap-2 cursor-pointer">
@@ -262,13 +326,23 @@ function Citas() {
 
                 <div>
                   <label htmlFor="prescription" className="block text-gray-700 mb-2">Subir Prescripción (Opcional)</label>
-                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#D4AF37] transition-colors cursor-pointer">
+                  <div
+                    className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#D4AF37] transition-colors cursor-pointer"
+                    onClick={() => document.getElementById('prescription').click()}
+                  >
                     <FaUpload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                    <input id="prescription" type="file" className="hidden" />
+                    <input
+                      id="prescription"
+                      type="file"
+                      accept=".pdf,.jpg,.jpeg,.png"
+                      style={{ display: "none" }}
+                      onChange={handleFileChange}
+                    />
                     <p className="text-sm text-gray-600">
                       Arrastra tu archivo aquí o haz clic para seleccionar
                     </p>
                     <p className="text-xs text-gray-400 mt-1">PDF, JPG, PNG (Max 5MB)</p>
+                    {file && <p className="text-xs text-green-600 mt-2">Archivo seleccionado: {file.name}</p>}
                   </div>
                 </div>
 
@@ -284,17 +358,7 @@ function Citas() {
                   />
                 </div>
 
-                <div>
-                  <label htmlFor="insurance" className="block text-gray-700 mb-2">Seguro Médico (Opcional)</label>
-                  <input
-                    id="insurance"
-                    type="text"
-                    value={formData.insurance}
-                    onChange={e => setFormData({ ...formData, insurance: e.target.value })}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#D4AF37] transition-colors"
-                    placeholder="Nombre de tu seguro"
-                  />
-                </div>
+                {/* Eliminado campo de seguro médico */}
 
                 <button
                   type="submit"

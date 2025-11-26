@@ -1,52 +1,109 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { FaEye, FaGlasses, FaShieldAlt, FaStar, FaMapMarkerAlt, FaClock, FaPhone, FaEnvelope, FaInstagram } from "react-icons/fa";
+import { useEffect } from "react";
+import { FaEye, FaGlasses, FaShieldAlt, FaStar, FaMapMarkerAlt, FaClock, FaPhone, FaEnvelope, FaInstagram, FaCreditCard, FaPercentage } from "react-icons/fa";
+import { MdAttachMoney } from "react-icons/md";
 
 import logoDV from "../../public/logoDV.jpg";
 
 function DivinaVision() {
   const services = [
-    { icon: FaEye, title: "Examen Visual Completo", description: "Evaluación integral de tu salud visual con tecnología de vanguardia", price: "$89" },
-    { icon: FaGlasses, title: "Prescripción de Lentes", description: "Diagnóstico preciso y recomendación personalizada de lentes correctivos", price: "$120" },
-    { icon: FaShieldAlt, title: "Lentes Personalizados", description: "Anti-reflejo, luz azul, progresivos y más opciones premium", price: "Desde $150" },
-    { icon: FaStar, title: "Lentes de Contacto", description: "Adaptación profesional y seguimiento para máxima comodidad", price: "$95" },
+    {
+      icon: FaEye,
+      title: "Examen Visual Computarizado",
+      description: "Valoración completa de Optometría con tecnología de vanguardia",
+      price: "$70.000",
+      priceNote: "$35.000 con compra de montura y lentes"
+    },
+    {
+      icon: FaGlasses,
+      title: "Monturas de Calidad",
+      description: "Diseños variados desde opciones sencillas hasta monturas premium",
+      price: "Desde $35.000",
+      priceNote: "Monturas de calidad desde $90.000"
+    },
+    {
+      icon: FaShieldAlt,
+      title: "Cristales Personalizados",
+      description: "Lentes según tu fórmula y recomendación del optometrista",
+      price: "Desde $80.000",
+      priceNote: "Varía según fórmula y necesidades"
+    },
+  ];
+
+  const paymentMethods = [
+    {
+      name: "Nequi",
+      logo: "/logos/nequi.jpg" 
+    },
+    {
+      name: "Bancolombia",
+      logo: "/logos/bancolombia.jpg" 
+    },
+    {
+      name: "Daviplata",
+      logo: "/logos/daviplata.png"
+    },
+    {
+      name: "Sistecredito",
+      logo: "/logos/sistecredito.png" 
+    },
+    {
+      name: "Addi",
+      logo: "/logos/addi.png" 
+    },
   ];
 
   const team = [
-    { name: "Dr. Carlos Mendoza", role: "Optometrista Principal", credentials: "PhD en Optometría, 15 años de experiencia", image: "https://images.unsplash.com/photo-1631507623112-0092cef9c70d?w=400" },
-    { name: "Dra. María González", role: "Especialista en Contactología", credentials: "Maestría en Ciencias de la Visión", image: "https://images.unsplash.com/photo-1758206524001-56b1b1ec72cf?w=400" },
-    { name: "Dr. Roberto Silva", role: "Experto en Baja Visión", credentials: "Certificación Internacional en Rehabilitación Visual", image: "https://images.unsplash.com/photo-1694892463534-dade2296283d?w=400" },
+    { name: "Equipo de Optometría", role: "Profesionales Certificados", credentials: "Expertos en salud visual y atención personalizada", image: "https://images.unsplash.com/photo-1631507623112-0092cef9c70d?w=400" },
+    { name: "Especialistas en Monturas", role: "Asesores de Imagen", credentials: "Te ayudamos a encontrar el estilo perfecto para ti", image: "https://images.unsplash.com/photo-1758206524001-56b1b1ec72cf?w=400" },
+    { name: "Servicio al Cliente", role: "Atención Personalizada", credentials: "Comprometidos con tu satisfacción y comodidad", image: "https://images.unsplash.com/photo-1694892463534-dade2296283d?w=400" },
   ];
 
   const testimonials = [
-    { name: "Laura Pérez", comment: "Excelente atención y equipamiento de primera. El Dr. Mendoza fue muy profesional y detallado.", rating: 5 },
-    { name: "Miguel Ángel Torres", comment: "La mejor experiencia en un examen visual. Instalaciones modernas y personal altamente capacitado.", rating: 5 },
+    { name: "Cliente Satisfecho", comment: "Excelente atención y productos de calidad. Los precios son muy accesibles y el servicio es impecable.", rating: 5 },
+    { name: "Cliente Frecuente", comment: "La mejor óptica de Cúcuta. Gran variedad de monturas y el examen visual es muy completo.", rating: 5 },
   ];
 
-  const insurancePartners = ["Blue Cross Blue Shield", "VSP Vision Care", "EyeMed", "UnitedHealthcare", "Aetna", "Cigna"];
-
   const instagramPosts = [
-    "https://images.unsplash.com/photo-1631507623112-0092cef9c70d?w=400",
-    "https://images.unsplash.com/photo-1758206524001-56b1b1ec72cf?w=400",
-    "https://images.unsplash.com/photo-1694892463534-dade2296283d?w=400",
-    "https://images.unsplash.com/photo-1689152496131-9cecc95cde25?w=400",
-    "https://images.unsplash.com/photo-1631507623112-0092cef9c70d?w=400",
-    "https://images.unsplash.com/photo-1758206524001-56b1b1ec72cf?w=400",
+    "https://www.instagram.com/p/DRAFqBPlXIw/",
+    "https://www.instagram.com/p/DQ9kga7inSv/",
+    "https://www.instagram.com/p/DPwK1shDfGy/",
+    "https://www.instagram.com/p/DRDdPZTCSqG/",
   ];
 
   const navigate = useNavigate();
+
+  // Cargar el script de Instagram para los embeds
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = '//www.instagram.com/embed.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    // Procesar los embeds cuando el script se carga
+    script.onload = () => {
+      if (window.instgrm) {
+        window.instgrm.Embeds.process();
+      }
+    };
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
   return (
-    <div id="divina-vision" className="min-h-screen pt-24 pb-20 bg-white">
-      
-      <section className="relative min-h-[340px] md:min-h-[420px] flex items-center justify-center overflow-hidden mb-20">
+    <div id="divina-vision" className="min-h-screen">
+
+      <section className="relative h-screen flex items-center justify-center overflow-hidden pt-20">
         <div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1631507623112-0092cef9c70d?w=1920')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundAttachment: "fixed"
-          }}
+            className="absolute inset-0 z-0"
+            style={{
+              backgroundImage: "url('/DivinaVisionLocal.jpg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundAttachment: "fixed"
+            }}
         >
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70" />
         </div>
@@ -84,7 +141,7 @@ function DivinaVision() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="text-lg sm:text-xl md:text-2xl text-white/90 mb-8 font-light"
           >
-            Centro Óptico Premium
+            Centro Óptico
           </motion.p>
 
           <motion.p
@@ -93,7 +150,7 @@ function DivinaVision() {
             transition={{ duration: 0.7, delay: 0.4 }}
             className="text-base md:text-lg text-white/85 mb-10 max-w-2xl mx-auto leading-relaxed"
           >
-            Tu salud visual en manos de expertos. Tecnología de vanguardia y atención personalizada.
+            "Todo un mundo por ver".
           </motion.p>
 
           <motion.div
@@ -135,8 +192,8 @@ function DivinaVision() {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <section className="mb-20" id="servicios">
+      <section className="py-20 bg-white" id="servicios">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -151,7 +208,7 @@ function DivinaVision() {
               Cuidado visual completo con la más alta tecnología y profesionalismo
             </p>
           </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services.map((service, index) => (
               <motion.div
                 key={index}
@@ -167,15 +224,20 @@ function DivinaVision() {
                 >
                   <service.icon className="w-7 h-7" style={{ color: "#1A628F" }} />
                 </div>
-                <h3 className="mb-2 text-black">{service.title}</h3>
+                <h3 className="mb-2 text-black font-semibold">{service.title}</h3>
                 <p className="text-gray-600 mb-4 text-sm">{service.description}</p>
-                <p style={{ color: "#1A628F" }} className="text-xl">{service.price}</p>
+                <p style={{ color: "#1A628F" }} className="text-2xl font-bold mb-2">{service.price}</p>
+                {service.priceNote && (
+                  <p className="text-sm text-gray-500 italic">{service.priceNote}</p>
+                )}
               </motion.div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-20">
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -217,9 +279,11 @@ function DivinaVision() {
               </motion.div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-20">
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -251,81 +315,12 @@ function DivinaVision() {
               </motion.div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            {/* Insurance */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="p-8 rounded-xl text-white"
-              style={{ background: "linear-gradient(135deg, #1A628F, #0D3B5C)" }}
-            >
-              <h3 className="mb-6" style={{ color: "#EF7272" }}>
-                Seguros Aceptados
-              </h3>
-              <div className="grid grid-cols-2 gap-4">
-                {insurancePartners.map((insurance, index) => (
-                  <div
-                    key={index}
-                    className="px-4 py-3 rounded-lg bg-white/10 backdrop-blur-sm text-center text-sm"
-                  >
-                    {insurance}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-            {/* Contact Info */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="p-8 rounded-xl bg-white border-2"
-              style={{ borderColor: "rgba(26, 98, 143, 0.2)" }}
-            >
-              <h3 className="mb-6 text-black">
-                Información de <span style={{ color: "#1A628F" }}>Contacto</span>
-              </h3>
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                  <FaClock className="w-6 h-6 shrink-0 mt-1" style={{ color: "#1A628F" }} />
-                  <div>
-                    <p className="text-black mb-1">Horarios</p>
-                    <p className="text-gray-600 text-sm">Lunes - Viernes: 9AM - 7PM</p>
-                    <p className="text-gray-600 text-sm">Sábado: 10AM - 4PM</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <FaPhone className="w-6 h-6 shrink-0 mt-1" style={{ color: "#1A628F" }} />
-                  <div>
-                    <p className="text-black mb-1">Teléfono</p>
-                    <p className="text-gray-600 text-sm">+1 (555) 123-4567</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <FaEnvelope className="w-6 h-6 shrink-0 mt-1" style={{ color: "#1A628F" }} />
-                  <div>
-                    <p className="text-black mb-1">Email</p>
-                    <p className="text-gray-600 text-sm">vision@divinasmonturas.com</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <FaMapMarkerAlt className="w-6 h-6 shrink-0 mt-1" style={{ color: "#1A628F" }} />
-                  <div>
-                    <p className="text-black mb-1">Ubicación</p>
-                    <p className="text-gray-600 text-sm">123 Luxury Ave, Fashion District</p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
-
-        <section className="mb-20">
+      {/* Métodos de Pago */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -334,66 +329,283 @@ function DivinaVision() {
             className="text-center mb-12"
           >
             <h2 className="font-serif text-black mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>
-              Síguenos en <span style={{ color: "#1A628F" }}>Instagram</span>
+              Métodos de <span style={{ color: "#1A628F" }}>Pago</span>
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Facilidades para tu compra
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-10">
+            {paymentMethods.map((method, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="p-6 rounded-xl bg-white border-2 border-gray-100 hover:border-[#1A628F] transition-all duration-300 hover:shadow-xl flex items-center justify-center group"
+                style={{ minHeight: "130px" }}
+              >
+                <img
+                  src={method.logo}
+                  alt={method.name}
+                  className="max-w-full max-h-16 object-contain group-hover:scale-105 transition-transform duration-300"
+                />
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
+            <div className="p-6 rounded-xl border-2 border-gray-100 bg-white hover:border-[#1A628F] transition-all duration-300 hover:shadow-lg">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "rgba(26, 98, 143, 0.1)" }}>
+                <FaCreditCard className="w-6 h-6" style={{ color: "#1A628F" }} />
+              </div>
+              <h4 className="font-semibold text-black mb-2">Tarjetas</h4>
+              <p className="text-sm text-gray-600">Débito y crédito en tienda</p>
+            </div>
+
+            <div className="p-6 rounded-xl border-2 border-gray-100 bg-white hover:border-[#1A628F] transition-all duration-300 hover:shadow-lg">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "rgba(26, 98, 143, 0.1)" }}>
+                <MdAttachMoney className="w-6 h-6" style={{ color: "#1A628F" }} />
+              </div>
+              <h4 className="font-semibold text-black mb-2">Sistecredito</h4>
+              <p className="text-sm text-gray-600">30% efectivo + 70% crédito</p>
+            </div>
+
+            <div className="p-6 rounded-xl border-2 border-gray-100 bg-white hover:border-[#1A628F] transition-all duration-300 hover:shadow-lg">
+              <div className="w-12 h-12 rounded-full flex items-center justify-center mb-4" style={{ backgroundColor: "rgba(26, 98, 143, 0.1)" }}>
+                <FaPercentage className="w-6 h-6" style={{ color: "#1A628F" }} />
+              </div>
+              <h4 className="font-semibold text-black mb-2">Addi</h4>
+              <p className="text-sm text-gray-600">+7% del total</p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Información de Contacto y Horarios */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-serif text-black mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>
+              Visítanos en <span style={{ color: "#1A628F" }}>Cúcuta</span>
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Estamos listos para atenderte
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Horarios de Atención */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="p-8 rounded-xl bg-white border-2 border-gray-100 hover:border-[#1A628F] transition-all duration-300 hover:shadow-xl"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: "rgba(26, 98, 143, 0.1)" }}>
+                  <FaClock className="w-6 h-6" style={{ color: "#1A628F" }} />
+                </div>
+                <h3 className="text-xl font-bold text-black">Horarios de Atención</h3>
+              </div>
+
+              <div className="space-y-4">
+                <div className="p-5 rounded-lg border border-gray-200">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "#EF7272" }} />
+                    <p className="font-semibold text-black">Tienda</p>
+                  </div>
+                  <p className="text-gray-600 text-sm mb-1">Lunes a Sábado</p>
+                  <p className="text-black font-medium text-lg">8:00 AM - 6:30 PM</p>
+                  <p className="text-gray-500 text-xs mt-2">(Jornada continua)</p>
+                </div>
+
+                <div className="p-5 rounded-lg border border-gray-200">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "#1A628F" }} />
+                    <p className="font-semibold text-black">Examen Visual</p>
+                  </div>
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-gray-600 text-sm mb-1">Lunes a Viernes</p>
+                      <p className="text-black font-medium">9:00 AM - 12:00 PM</p>
+                      <p className="text-black font-medium">2:30 PM - 6:00 PM</p>
+                    </div>
+                    <div className="pt-2 border-t border-gray-200">
+                      <p className="text-gray-600 text-sm mb-1">Sábado</p>
+                      <p className="text-black font-medium">9:00 AM - 4:00 PM</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Información de Contacto */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="p-8 rounded-xl bg-white border-2 border-gray-100 hover:border-[#1A628F] transition-all duration-300 hover:shadow-xl"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ backgroundColor: "rgba(239, 114, 114, 0.1)" }}>
+                  <FaMapMarkerAlt className="w-6 h-6" style={{ color: "#EF7272" }} />
+                </div>
+                <h3 className="text-xl font-bold text-black">Contáctanos</h3>
+              </div>
+
+              <div className="space-y-4">
+                <div className="p-5 rounded-lg border border-gray-200 hover:border-[#1A628F] transition-all duration-300 group">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: "rgba(26, 98, 143, 0.1)" }}>
+                      <FaMapMarkerAlt className="w-5 h-5" style={{ color: "#1A628F" }} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-black mb-2">Nuestra Ubicación</p>
+                      <p className="text-gray-700 text-sm font-medium mb-1">C.C. Alejandría Local 1-3-4A</p>
+                      <p className="text-gray-600 text-sm">Calle 9 Entrada 1</p>
+                      <p className="text-gray-600 text-sm">Cúcuta, Colombia</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-5 rounded-lg border border-gray-200 hover:border-[#1A628F] transition-all duration-300 group">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: "rgba(26, 98, 143, 0.1)" }}>
+                      <FaPhone className="w-5 h-5" style={{ color: "#1A628F" }} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-black mb-2">WhatsApp</p>
+                      <a
+                        href="https://wa.me/573134095006"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-700 hover:text-[#1A628F] transition-colors text-sm font-medium inline-flex items-center gap-2"
+                      >
+                        +57 313 409 5006
+                        <span className="text-xs">→</span>
+                      </a>
+                      <p className="text-gray-500 text-xs mt-1">Escríbenos, estamos para ayudarte</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-5 rounded-lg border border-gray-200 hover:border-[#EF7272] transition-all duration-300 group">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: "rgba(239, 114, 114, 0.1)" }}>
+                      <FaInstagram className="w-5 h-5" style={{ color: "#EF7272" }} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-black mb-2">Síguenos</p>
+                      <a
+                        href="https://www.instagram.com/divinavisioncucuta1/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-700 hover:text-[#EF7272] transition-colors text-sm font-medium inline-flex items-center gap-2"
+                      >
+                        @divinavisioncucuta1
+                        <span className="text-xs">→</span>
+                      </a>
+                      <p className="text-gray-500 text-xs mt-1">Conoce nuestras promociones</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-serif text-black mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>
+              Síguenos en <span style={{ color: "#EF7272" }}>Instagram</span>
             </h2>
             <a
               href="https://www.instagram.com/divinavisioncucuta1/"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 hover:opacity-80 transition-colors text-[#1A628F]"
+              className="inline-flex items-center gap-2 text-lg font-medium hover:opacity-80 transition-all duration-300"
+              style={{ color: "#EF7272" }}
             >
-              <FaInstagram className="w-5 h-5" />
+              <FaInstagram className="w-6 h-6" />
               <span>@divinavisioncucuta1</span>
             </a>
-            <p className="text-gray-600 mt-2">Descubre consejos de salud visual y más</p>
+            <p className="text-gray-600 mt-3">Descubre nuestras monturas y promociones</p>
           </motion.div>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {instagramPosts.map((image, index) => (
-            <motion.a
-              key={index}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            {instagramPosts.map((postUrl, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="flex justify-center"
+              >
+                <iframe
+                  src={`${postUrl}embed/`}
+                  className="border-0 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+                  style={{
+                    width: '100%',
+                    maxWidth: '540px',
+                    minHeight: '600px',
+                    height: 'auto'
+                  }}
+                  scrolling="no"
+                  allowTransparency="true"
+                  allow="encrypted-media"
+                />
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mt-10"
+          >
+            <a
               href="https://www.instagram.com/divinavisioncucuta1/"
               target="_blank"
               rel="noopener noreferrer"
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="relative aspect-square overflow-hidden rounded-lg group border-2 border-transparent hover:border-[#EF7272] transition-all duration-300"
+              className="inline-block px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl"
+              style={{ backgroundColor: "#EF7272", color: "white" }}
             >
-              <img
-                src={image}
-                alt={`Divina Visión Instagram ${index + 1}`}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-4"
-                style={{ background: "linear-gradient(to top, rgba(26, 98, 143, 0.85), transparent)" }}
-              >
-                <div className="flex items-center gap-2 text-white">
-                  <FaInstagram className="w-5 h-5" />
-                  <span>Ver en Instagram</span>
-                </div>
-              </div>
-            </motion.a>
-          ))}
+              Seguir en Instagram
+            </a>
+          </motion.div>
         </div>
-        <div className="text-center mt-8">
-          <a
-            href="https://www.instagram.com/divinavisioncucuta1/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block px-8 py-4 rounded-lg border-2 border-[#1A628F] text-[#1A628F] transition-all duration-300 hover:scale-105 hover:shadow-lg"
-            style={{ boxShadow: "0 0 0 rgba(26, 98, 143, 0)" }}
-            onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 20px rgba(26, 98, 143, 0.4)"; }}
-            onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 0 0 rgba(26, 98, 143, 0)"; }}
-          >
-            Seguir en Instagram
-          </a>
-        </div>
-    </section>
+      </section>
 
-
-        <section className="text-center mb-20">
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -416,7 +628,7 @@ function DivinaVision() {
                 ¿Listo para tu <span style={{ color: "#EF7272" }}>Consulta?</span>
               </h2>
               <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                Agenda tu cita hoy y descubre la diferencia de un cuidado visual de clase mundial
+                Agenda tu cita hoy y descubre la diferencia de un cuidado visual
               </p>
               <a
                 href="/citas"
@@ -426,9 +638,9 @@ function DivinaVision() {
               </a>
             </div>
           </motion.div>
-        </section>
-      </div >
-    </div >
+        </div>
+      </section>
+    </div>
   );
 }
 
