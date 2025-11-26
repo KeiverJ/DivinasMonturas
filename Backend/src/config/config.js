@@ -33,7 +33,7 @@ const config = {
   
   // CORS
   cors: {
-    origin: getEnvVariable('CORS_ORIGIN', 'http://localhost:3000'),
+    origin: getEnvVariable('CORS_ORIGIN', 'http://localhost:5173'),
   },
   
 };
