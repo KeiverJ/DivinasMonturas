@@ -6,8 +6,8 @@ const citaSchema = new mongoose.Schema({
   phone: { type: String, required: true },
   firstVisit: { type: Boolean, default: false },
   symptoms: { type: String },
-  date: { type: String, required: true }, // formato YYYY-MM-DD
-  time: { type: String, required: true }, // Ej: "9:00 AM"
+  date: { type: String, required: true },
+  time: { type: String, required: true },
   createdAt: { type: Date, default: Date.now }
 });
 
