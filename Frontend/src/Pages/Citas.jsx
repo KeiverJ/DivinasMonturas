@@ -234,7 +234,7 @@ function Citas() {
                   <FaClock className="w-5 h-5 text-[#D4AF37]" />
                   Horarios Disponibles
                 </h3>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {timeSlots.map((time) => {
                     const ocupado = horariosOcupados.includes(time);
                     return (
@@ -242,7 +242,7 @@ function Citas() {
                         key={time}
                         type="button"
                         onClick={() => !ocupado && setSelectedTime(time)}
-                        className={`px-4 py-3 rounded-lg border-2 transition-all duration-300 ${ocupado
+                        className={`px-3 sm:px-4 py-3 rounded-lg border-2 transition-all duration-300 text-sm sm:text-base ${ocupado
                           ? "border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed"
                           : selectedTime === time
                             ? "border-[#D4AF37] bg-[#D4AF37] text-black"

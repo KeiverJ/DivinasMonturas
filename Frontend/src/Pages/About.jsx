@@ -35,9 +35,9 @@ export function About() {
   ];
 
   return (
-    <div id="acerca" className="min-h-screen pt-24 bg-white">
-      
-      <section className="relative min-h-[340px] md:min-h-[420px] flex items-center justify-center overflow-hidden mb-20">
+    <div id="acerca" className="min-h-screen pt-32 md:pt-36 bg-white">
+
+      <section className="relative min-h-[300px] sm:min-h-[340px] md:min-h-[420px] flex items-center justify-center overflow-hidden mb-20">
         <div
           className="absolute inset-0 z-0"
           style={{

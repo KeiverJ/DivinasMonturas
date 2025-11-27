@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaChevronLeft, FaChevronRight, FaStar, FaQuoteLeft } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaStar, FaQuoteLeft, FaEye, FaGlasses, FaShieldAlt, FaCreditCard, FaPercentage, FaClock, FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
+import { MdAttachMoney } from "react-icons/md";
 import ProductCard from "../Components/ProductCard";
 
 export default function Home() {
@@ -59,6 +60,59 @@ export default function Home() {
         "El servicio de optometría es de primera clase. Personal profesional y una experiencia increíble.",
       rating: 5,
     },
+  ];
+
+  const services = [
+    {
+      icon: FaEye,
+      title: "Examen Visual Computarizado",
+      description: "Valoración completa de Optometría con tecnología de vanguardia",
+      price: "$70.000",
+      priceNote: "$35.000 con compra de montura y lentes"
+    },
+    {
+      icon: FaGlasses,
+      title: "Monturas de Calidad",
+      description: "Diseños variados desde opciones sencillas hasta monturas premium",
+      price: "Desde $35.000",
+      priceNote: "Monturas de calidad desde $90.000"
+    },
+    {
+      icon: FaShieldAlt,
+      title: "Cristales Personalizados",
+      description: "Lentes según tu fórmula y recomendación del optometrista",
+      price: "Desde $80.000",
+      priceNote: "Varía según fórmula y necesidades"
+    },
+  ];
+
+  const paymentMethods = [
+    {
+      name: "Nequi",
+      logo: "/logos/nequi.jpg"
+    },
+    {
+      name: "Bancolombia",
+      logo: "/logos/bancolombia.jpg"
+    },
+    {
+      name: "Daviplata",
+      logo: "/logos/daviplata.png"
+    },
+    {
+      name: "Sistecredito",
+      logo: "/logos/sistecredito.png"
+    },
+    {
+      name: "Addi",
+      logo: "/logos/addi.png"
+    },
+  ];
+
+  const team = [
+    { name: "Equipo de Optometría", role: "Profesionales Certificados", credentials: "Expertos en salud visual y atención personalizada", image: "https://images.unsplash.com/photo-1631507623112-0092cef9c70d?w=400" },
+    { name: "Especialistas en Monturas", role: "Asesores de Imagen", credentials: "Te ayudamos a encontrar el estilo perfecto para ti", image: "https://images.unsplash.com/photo-1758206524001-56b1b1ec72cf?w=400" },
+    { name: "Servicio al Cliente", role: "Atención Personalizada", credentials: "Comprometidos con tu satisfacción y comodidad", image: "https://images.unsplash.com/photo-1694892463534-dade2296283d?w=400" },
   ];
 
   const instagramPosts = [
@@ -229,6 +283,316 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Servicios de Optometría */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-serif text-black mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>
+              Servicios de <span style={{ color: "#D4AF37" }}>Optometría</span>
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Cuidado visual completo con la más alta tecnología y profesionalismo
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {services.map((service, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="p-6 rounded-xl bg-white shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-1 group border border-gray-100"
+              >
+                <div
+                  className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 transition-all duration-300 group-hover:scale-110"
+                  style={{ backgroundColor: "rgba(212, 175, 55, 0.1)" }}
+                >
+                  <service.icon className="w-6 h-6" style={{ color: "#D4AF37" }} />
+                </div>
+                <h3 className="text-lg mb-2 text-black font-semibold">{service.title}</h3>
+                <p className="text-gray-600 mb-4 text-sm">{service.description}</p>
+                <div className="pt-4 border-t border-gray-100">
+                  <p style={{ color: "#D4AF37" }} className="text-2xl font-bold mb-1">{service.price}</p>
+                  {service.priceNote && (
+                    <p className="text-xs text-gray-500">{service.priceNote}</p>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          <div className="text-center mt-12">
+            <Link
+              to="/citas"
+              className="inline-block px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:scale-105"
+              style={{ backgroundColor: "#D4AF37", color: "#000" }}
+            >
+              Agendar Cita
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Nuestro Equipo */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-serif text-black mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>
+              Nuestro <span style={{ color: "#D4AF37" }}>Equipo</span>
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Profesionales certificados comprometidos con tu salud visual
+            </p>
+          </motion.div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {team.map((member, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group"
+              >
+                <div className="relative overflow-hidden rounded-xl mb-4" style={{ border: "3px solid #D4AF37" }}>
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full aspect-square object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{ background: "linear-gradient(to top, rgba(212, 175, 55, 0.7), transparent)" }}
+                  />
+                </div>
+                <h3 className="mb-1 text-black font-semibold">{member.name}</h3>
+                <p className="mb-2" style={{ color: "#D4AF37" }}>{member.role}</p>
+                <p className="text-sm text-gray-600">{member.credentials}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Métodos de Pago */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-serif text-black mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>
+              Métodos de <span style={{ color: "#D4AF37" }}>Pago</span>
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Facilidades para tu compra
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-10">
+            {paymentMethods.map((method, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="p-6 rounded-xl bg-white shadow-sm hover:shadow-lg transition-all duration-300 flex items-center justify-center group border border-gray-100"
+                style={{ minHeight: "120px" }}
+              >
+                <img
+                  src={method.logo}
+                  alt={method.name}
+                  className="max-w-full max-h-20 object-contain group-hover:scale-105 transition-transform duration-300"
+                />
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          >
+            <div className="p-6 rounded-xl bg-white shadow-md hover:shadow-lg transition-all duration-300 group border border-gray-100">
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: "rgba(212, 175, 55, 0.1)" }}>
+                <FaCreditCard className="w-6 h-6" style={{ color: "#D4AF37" }} />
+              </div>
+              <h4 className="font-semibold text-black mb-2">Tarjetas</h4>
+              <p className="text-sm text-gray-600">Débito y crédito en tienda</p>
+            </div>
+
+            <div className="p-6 rounded-xl bg-white shadow-md hover:shadow-lg transition-all duration-300 group border border-gray-100">
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: "rgba(212, 175, 55, 0.1)" }}>
+                <MdAttachMoney className="w-6 h-6" style={{ color: "#D4AF37" }} />
+              </div>
+              <h4 className="font-semibold text-black mb-2">Sistecredito</h4>
+              <p className="text-sm text-gray-600">30% efectivo + 70% crédito</p>
+            </div>
+
+            <div className="p-6 rounded-xl bg-white shadow-md hover:shadow-lg transition-all duration-300 group border border-gray-100">
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: "rgba(212, 175, 55, 0.1)" }}>
+                <FaPercentage className="w-6 h-6" style={{ color: "#D4AF37" }} />
+              </div>
+              <h4 className="font-semibold text-black mb-2">Addi</h4>
+              <p className="text-sm text-gray-600">+7% del total</p>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Horarios y Contacto */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="font-serif text-black mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>
+              Visítanos en <span style={{ color: "#D4AF37" }}>Cúcuta</span>
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Estamos listos para atenderte
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="p-8 rounded-xl bg-white shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(212, 175, 55, 0.1)" }}>
+                  <FaClock className="w-6 h-6" style={{ color: "#D4AF37" }} />
+                </div>
+                <h3 className="text-xl font-bold text-black">Horarios de Atención</h3>
+              </div>
+
+              <div className="space-y-4">
+                <div className="p-5 rounded-lg border border-gray-200">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "#D4AF37" }} />
+                    <p className="font-semibold text-black">Tienda</p>
+                  </div>
+                  <p className="text-gray-600 text-sm mb-1">Lunes a Sábado</p>
+                  <p className="text-black font-medium text-lg">8:00 AM - 6:30 PM</p>
+                  <p className="text-gray-500 text-xs mt-2">(Jornada continua)</p>
+                </div>
+
+                <div className="p-5 rounded-lg border border-gray-200">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: "#D4AF37" }} />
+                    <p className="font-semibold text-black">Examen Visual</p>
+                  </div>
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-gray-600 text-sm mb-1">Lunes a Viernes</p>
+                      <p className="text-black font-medium">9:00 AM - 12:00 PM</p>
+                      <p className="text-black font-medium">2:30 PM - 6:00 PM</p>
+                    </div>
+                    <div className="pt-2 border-t border-gray-200">
+                      <p className="text-gray-600 text-sm mb-1">Sábado</p>
+                      <p className="text-black font-medium">9:00 AM - 4:00 PM</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="p-8 rounded-xl bg-white shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100"
+            >
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center" style={{ backgroundColor: "rgba(212, 175, 55, 0.1)" }}>
+                  <FaMapMarkerAlt className="w-6 h-6" style={{ color: "#D4AF37" }} />
+                </div>
+                <h3 className="text-xl font-bold text-black">Contáctanos</h3>
+              </div>
+
+              <div className="space-y-4">
+                <div className="p-5 rounded-lg border border-gray-200 hover:border-[#D4AF37] transition-all duration-300 group">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: "rgba(212, 175, 55, 0.1)" }}>
+                      <FaMapMarkerAlt className="w-5 h-5" style={{ color: "#D4AF37" }} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-black mb-2">Nuestra Ubicación</p>
+                      <p className="text-gray-700 text-sm font-medium mb-1">C.C. Alejandría Entrada 1</p>
+                      <p className="text-gray-600 text-sm">Local 1-309, Cúcuta</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-5 rounded-lg border border-gray-200 hover:border-[#D4AF37] transition-all duration-300 group">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: "rgba(212, 175, 55, 0.1)" }}>
+                      <FaPhone className="w-5 h-5" style={{ color: "#D4AF37" }} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-black mb-2">WhatsApp</p>
+                      <a
+                        href="https://wa.me/573151449003"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-gray-700 hover:text-[#D4AF37] transition-colors text-sm font-medium inline-flex items-center gap-2"
+                      >
+                        +57 315 144 9003
+                        <span className="text-xs">→</span>
+                      </a>
+                      <p className="text-gray-500 text-xs mt-1">Escríbenos, estamos para ayudarte</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-5 rounded-lg border border-gray-200 hover:border-[#D4AF37] transition-all duration-300 group">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: "rgba(212, 175, 55, 0.1)" }}>
+                      <FaEnvelope className="w-5 h-5" style={{ color: "#D4AF37" }} />
+                    </div>
+                    <div className="flex-1">
+                      <p className="font-semibold text-black mb-2">Email</p>
+                      <a
+                        href="mailto:divinavision@gmail.com"
+                        className="text-gray-700 hover:text-[#D4AF37] transition-colors text-sm font-medium"
+                      >
+                        divinavision@gmail.com
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       <section className="py-20 bg-[#F5F5DC]/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -255,20 +619,25 @@ export default function Home() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="flex justify-center"
               >
-                <iframe
-                  src={`${postUrl}embed/`}
-                  className="border-0 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+                <div className="w-full max-w-[540px] overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
                   style={{
-                    width: '100%',
-                    maxWidth: '540px',
-                    minHeight: '600px',
-                    height: 'auto'
+                    height: '480px',
+                    maxHeight: '480px'
                   }}
-                  scrolling="no"
-                  allowTransparency="true"
-                  allow="encrypted-media"
-                  title={`Instagram Post ${index + 1}`}
-                />
+                >
+                  <iframe
+                    src={`${postUrl}embed/`}
+                    className="border-0 w-full"
+                    style={{
+                      height: '700px',
+                      marginTop: '0'
+                    }}
+                    scrolling="no"
+                    allowTransparency="true"
+                    allow="encrypted-media"
+                    title={`Instagram Post ${index + 1}`}
+                  />
+                </div>
               </motion.div>
             ))}
           </div>

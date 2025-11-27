@@ -73,8 +73,8 @@ function Mayoristas() {
   ];
 
   return (
-    <div id="mayoristas" className="min-h-screen pt-24 pb-20">
-      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden mb-20">
+    <div id="mayoristas" className="min-h-screen pt-32 md:pt-36 pb-20">
+      <section className="relative h-[50vh] sm:h-[60vh] flex items-center justify-center overflow-hidden mb-20">
         <div
           className="absolute inset-0 z-0"
           style={{

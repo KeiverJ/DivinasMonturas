@@ -76,15 +76,15 @@ function Footer() {
               </li>
               <li className="flex items-start space-x-3">
                 <span className="w-5 h-5 text-[#D4AF37] mt-0.5">📞</span>
-                <a href="https://wa.me/573134095006" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#D4AF37] transition-colors">
-                  +57 313 409 5006
+                <a href="https://wa.me/573151449003" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#D4AF37] transition-colors">
+                  +57 315 144 9003
                 </a>
               </li>
               <li className="flex items-start space-x-3">
                 <span className="w-5 h-5 text-[#D4AF37] mt-0.5">📍</span>
                 <div>
-                  <p className="text-gray-400">C.C. Alejandría Local 1-3-4A</p>
-                  <p className="text-gray-400">Calle 9 Entrada 1, Cúcuta</p>
+                  <p className="text-gray-400">C.C. Alejandría Entrada 1</p>
+                  <p className="text-gray-400">Local 1-309, Cúcuta</p>
                 </div>
               </li>
             </ul>
