@@ -4,36 +4,26 @@ import { motion } from "framer-motion";
 import { FaChevronLeft, FaChevronRight, FaStar, FaQuoteLeft, FaEye, FaGlasses, FaShieldAlt, FaCreditCard, FaPercentage, FaClock, FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
 import ProductCard from "../Components/ProductCard";
+import { productService } from "../services/productService";
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [products, setProducts] = useState([]);
 
-  const products = [
-    {
-      id: 1,
-      name: "Aviator Classic Gold",
-      brand: "DIVINAS",
-      price: 299,
-      image: "https://images.unsplash.com/photo-1762706334838-ea8425b43116?w=800",
-      category: "Sunglasses",
-    },
-    {
-      id: 2,
-      name: "Elegance Frame",
-      brand: "DIVINAS",
-      price: 349,
-      image: "https://images.unsplash.com/photo-1671960610018-f2fdebbe5b47?w=800",
-      category: "Optical",
-    },
-    {
-      id: 3,
-      name: "Luxury Cat Eye",
-      brand: "DIVINAS",
-      price: 399,
-      image: "https://images.unsplash.com/photo-1760337871482-9dd93e75fa88?w=800",
-      category: "Sunglasses",
-    },
-  ];
+  useEffect(() => {
+    loadRandomProducts();
+  }, []);
+
+  const loadRandomProducts = async () => {
+    try {
+      const response = await productService.getProducts({ disponible: true }, 1, 6);
+      // Mezclar aleatoriamente y tomar solo 3
+      const shuffled = response.data.sort(() => 0.5 - Math.random());
+      setProducts(shuffled.slice(0, 3));
+    } catch (error) {
+      console.error('Error cargando productos:', error);
+    }
+  };
 
   const testimonials = [
     {
@@ -210,9 +200,21 @@ export default function Home() {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product) => (
-              <ProductCard key={product.id} {...product} />
-            ))}
+            {products.length > 0 ? (
+              products.map((product) => (
+                <ProductCard
+                  key={product._id}
+                  name={product.nombre}
+                  brand={product.marca || 'DIVINAS'}
+                  image={product.imagenes?.principal || 'https://via.placeholder.com/400x400?text=Sin+imagen'}
+                  category={product.categoria}
+                />
+              ))
+            ) : (
+              <div className="col-span-3 text-center py-12 text-gray-600">
+                Cargando monturas destacadas...
+              </div>
+            )}
           </div>
           <div className="text-center mt-12">
             <Link

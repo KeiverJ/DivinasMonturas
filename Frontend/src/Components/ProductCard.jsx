@@ -37,15 +37,11 @@ function ProductCard({ name, brand, price, image, category }) {
       <div className="p-5">
         <p className="text-sm text-gray-500 mb-1">{brand}</p>
         <h3 className="mb-3 text-black font-semibold">{name}</h3>
-        <div className="flex items-center justify-between">
-          <div>
-            <span className="text-2xl font-bold" style={{ color: "#D4AF37" }}>
-              ${price?.toLocaleString?.() ?? price}
-            </span>
-          </div>
+        <div className="flex items-center justify-end">
           <button
             className="px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(34,139,34,0.3)] hover:scale-105 flex items-center gap-2"
             style={{ backgroundColor: "#228B22", color: "#fff" }}
+            onClick={() => window.open('https://wa.me/573151449003', '_blank')}
           >
             <FaWhatsapp className="w-4 h-4" />
             <span className="text-sm font-medium">WhatsApp</span>
@@ -69,7 +65,6 @@ function ProductCard({ name, brand, price, image, category }) {
 ProductCard.propTypes = {
   name: PropTypes.string.isRequired,
   brand: PropTypes.string.isRequired,
-  price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   image: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
 };

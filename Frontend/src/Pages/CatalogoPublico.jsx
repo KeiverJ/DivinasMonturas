@@ -39,6 +39,20 @@ export default function CatalogoPublico() {
     }
   };
 
+  const loadProductsWithFilter = async (filter) => {
+    try {
+      setLoading(true);
+      const response = await productService.getProducts(filter, 1, 9);
+      setProducts(response.data);
+      setPagination(response.paginacion);
+      setPage(1);
+    } catch (err) {
+      console.error('Error cargando productos con filtro:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
@@ -175,27 +189,15 @@ export default function CatalogoPublico() {
         ) : products.length === 0 ? (
           <div className="text-center py-12 text-gray-600">No hay productos disponibles.</div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {products.map(product => (
-              <div key={product._id} className="text-center">
-                <div className="relative mb-4 overflow-hidden rounded-lg bg-gray-200 h-80">
-                  <img
-                    src={product.imagenes?.principal || 'https://via.placeholder.com/300x400?text=Sin+imagen'}
-                    alt={product.nombre}
-                    className="w-full h-full object-cover hover:scale-105 transition"
-                  />
-                  <span className="absolute top-4 left-4 bg-gray-800 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                    {product.tipo}
-                  </span>
-                </div>
-                <p className="text-gray-500 text-sm mb-2">{product.categoria}</p>
-                <h3 className="text-lg font-semibold text-black mb-4">{product.nombre}</h3>
-                {product.disponible && (
-                  <button className="border-2 border-yellow-600 text-yellow-600 px-6 py-2 rounded hover:bg-yellow-600 hover:text-white transition font-semibold">
-                    Ver Detalles
-                  </button>
-                )}
-              </div>
+              <ProductCard
+                key={product._id}
+                name={product.nombre}
+                brand={product.marca || 'Sin marca'}
+                image={product.imagenes?.principal || 'https://via.placeholder.com/400x400?text=Sin+imagen'}
+                category={product.categoria}
+              />
             ))}
           </div>
         )}
@@ -213,6 +215,8 @@ export default function CatalogoPublico() {
           </button>
         </div>
       )}
+
+      <Footer />
     </div>
   );
 }
