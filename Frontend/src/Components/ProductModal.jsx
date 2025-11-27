@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaTimes, FaImage, FaPlus, FaTrash } from 'react-icons/fa';
 
 export default function ProductModal({ isOpen, onClose, onSubmit, product = null, filters = {} }) {
   const [formData, setFormData] = useState({
@@ -16,10 +18,16 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
   const [colorInput, setColorInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   useEffect(() => {
     if (product) {
       setFormData(product);
+      // Si hay imagen en el producto, mostrarla
+      if (product.imagenes?.principal) {
+        setImagePreview(product.imagenes.principal);
+      }
     } else {
       setFormData({
         nombre: '',
@@ -32,8 +40,11 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
         disponible: true,
         descripcion: '',
       });
+      setImagePreview(null);
+      setImageFile(null);
     }
     setColorInput('');
+    setError(null);
   }, [product, isOpen]);
 
   const handleChange = (e) => {
@@ -42,6 +53,29 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
       ...formData,
       [name]: type === 'checkbox' ? checked : value,
     });
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        setError('La imagen no debe superar 5MB');
+        return;
+      }
+
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+      setError(null);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setImagePreview(null);
   };
 
   const handleAddColor = () => {
@@ -67,7 +101,24 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
     setLoading(true);
 
     try {
-      await onSubmit(formData);
+      // Crear FormData para enviar imagen
+      const formDataToSend = new FormData();
+
+      // Agregar imagen si existe
+      if (imageFile) {
+        formDataToSend.append('image', imageFile);
+      }
+
+      // Agregar otros campos
+      Object.keys(formData).forEach(key => {
+        if (key === 'color') {
+          formDataToSend.append(key, JSON.stringify(formData[key]));
+        } else {
+          formDataToSend.append(key, formData[key]);
+        }
+      });
+
+      await onSubmit(formDataToSend);
       onClose();
     } catch (err) {
       setError(err.message);
@@ -79,239 +130,425 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b p-6 flex justify-between items-center">
-          <h2 className="text-2xl font-bold">
-            {product ? 'Editar Montura' : 'Nueva Montura'}
-          </h2>
-          <button
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 text-2xl"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          />
+
+          {/* Modal */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            className="relative bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl"
+            style={{ border: '2px solid rgba(212, 175, 55, 0.2)' }}
           >
-            ×
-          </button>
-        </div>
-
-        {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 m-4 rounded">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            {/* Nombre */}
-            <div className="col-span-2">
-              <label className="block text-gray-700 font-semibold mb-2">
-                Nombre *
-              </label>
-              <input
-                type="text"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-                placeholder="Ej: Montura Acetato Dama Rosa"
-              />
-            </div>
-
-            {/* Tipo */}
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2">
-                Tipo *
-              </label>
-              <select
-                name="tipo"
-                value={formData.tipo}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-              >
-                <option value="montura">Montura</option>
-                <option value="lentes">Lentes</option>
-                <option value="accesorios">Accesorios</option>
-              </select>
-            </div>
-
-            {/* Categoría */}
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2">
-                Categoría *
-              </label>
-              <input
-                type="text"
-                name="categoria"
-                value={formData.categoria}
-                onChange={handleChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-                placeholder="Ej: Acetato dama"
-                list="categorias"
-              />
-              <datalist id="categorias">
-                {filters.categorias?.map(cat => (
-                  <option key={cat} value={cat} />
-                ))}
-              </datalist>
-            </div>
-
-            {/* Marca */}
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2">
-                Marca
-              </label>
-              <input
-                type="text"
-                name="marca"
-                value={formData.marca}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-                placeholder="Ej: Victoria Rose"
-                list="marcas"
-              />
-              <datalist id="marcas">
-                {filters.marcas?.map(marca => (
-                  <option key={marca} value={marca} />
-                ))}
-              </datalist>
-            </div>
-
-            {/* Material */}
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2">
-                Material
-              </label>
-              <input
-                type="text"
-                name="material"
-                value={formData.material}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-                placeholder="Ej: acetato"
-                list="materiales"
-              />
-              <datalist id="materiales">
-                {filters.materiales?.map(mat => (
-                  <option key={mat} value={mat} />
-                ))}
-              </datalist>
-            </div>
-
-            {/* Género */}
-            <div>
-              <label className="block text-gray-700 font-semibold mb-2">
-                Género
-              </label>
-              <select
-                name="genero"
-                value={formData.genero}
-                onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-              >
-                <option value="dama">Dama</option>
-                <option value="caballero">Caballero</option>
-                <option value="niño">Niño</option>
-                <option value="niña">Niña</option>
-                <option value="unisex">Unisex</option>
-              </select>
-            </div>
-
-            {/* Colores */}
-            <div className="col-span-2">
-              <label className="block text-gray-700 font-semibold mb-2">
-                Colores
-              </label>
-              <div className="flex gap-2 mb-2">
-                <input
-                  type="text"
-                  value={colorInput}
-                  onChange={(e) => setColorInput(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddColor())}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-                  placeholder="Escribe un color y presiona Enter"
-                  list="colores"
-                />
-                <button
-                  type="button"
-                  onClick={handleAddColor}
-                  className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700"
+            {/* Header */}
+            <div className="sticky top-0 z-10 px-8 py-6 border-b border-gray-100"
+              style={{
+                background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(244, 229, 184, 0.05))',
+              }}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-3xl font-bold text-black">
+                    {product ? 'Editar' : 'Nueva'}{' '}
+                    <span style={{ color: '#D4AF37' }}>Montura</span>
+                  </h2>
+                  <p className="text-gray-500 text-sm mt-1">
+                    {product ? 'Modifica los datos del producto' : 'Completa el formulario para agregar un nuevo producto'}
+                  </p>
+                </div>
+                <motion.button
+                  whileHover={{ scale: 1.1, rotate: 90 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={onClose}
+                  className="p-3 rounded-full transition-colors duration-300"
+                  style={{
+                    backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                    color: '#D4AF37',
+                  }}
                 >
-                  Agregar
-                </button>
-                <datalist id="colores">
-                  {filters.colores?.map(color => (
-                    <option key={color} value={color} />
-                  ))}
-                </datalist>
+                  <FaTimes className="w-5 h-5" />
+                </motion.button>
               </div>
-              <div className="flex flex-wrap gap-2">
-                {formData.color.map(color => (
-                  <span
-                    key={color}
-                    className="bg-purple-200 text-purple-800 px-3 py-1 rounded-full text-sm flex items-center gap-2"
-                  >
-                    {color}
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveColor(color)}
-                      className="text-purple-800 hover:text-purple-900"
+            </div>
+
+            {/* Content */}
+            <div className="overflow-y-auto max-h-[calc(90vh-180px)] px-8 py-6 pb-8">
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm"
+                >
+                  {error}
+                </motion.div>
+              )}
+
+              <form onSubmit={handleSubmit} className="space-y-6 pb-4">
+                {/* Imagen Upload */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                    Imagen Principal *
+                  </label>
+                  <div className="flex gap-4">
+                    {/* Preview */}
+                    {imagePreview ? (
+                      <div className="relative group">
+                        <div className="w-40 h-40 rounded-2xl overflow-hidden border-2 border-gray-200">
+                          <img
+                            src={imagePreview}
+                            alt="Preview"
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={handleRemoveImage}
+                          className="absolute -top-2 -right-2 p-2 rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg"
+                        >
+                          <FaTrash className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ) : (
+                      <label
+                        className="w-40 h-40 flex flex-col items-center justify-center rounded-2xl border-2 border-dashed cursor-pointer transition-all duration-300 hover:scale-105"
+                        style={{
+                          borderColor: 'rgba(212, 175, 55, 0.3)',
+                          backgroundColor: 'rgba(212, 175, 55, 0.05)',
+                        }}
+                      >
+                        <FaImage className="w-8 h-8 mb-2" style={{ color: '#D4AF37' }} />
+                        <span className="text-sm font-medium" style={{ color: '#D4AF37' }}>
+                          Subir imagen
+                        </span>
+                        <span className="text-xs text-gray-400 mt-1">Max 5MB</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageChange}
+                          className="hidden"
+                        />
+                      </label>
+                    )}
+
+                    {/* Info */}
+                    <div className="flex-1 flex flex-col justify-center">
+                      <p className="text-sm text-gray-600 mb-2">
+                        Formatos aceptados: JPG, PNG, WEBP
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        Recomendamos imágenes de 800x1000px para mejor calidad
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Grid de campos */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Nombre */}
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Nombre *
+                    </label>
+                    <input
+                      type="text"
+                      name="nombre"
+                      value={formData.nombre}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:outline-none transition-all duration-300"
+                      style={{
+                        borderColor: 'rgba(212, 175, 55, 0.2)',
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = '#D4AF37'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.2)'}
+                      placeholder="Ej: Montura Acetato Dama Rosa"
+                    />
+                  </div>
+
+                  {/* Tipo */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Tipo *
+                    </label>
+                    <select
+                      name="tipo"
+                      value={formData.tipo}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-xl border-2 transition-all duration-300"
+                      style={{
+                        borderColor: 'rgba(212, 175, 55, 0.2)',
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = '#D4AF37'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.2)'}
                     >
-                      ×
-                    </button>
-                  </span>
-                ))}
+                      <option value="montura">Montura</option>
+                      <option value="lentes">Lentes</option>
+                      <option value="accesorios">Accesorios</option>
+                    </select>
+                  </div>
+
+                  {/* Categoría */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Categoría *
+                    </label>
+                    <input
+                      type="text"
+                      name="categoria"
+                      value={formData.categoria}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 rounded-xl border-2 transition-all duration-300"
+                      style={{
+                        borderColor: 'rgba(212, 175, 55, 0.2)',
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = '#D4AF37'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.2)'}
+                      placeholder="Ej: Acetato dama"
+                      list="categorias"
+                    />
+                    <datalist id="categorias">
+                      {filters.categorias?.map(cat => (
+                        <option key={cat} value={cat} />
+                      ))}
+                    </datalist>
+                  </div>
+
+                  {/* Marca */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Marca
+                    </label>
+                    <input
+                      type="text"
+                      name="marca"
+                      value={formData.marca}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-xl border-2 transition-all duration-300"
+                      style={{
+                        borderColor: 'rgba(212, 175, 55, 0.2)',
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = '#D4AF37'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.2)'}
+                      placeholder="Ej: Victoria Rose"
+                      list="marcas"
+                    />
+                    <datalist id="marcas">
+                      {filters.marcas?.map(marca => (
+                        <option key={marca} value={marca} />
+                      ))}
+                    </datalist>
+                  </div>
+
+                  {/* Material */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Material
+                    </label>
+                    <input
+                      type="text"
+                      name="material"
+                      value={formData.material}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-xl border-2 transition-all duration-300"
+                      style={{
+                        borderColor: 'rgba(212, 175, 55, 0.2)',
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = '#D4AF37'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.2)'}
+                      placeholder="Ej: acetato"
+                      list="materiales"
+                    />
+                    <datalist id="materiales">
+                      {filters.materiales?.map(mat => (
+                        <option key={mat} value={mat} />
+                      ))}
+                    </datalist>
+                  </div>
+
+                  {/* Género */}
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Género
+                    </label>
+                    <select
+                      name="genero"
+                      value={formData.genero}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 rounded-xl border-2 transition-all duration-300"
+                      style={{
+                        borderColor: 'rgba(212, 175, 55, 0.2)',
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = '#D4AF37'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.2)'}
+                    >
+                      <option value="dama">Dama</option>
+                      <option value="caballero">Caballero</option>
+                      <option value="niño">Niño</option>
+                      <option value="niña">Niña</option>
+                      <option value="unisex">Unisex</option>
+                    </select>
+                  </div>
+
+                  {/* Colores */}
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Colores
+                    </label>
+                    <div className="flex gap-2 mb-3">
+                      <input
+                        type="text"
+                        value={colorInput}
+                        onChange={(e) => setColorInput(e.target.value)}
+                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddColor())}
+                        className="flex-1 px-4 py-3 rounded-xl border-2 transition-all duration-300"
+                        style={{
+                          borderColor: 'rgba(212, 175, 55, 0.2)',
+                        }}
+                        onFocus={(e) => e.target.style.borderColor = '#D4AF37'}
+                        onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.2)'}
+                        placeholder="Escribe un color y presiona Enter"
+                        list="colores"
+                      />
+                      <motion.button
+                        type="button"
+                        onClick={handleAddColor}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="px-6 py-3 rounded-xl font-semibold text-white flex items-center gap-2"
+                        style={{ backgroundColor: '#D4AF37' }}
+                      >
+                        <FaPlus className="w-4 h-4" />
+                        Agregar
+                      </motion.button>
+                      <datalist id="colores">
+                        {filters.colores?.map(color => (
+                          <option key={color} value={color} />
+                        ))}
+                      </datalist>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {formData.color.map(color => (
+                        <motion.span
+                          key={color}
+                          initial={{ scale: 0 }}
+                          animate={{ scale: 1 }}
+                          exit={{ scale: 0 }}
+                          className="px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2"
+                          style={{
+                            backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                            color: '#D4AF37',
+                            border: '1px solid rgba(212, 175, 55, 0.3)',
+                          }}
+                        >
+                          {color}
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveColor(color)}
+                            className="hover:scale-110 transition-transform"
+                          >
+                            <FaTimes className="w-3 h-3" />
+                          </button>
+                        </motion.span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Descripción */}
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Descripción
+                    </label>
+                    <textarea
+                      name="descripcion"
+                      value={formData.descripcion}
+                      onChange={handleChange}
+                      rows="4"
+                      className="w-full px-4 py-3 rounded-xl border-2 transition-all duration-300 resize-none"
+                      style={{
+                        borderColor: 'rgba(212, 175, 55, 0.2)',
+                      }}
+                      onFocus={(e) => e.target.style.borderColor = '#D4AF37'}
+                      onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.2)'}
+                      placeholder="Descripción detallada del producto..."
+                    />
+                  </div>
+
+                  {/* Disponible */}
+                  <div className="md:col-span-2">
+                    <label className="flex items-center gap-3 cursor-pointer group">
+                      <div className="relative">
+                        <input
+                          type="checkbox"
+                          name="disponible"
+                          checked={formData.disponible}
+                          onChange={handleChange}
+                          className="sr-only"
+                        />
+                        <div
+                          className="w-12 h-6 rounded-full transition-all duration-300"
+                          style={{
+                            backgroundColor: formData.disponible ? '#D4AF37' : '#E5E7EB',
+                          }}
+                        >
+                          <div
+                            className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-300"
+                            style={{
+                              transform: formData.disponible ? 'translateX(24px)' : 'translateX(0)',
+                            }}
+                          />
+                        </div>
+                      </div>
+                      <span className="text-sm font-semibold text-gray-700">
+                        Producto disponible
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            {/* Footer */}
+            <div className="sticky bottom-0 px-8 py-6 border-t border-gray-100 bg-white">
+              <div className="flex gap-4">
+                <motion.button
+                  type="button"
+                  onClick={onClose}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex-1 px-6 py-3 rounded-xl font-semibold transition-all duration-300"
+                  style={{
+                    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+                    color: '#000',
+                  }}
+                >
+                  Cancelar
+                </motion.button>
+                <motion.button
+                  type="submit"
+                  onClick={handleSubmit}
+                  disabled={loading}
+                  whileHover={{ scale: loading ? 1 : 1.02 }}
+                  whileTap={{ scale: loading ? 1 : 0.98 }}
+                  className="flex-1 px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300 disabled:opacity-50"
+                  style={{ backgroundColor: '#D4AF37' }}
+                >
+                  {loading ? 'Guardando...' : product ? 'Actualizar Producto' : 'Crear Producto'}
+                </motion.button>
               </div>
             </div>
-
-            {/* Descripción */}
-            <div className="col-span-2">
-              <label className="block text-gray-700 font-semibold mb-2">
-                Descripción
-              </label>
-              <textarea
-                name="descripcion"
-                value={formData.descripcion}
-                onChange={handleChange}
-                rows="3"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600"
-                placeholder="Descripción del producto"
-              />
-            </div>
-
-            {/* Disponible */}
-            <div className="col-span-2">
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  name="disponible"
-                  checked={formData.disponible}
-                  onChange={handleChange}
-                  className="w-4 h-4"
-                />
-                <span className="text-gray-700 font-semibold">Disponible</span>
-              </label>
-            </div>
-          </div>
-
-          <div className="flex gap-4 pt-4 border-t">
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex-1 bg-purple-600 text-white font-semibold py-2 rounded-lg hover:bg-purple-700 disabled:opacity-50"
-            >
-              {loading ? 'Guardando...' : product ? 'Actualizar' : 'Crear'}
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 bg-gray-300 text-gray-800 font-semibold py-2 rounded-lg hover:bg-gray-400"
-            >
-              Cancelar
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
   );
 }

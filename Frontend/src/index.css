@@ -78,6 +78,15 @@
           animation: fade-in-up 0.8s ease-out 1s both;
         }
 
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(100%);
+          }
+        }
+
         /* Ensure global background matches navbar (white) */
         html, body, #root {
           background: #ffffff;

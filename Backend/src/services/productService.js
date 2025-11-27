@@ -2,21 +2,36 @@
 // Lógica de negocio con nuevas categorías
 
 import Product from '../models/Product.js';
+import { uploadImage, deleteImage } from '../config/cloudinary.js';
 
 class ProductService {
-  
+
   /**
    * Crear un nuevo producto
    */
-  async createProduct(productData, userId) {
+  async createProduct(productData, userId, imageFile = null) {
     try {
+      // Si hay imagen, subirla a Cloudinary
+      if (imageFile) {
+        // Convertir buffer a base64 data URI
+        const b64 = Buffer.from(imageFile.buffer).toString('base64');
+        const dataURI = `data:${imageFile.mimetype};base64,${b64}`;
+
+        const imageResult = await uploadImage(dataURI);
+
+        productData.imagenes = {
+          principal: imageResult.url,
+          adicionales: []
+        };
+      }
+
       const producto = new Product({
         ...productData,
         creadoPor: userId,
       });
-      
+
       await producto.save();
-      
+
       return await producto.populate('creadoPor', 'nombre email');
     } catch (error) {
       throw new Error(`Error al crear producto: ${error.message}`);
@@ -96,8 +111,30 @@ class ProductService {
   /**
    * Actualizar un producto
    */
-  async updateProducto(productoId, updateData) {
+  async updateProducto(productoId, updateData, imageFile = null) {
     try {
+      // Si hay una nueva imagen, subirla a Cloudinary
+      if (imageFile) {
+        // Convertir buffer a base64 data URI
+        const b64 = Buffer.from(imageFile.buffer).toString('base64');
+        const dataURI = `data:${imageFile.mimetype};base64,${b64}`;
+
+        const imageResult = await uploadImage(dataURI);
+
+        // Actualizar la imagen principal
+        if (!updateData.imagenes) {
+          updateData.imagenes = {};
+        }
+        updateData.imagenes.principal = imageResult.url;
+
+        // Opcionalmente, podrías eliminar la imagen anterior de Cloudinary aquí
+        // const oldProduct = await Product.findById(productoId);
+        // if (oldProduct?.imagenes?.principal) {
+        //   const publicId = extractPublicIdFromUrl(oldProduct.imagenes.principal);
+        //   await deleteImage(publicId);
+        // }
+      }
+
       const producto = await Product.findByIdAndUpdate(
         productoId,
         updateData,
@@ -106,11 +143,11 @@ class ProductService {
           runValidators: true,
         }
       ).populate('creadoPor', 'nombre email');
-      
+
       if (!producto) {
         throw new Error('Producto no encontrado');
       }
-      
+
       return producto;
     } catch (error) {
       throw new Error(`Error al actualizar producto: ${error.message}`);

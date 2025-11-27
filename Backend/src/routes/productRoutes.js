@@ -1,6 +1,7 @@
 import express from 'express';
 import * as productController from '../controllers/productController.js';
 import { authenticateToken, authorizeRole } from '../middleware/authMiddleware.js';
+import { uploadSingleImage, handleMulterError } from '../middleware/uploadMiddleware.js';
 
 const router = express.Router();
 
@@ -22,10 +23,10 @@ router.get('/:id', productController.obtenerProductoPorId);
  */
 
 // Crear producto
-router.post('/', authenticateToken, authorizeRole('admin', 'gerente'), productController.crearProducto);
+router.post('/', authenticateToken, authorizeRole('admin', 'gerente'), uploadSingleImage, handleMulterError, productController.crearProducto);
 
 // Actualizar producto
-router.put('/:id', authenticateToken, authorizeRole('admin', 'gerente'), productController.actualizarProducto);
+router.put('/:id', authenticateToken, authorizeRole('admin', 'gerente'), uploadSingleImage, handleMulterError, productController.actualizarProducto);
 
 // Eliminar producto (solo admin)
 router.delete('/:id', authenticateToken, authorizeRole('admin'), productController.eliminarProducto);

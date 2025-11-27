@@ -14,6 +14,7 @@ const createProductSchema = Joi.object({
   descripcion: Joi.string()
     .trim()
     .max(1000)
+    .allow('')
     .optional()
     .messages({
       'string.max': 'La descripción no puede exceder 1000 caracteres'
@@ -39,14 +40,16 @@ const createProductSchema = Joi.object({
   
   marca: Joi.string()
     .optional()
+    .allow('')
     .trim()
     .max(50)
     .messages({
       'string.max': 'La marca no puede exceder 50 caracteres'
     }),
-  
+
   material: Joi.string()
     .optional()
+    .allow('')
     .trim()
     .max(50)
     .messages({
@@ -85,29 +88,32 @@ const updateProductSchema = Joi.object({
     .trim()
     .max(100)
     .optional(),
-  
+
   descripcion: Joi.string()
     .trim()
     .max(1000)
+    .allow('')
     .optional(),
-  
+
   tipo: Joi.string()
     .valid('montura', 'lentes', 'accesorios')
     .optional(),
-  
+
   categoria: Joi.string()
     .trim()
     .max(100)
     .optional(),
-  
+
   marca: Joi.string()
     .trim()
     .max(50)
+    .allow('')
     .optional(),
-  
+
   material: Joi.string()
     .trim()
     .max(50)
+    .allow('')
     .optional(),
   
   genero: Joi.string()

@@ -10,8 +10,29 @@ import { validateCreateProduct, validateUpdateProduct } from '../validators/prod
  * Crear un nuevo producto
  */
 export const crearProducto = asyncHandler(async (req, res) => {
+  // Log para debug
+  console.log('📦 Datos recibidos:', req.body);
+  console.log('🖼️ Archivo recibido:', req.file ? 'Sí' : 'No');
+
+  // Parsear el color si viene como JSON string
+  if (req.body.color && typeof req.body.color === 'string') {
+    try {
+      req.body.color = JSON.parse(req.body.color);
+    } catch (e) {
+      req.body.color = [];
+    }
+  }
+
+  // Convertir disponible de string a boolean
+  if (typeof req.body.disponible === 'string') {
+    req.body.disponible = req.body.disponible === 'true';
+  }
+
+  console.log('📦 Datos después de parsear:', req.body);
+
   const { error, value } = validateCreateProduct(req.body);
   if (error) {
+    console.log('❌ Error de validación:', error.details);
     return res.status(400).json({
       success: false,
       message: 'Validación fallida',
@@ -21,9 +42,12 @@ export const crearProducto = asyncHandler(async (req, res) => {
       }))
     });
   }
-  
-  const producto = await productService.createProduct(value, '507f1f77bcf86cd799439011');
-  
+
+  // Agregar imagen si existe
+  const imageFile = req.file;
+
+  const producto = await productService.createProduct(value, '507f1f77bcf86cd799439011', imageFile);
+
   res.status(201).json({
     success: true,
     statusCode: 201,
@@ -111,7 +135,21 @@ export const obtenerProductoPorId = asyncHandler(async (req, res) => {
  */
 export const actualizarProducto = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  
+
+  // Parsear el color si viene como JSON string
+  if (req.body.color && typeof req.body.color === 'string') {
+    try {
+      req.body.color = JSON.parse(req.body.color);
+    } catch (e) {
+      req.body.color = [];
+    }
+  }
+
+  // Convertir disponible de string a boolean
+  if (typeof req.body.disponible === 'string') {
+    req.body.disponible = req.body.disponible === 'true';
+  }
+
   const { error, value } = validateUpdateProduct(req.body);
   if (error) {
     return res.status(400).json({
@@ -123,9 +161,12 @@ export const actualizarProducto = asyncHandler(async (req, res) => {
       }))
     });
   }
-  
-  const producto = await productService.updateProducto(id, value);
-  
+
+  // Agregar imagen si existe
+  const imageFile = req.file;
+
+  const producto = await productService.updateProducto(id, value, imageFile);
+
   res.status(200).json({
     success: true,
     statusCode: 200,

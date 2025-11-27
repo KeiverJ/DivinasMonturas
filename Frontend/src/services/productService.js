@@ -3,12 +3,18 @@ const API_URL = 'http://localhost:5000/api/productos';
 
 export const productService = {
   // Obtener token del localStorage
-  getAuthHeader() {
+  getAuthHeader(isFormData = false) {
     const token = localStorage.getItem('token');
-    return {
-      'Content-Type': 'application/json',
+    const headers = {
       'Authorization': `Bearer ${token}`,
     };
+
+    // No agregar Content-Type para FormData (el browser lo hace automáticamente)
+    if (!isFormData) {
+      headers['Content-Type'] = 'application/json';
+    }
+
+    return headers;
   },
 
   // Obtener todos los productos
@@ -52,10 +58,13 @@ export const productService = {
   // Crear producto
   async createProduct(productData) {
     try {
+      // Detectar si productData es FormData o un objeto normal
+      const isFormData = productData instanceof FormData;
+
       const response = await fetch(API_URL, {
         method: 'POST',
-        headers: this.getAuthHeader(),
-        body: JSON.stringify(productData),
+        headers: this.getAuthHeader(isFormData),
+        body: isFormData ? productData : JSON.stringify(productData),
       });
 
       if (!response.ok) {
@@ -72,10 +81,13 @@ export const productService = {
   // Actualizar producto
   async updateProduct(id, productData) {
     try {
+      // Detectar si productData es FormData o un objeto normal
+      const isFormData = productData instanceof FormData;
+
       const response = await fetch(`${API_URL}/${id}`, {
         method: 'PUT',
-        headers: this.getAuthHeader(),
-        body: JSON.stringify(productData),
+        headers: this.getAuthHeader(isFormData),
+        body: isFormData ? productData : JSON.stringify(productData),
       });
 
       if (!response.ok) {
