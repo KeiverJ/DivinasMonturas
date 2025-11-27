@@ -1,22 +1,16 @@
-// src/Pages/Catalogo.jsx
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { productService } from '../services/productService.js';
-import ProductModal from '../Components/ProductModal';
+import { productService } from '../services/productService';
+import ProductCard from '../Components/ProductCard';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
 
-export default function Catalogo() {
-  const { user } = useAuth();
+export default function CatalogoPublico() {
   const [products, setProducts] = useState([]);
   const [filters, setFilters] = useState({});
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     loadProducts();
@@ -26,12 +20,11 @@ export default function Catalogo() {
   const loadProducts = async () => {
     try {
       setLoading(true);
-      setError(null);
       const response = await productService.getProducts({}, page, 9);
       setProducts(response.data);
       setPagination(response.paginacion);
     } catch (err) {
-      setError(err.message);
+      console.error('Error cargando productos:', err);
     } finally {
       setLoading(false);
     }
@@ -46,84 +39,23 @@ export default function Catalogo() {
     }
   };
 
-  const loadProductsWithFilter = async (filterData) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await productService.getProducts(filterData, 1, 9);
-      setProducts(response.data);
-      setPagination(response.paginacion);
-      setPage(1);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleEditClick = (product) => {
-    setSelectedProduct(product);
-    setModalOpen(true);
-  };
-
-  const handleDelete = async (id) => {
-    if (!window.confirm('¿Estás seguro de que deseas eliminar este producto?')) {
-      return;
-    }
-
-    try {
-      await productService.deleteProduct(id);
-      setProducts(products.filter(p => p._id !== id));
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  const handleSubmit = async (formData) => {
-    try {
-      if (selectedProduct) {
-        const response = await productService.updateProduct(selectedProduct._id, formData);
-        setProducts(products.map(p => p._id === selectedProduct._id ? response.data : p));
-      }
-      setModalOpen(false);
-      setSelectedProduct(null);
-    } catch (err) {
-      throw err;
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <Navbar />
 
       {/* Header */}
-      <div className="text-center py-16 px-4 bg-white">
-        <span className="text-yellow-600 text-sm font-semibold">Panel de Administración</span>
-        <h1 className="text-5xl font-serif my-4">
-          <span className="text-black">Gestión de</span> <span className="text-yellow-600">Productos</span>
+      <div className="text-center py-16 px-4">
+        <p className="text-sm text-gray-500 mb-2">Catálogo</p>
+        <h1 className="text-5xl font-serif mb-4">
+          <span className="text-black">Catálogo</span> <span className="text-yellow-600">Premium</span>
         </h1>
-        <p className="text-gray-600 max-w-2xl mx-auto mb-8">
-          Administra el catálogo completo de monturas. Edita, elimina o añade nuevos productos al inventario.
+        <p className="text-gray-600 max-w-2xl mx-auto">
+          Descubre nuestra exclusiva colección de monturas de lujo, diseñadas para reflejar tu estilo único y sofisticado.
         </p>
-        <button
-          onClick={() => {
-            setSelectedProduct(null);
-            setModalOpen(true);
-          }}
-          className="bg-yellow-600 text-white px-6 py-3 rounded hover:bg-yellow-700 font-semibold"
-        >
-          + Añadir Nuevo Producto
-        </button>
       </div>
 
-      {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mx-4 mt-4">
-          {error}
-        </div>
-      )}
-
       {/* Filtros */}
-      <div className="px-4 mb-8 max-w-7xl mx-auto">
+      <div className="px-4 mb-8">
         <button
           onClick={() => setShowFilters(!showFilters)}
           className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
@@ -132,7 +64,8 @@ export default function Catalogo() {
         </button>
 
         {showFilters && (
-          <div className="mt-4 bg-white p-6 rounded-lg grid grid-cols-1 md:grid-cols-5 gap-4 shadow">
+          <div className="mt-4 bg-gray-100 p-6 rounded-lg grid grid-cols-1 md:grid-cols-5 gap-4">
+            {/* Filtro por tipo */}
             <div>
               <label className="block font-semibold text-gray-700 mb-2">Tipo</label>
               <select
@@ -152,6 +85,7 @@ export default function Catalogo() {
               </select>
             </div>
 
+            {/* Filtro por categoría */}
             <div>
               <label className="block font-semibold text-gray-700 mb-2">Categoría</label>
               <select
@@ -171,6 +105,7 @@ export default function Catalogo() {
               </select>
             </div>
 
+            {/* Filtro por marca */}
             <div>
               <label className="block font-semibold text-gray-700 mb-2">Marca</label>
               <select
@@ -190,6 +125,7 @@ export default function Catalogo() {
               </select>
             </div>
 
+            {/* Filtro por material */}
             <div>
               <label className="block font-semibold text-gray-700 mb-2">Material</label>
               <select
@@ -209,6 +145,7 @@ export default function Catalogo() {
               </select>
             </div>
 
+            {/* Filtro por género */}
             <div>
               <label className="block font-semibold text-gray-700 mb-2">Género</label>
               <select
@@ -236,12 +173,12 @@ export default function Catalogo() {
         {loading ? (
           <div className="text-center py-12">Cargando productos...</div>
         ) : products.length === 0 ? (
-          <div className="text-center py-12 text-gray-600">No hay productos. Crea el primero.</div>
+          <div className="text-center py-12 text-gray-600">No hay productos disponibles.</div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {products.map(product => (
-              <div key={product._id} className="bg-white rounded-lg overflow-hidden shadow hover:shadow-lg transition">
-                <div className="relative overflow-hidden bg-gray-200 h-80">
+              <div key={product._id} className="text-center">
+                <div className="relative mb-4 overflow-hidden rounded-lg bg-gray-200 h-80">
                   <img
                     src={product.imagenes?.principal || 'https://via.placeholder.com/300x400?text=Sin+imagen'}
                     alt={product.nombre}
@@ -250,31 +187,14 @@ export default function Catalogo() {
                   <span className="absolute top-4 left-4 bg-gray-800 text-white px-3 py-1 rounded-full text-xs font-semibold">
                     {product.tipo}
                   </span>
-                  <span className="absolute top-4 right-4 bg-yellow-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                    Admin
-                  </span>
                 </div>
-                
-                <div className="p-4">
-                  <p className="text-gray-500 text-sm mb-2">{product.categoria}</p>
-                  <h3 className="text-lg font-semibold text-black mb-2">{product.nombre}</h3>
-                  <p className="text-gray-600 text-sm mb-4">{product.descripcion}</p>
-                  
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleEditClick(product)}
-                      className="flex-1 bg-yellow-600 text-white px-3 py-2 rounded hover:bg-yellow-700 font-semibold text-sm"
-                    >
-                      ✎ Modificar
-                    </button>
-                    <button
-                      onClick={() => handleDelete(product._id)}
-                      className="flex-1 bg-black text-white px-3 py-2 rounded hover:bg-gray-800 font-semibold text-sm"
-                    >
-                      🗑 Eliminar
-                    </button>
-                  </div>
-                </div>
+                <p className="text-gray-500 text-sm mb-2">{product.categoria}</p>
+                <h3 className="text-lg font-semibold text-black mb-4">{product.nombre}</h3>
+                {product.disponible && (
+                  <button className="border-2 border-yellow-600 text-yellow-600 px-6 py-2 rounded hover:bg-yellow-600 hover:text-white transition font-semibold">
+                    Ver Detalles
+                  </button>
+                )}
               </div>
             ))}
           </div>
@@ -287,34 +207,12 @@ export default function Catalogo() {
           <button
             onClick={() => setPage(page - 1)}
             disabled={!pagination.hasPrevPage}
-            className="px-6 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
+            className="border-2 border-yellow-600 text-yellow-600 px-6 py-2 rounded hover:bg-yellow-600 hover:text-white transition disabled:opacity-50"
           >
-            Anterior
-          </button>
-          <span className="px-4 py-2 text-gray-700">
-            Página {pagination.pagina} de {pagination.totalPages}
-          </span>
-          <button
-            onClick={() => setPage(page + 1)}
-            disabled={!pagination.hasNextPage}
-            className="px-6 py-2 bg-gray-300 rounded hover:bg-gray-400 disabled:opacity-50"
-          >
-            Siguiente
+            Cargar Más Productos
           </button>
         </div>
       )}
-
-      {/* Modal */}
-      <ProductModal
-        isOpen={modalOpen}
-        onClose={() => {
-          setModalOpen(false);
-          setSelectedProduct(null);
-        }}
-        onSubmit={handleSubmit}
-        product={selectedProduct}
-        filters={filters}
-      />
 
       <Footer />
     </div>

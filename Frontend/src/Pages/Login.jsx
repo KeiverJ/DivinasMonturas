@@ -31,7 +31,7 @@ export default function Login() {
     try {
       await login(formData.email, formData.password);
       // Redirigir al panel de administración
-      navigate('/admin');
+      navigate('/catalogo-admin');
     } catch (err) {
       setError(err.message || 'Error al iniciar sesión');
     } finally {
