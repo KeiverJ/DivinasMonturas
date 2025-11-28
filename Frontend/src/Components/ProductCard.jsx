@@ -41,8 +41,25 @@ function ProductCard({ name, brand, price, image, category }) {
           <button
             className="px-4 py-2 rounded-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(34,139,34,0.3)] hover:scale-105 flex items-center gap-2"
             style={{ backgroundColor: "#228B22", color: "#fff" }}
-            onClick={() => window.open('https://wa.me/573151449003', '_blank')}
-          >
+            onClick={() => {
+              const mensaje = `
+¡Hola!
+
+Estoy interesado en obtener más información sobre este producto:
+
+*${name}*
+Marca: *${brand}*
+Categoría: *${category}*
+
+📸 Aquí puedes ver la imagen del producto:
+${image}
+
+¡Quedo atento/a!
+  `;
+
+              const url = `https://wa.me/573203713761?text=${encodeURIComponent(mensaje)}`;
+              window.open(url, "_blank");
+            }}>
             <FaWhatsapp className="w-4 h-4" />
             <span className="text-sm font-medium">WhatsApp</span>
           </button>
@@ -50,9 +67,8 @@ function ProductCard({ name, brand, price, image, category }) {
       </div>
 
       <div
-        className={`absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-300 ${
-          isHovered ? "opacity-100" : "opacity-0"
-        }`}
+        className={`absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-300 ${isHovered ? "opacity-100" : "opacity-0"
+          }`}
         style={{
           border: "2px solid #D4AF37",
         }}

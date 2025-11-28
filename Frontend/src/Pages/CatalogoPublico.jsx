@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { productService } from '../services/productService';
 import ProductCard from '../Components/ProductCard';
 import Navbar from '../Components/Navbar';
-import Footer from '../Components/Footer';
 
 export default function CatalogoPublico() {
   const [products, setProducts] = useState([]);

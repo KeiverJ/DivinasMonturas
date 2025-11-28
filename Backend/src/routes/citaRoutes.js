@@ -1,34 +1,19 @@
+// src/routes/citaRoutes.js
 import express from 'express';
-import { createCita, getHorariosOcupados, getAllCitas, deleteCita } from '../controllers/citaController.js';
-import multer from 'multer';
+import * as citaController from '../controllers/citaController.js';
+import { authenticateToken, authorizeRole } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
-const storage = multer.memoryStorage();
-const upload = multer({
-  storage,
-  limits: {
-    fileSize: 5 * 1024 * 1024 // Límite de 5MB
-  },
-  fileFilter: (_req, file, cb) => {
-    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/jpg'];
-    if (allowedTypes.includes(file.mimetype)) {
-      cb(null, true);
-    } else {
-      cb(new Error('Tipo de archivo no permitido. Solo PDF, JPG y PNG.'));
-    }
-  }
-});
 
-// Crear nueva cita (público)
-router.post('/', upload.single('prescription'), createCita);
+// Rutas públicas
+router.get('/ocupados', citaController.getHorariosOcupados);
+router.post('/', citaController.crearCita);
 
-// Obtener horarios ocupados de una fecha (público)
-router.get('/ocupados', getHorariosOcupados);
-
-// Obtener todas las citas (admin - agregar autenticación después)
-router.get('/', getAllCitas);
-
-// Eliminar una cita (admin - agregar autenticación después)
-router.delete('/:id', deleteCita);
+// Rutas protegidas (solo admin/gerente)
+router.get('/', authenticateToken, authorizeRole('admin', 'gerente'), citaController.obtenerCitas);
+router.get('/estadisticas/dia', authenticateToken, authorizeRole('admin', 'gerente'), citaController.getEstadisticasDia);
+router.get('/:id', authenticateToken, authorizeRole('admin', 'gerente'), citaController.obtenerCitaPorId);
+router.put('/:id', authenticateToken, authorizeRole('admin', 'gerente'), citaController.actualizarCita);
+router.delete('/:id', authenticateToken, authorizeRole('admin'), citaController.cancelarCita);
 
 export default router;

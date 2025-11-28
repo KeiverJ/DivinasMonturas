@@ -12,7 +12,6 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
     genero: 'unisex',
     color: [],
     disponible: true,
-    descripcion: '',
   });
 
   const [colorInput, setColorInput] = useState('');
@@ -38,7 +37,6 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
         genero: 'unisex',
         color: [],
         disponible: true,
-        descripcion: '',
       });
       setImagePreview(null);
       setImageFile(null);
@@ -463,25 +461,6 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
                     </div>
                   </div>
 
-                  {/* Descripción */}
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Descripción
-                    </label>
-                    <textarea
-                      name="descripcion"
-                      value={formData.descripcion}
-                      onChange={handleChange}
-                      rows="4"
-                      className="w-full px-4 py-3 rounded-xl border-2 transition-all duration-300 resize-none"
-                      style={{
-                        borderColor: 'rgba(212, 175, 55, 0.2)',
-                      }}
-                      onFocus={(e) => e.target.style.borderColor = '#D4AF37'}
-                      onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.2)'}
-                      placeholder="Descripción detallada del producto..."
-                    />
-                  </div>
 
                   {/* Disponible */}
                   <div className="md:col-span-2">

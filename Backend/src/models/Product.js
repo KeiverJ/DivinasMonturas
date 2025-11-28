@@ -10,11 +10,6 @@ const productSchema = new mongoose.Schema(
       index: true,
     },
     
-    descripcion: {
-      type: String,
-      maxlength: [1000, 'La descripción no puede exceder 1000 caracteres'],
-    },
-    
     tipo: {
       type: String,
       enum: {
@@ -91,7 +86,7 @@ const productSchema = new mongoose.Schema(
   }
 );
 
-productSchema.index({ nombre: 'text', descripcion: 'text', etiquetas: 'text' });
+productSchema.index({ nombre: 'text', etiquetas: 'text' });
 productSchema.index({ tipo: 1, categoria: 1, disponible: 1 });
 productSchema.index({ marca: 1, material: 1, genero: 1 });
 productSchema.index({ categoria: 1, marca: 1, material: 1, genero: 1, color: 1 });

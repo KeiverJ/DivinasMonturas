@@ -11,15 +11,6 @@ const createProductSchema = Joi.object({
       'any.required': 'El nombre es obligatorio'
     }),
   
-  descripcion: Joi.string()
-    .trim()
-    .max(1000)
-    .allow('')
-    .optional()
-    .messages({
-      'string.max': 'La descripción no puede exceder 1000 caracteres'
-    }),
-  
   tipo: Joi.string()
     .required()
     .valid('montura', 'lentes', 'accesorios')
@@ -87,12 +78,6 @@ const updateProductSchema = Joi.object({
   nombre: Joi.string()
     .trim()
     .max(100)
-    .optional(),
-
-  descripcion: Joi.string()
-    .trim()
-    .max(1000)
-    .allow('')
     .optional(),
 
   tipo: Joi.string()

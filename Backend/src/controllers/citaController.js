@@ -1,214 +1,252 @@
-import nodemailer from 'nodemailer';
-import Cita from '../models/Cita.js';
-import config from '../config/config.js';
+// src/controllers/citaController.js
+import { asyncHandler } from '../middleware/errorHandler.js';
+import citaService from '../services/citaService.js';
+import { validateCreateCita, validateUpdateCita } from '../validators/citaValidator.js';
 
 /**
  * POST /api/citas
- * Crear una nueva cita
+ * Crear una nueva cita (público)
  */
-export const createCita = async (req, res) => {
+export const crearCita = asyncHandler(async (req, res) => {
   try {
-    const { name, email, phone, firstVisit, symptoms, date, time } = req.body;
-    const file = req.file;
+    console.log('📝 Datos recibidos:', req.body);
+    console.log('📁 Archivo:', req.file);
 
-    // Validar datos requeridos
-    if (!name || !email || !phone || !date || !time) {
-      return res.status(400).json({ error: 'Faltan datos requeridos.' });
+    const { error, value } = validateCreateCita(req.body);
+    if (error) {
+      console.log('❌ Error de validación:', error.details);
+      return res.status(400).json({
+        success: false,
+        message: 'Validación fallida',
+        errors: error.details.map(detail => ({
+          field: detail.path.join('.'),
+          message: detail.message
+        }))
+      });
     }
 
-    // Verificar si el horario ya está ocupado
-    const existe = await Cita.findOne({ date, time });
-    if (existe) {
-      return res.status(409).json({ error: 'Horario ya ocupado.' });
-    }
+    console.log('✅ Validación pasada, creando cita...');
+    const cita = await citaService.createCita(value, req.file);
+    
+    console.log('✅ Cita creada:', cita);
 
-    // Guardar la cita en la BD
-    const cita = new Cita({
-      name,
-      email,
-      phone,
-      firstVisit: firstVisit === 'true' || firstVisit === true,
-      symptoms,
-      date,
-      time
-    });
-    await cita.save();
-
-    // Enviar correos de notificación si está configurado
-    if (config.email && config.email.user && config.email.pass) {
-      try {
-        const transporter = nodemailer.createTransport({
-          service: 'gmail',
-          auth: {
-            user: config.email.user,
-            pass: config.email.pass,
-          },
-        });
-
-        // 1. Email a la óptica (notificación de nueva cita)
-        const mailToOptica = {
-          from: config.email.user,
-          to: config.email.recipient,
-          subject: '🔔 Nueva cita agendada - Divinas Monturas',
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #D4AF37;">Nueva Cita Agendada</h2>
-              <div style="background-color: #f5f5f5; padding: 20px; border-radius: 10px;">
-                <p><strong>Nombre:</strong> ${name}</p>
-                <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-                <p><strong>Teléfono:</strong> ${phone}</p>
-                <p><strong>Primera visita:</strong> ${firstVisit ? 'Sí' : 'No'}</p>
-                <p><strong>Síntomas/Motivo:</strong> ${symptoms || 'No especificado'}</p>
-                <p><strong>Fecha:</strong> ${date}</p>
-                <p><strong>Hora:</strong> ${time}</p>
-              </div>
-            </div>
-          `,
-          attachments: file ? [{
-            filename: file.originalname,
-            content: file.buffer
-          }] : []
-        };
-
-        // 2. Email al cliente (confirmación de cita)
-        const mailToCliente = {
-          from: config.email.user,
-          to: email,
-          subject: '✅ Confirmación de cita - Divinas Monturas',
-          html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-              <h2 style="color: #D4AF37;">¡Tu cita ha sido confirmada!</h2>
-              <p>Hola <strong>${name}</strong>,</p>
-              <p>Tu cita en Divinas Monturas ha sido agendada exitosamente.</p>
-
-              <div style="background-color: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0;">
-                <h3 style="color: #D4AF37; margin-top: 0;">Detalles de tu cita</h3>
-                <p><strong>📅 Fecha:</strong> ${date}</p>
-                <p><strong>🕐 Hora:</strong> ${time}</p>
-                <p><strong>📍 Dirección:</strong> DIVINA VISIÓN, 123 Luxury Ave, Fashion District</p>
-                <p><strong>📞 Teléfono:</strong> +1 (555) 123-4567</p>
-              </div>
-
-              <div style="background-color: #fff3cd; padding: 15px; border-radius: 10px; margin: 20px 0;">
-                <h4 style="margin-top: 0;">Instrucciones importantes:</h4>
-                <ul>
-                  <li>Llega 10 minutos antes de tu cita</li>
-                  <li>Trae tu seguro y documentación</li>
-                  <li>Si usas lentes de contacto, retíralos 2 horas antes del examen</li>
-                  <li>Trae tus lentes o prescripción actual</li>
-                </ul>
-              </div>
-
-              <p style="color: #666; font-size: 12px;">
-                Si necesitas cancelar o reprogramar tu cita, por favor contáctanos con al menos 24 horas de anticipación.
-              </p>
-
-              <p>¡Te esperamos!</p>
-              <p><strong>Equipo Divinas Monturas</strong></p>
-            </div>
-          `
-        };
-
-        // Enviar ambos correos
-        await Promise.all([
-          transporter.sendMail(mailToOptica),
-          transporter.sendMail(mailToCliente)
-        ]);
-
-        console.log(`✅ Emails enviados: notificación a óptica y confirmación a ${email}`);
-      } catch (emailError) {
-        console.error('Error al enviar correo:', emailError);
-        // No falla la petición si el correo falla
-      }
-    }
-
-    res.status(200).json({
-      message: 'Cita agendada exitosamente.',
-      data: {
-        id: cita._id,
-        name: cita.name,
-        date: cita.date,
-        time: cita.time
-      }
+    res.status(201).json({
+      success: true,
+      statusCode: 201,
+      message: 'Cita agendada exitosamente',
+      data: cita
     });
   } catch (err) {
-    console.error('Error al crear cita:', err);
-    res.status(500).json({ error: 'Error al agendar la cita.' });
+    console.error('❌ Error en crearCita:', err.message);
+    console.error('Stack:', err.stack);
+    
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: err.message || 'Error al crear cita'
+    });
   }
-};
+});
 
 /**
- * GET /api/citas/ocupados?date=YYYY-MM-DD
- * Obtener horarios ocupados de una fecha específica
+ * GET /api/citas/ocupados
+ * Obtener horarios ocupados para una fecha
  */
-export const getHorariosOcupados = async (req, res) => {
+export const getHorariosOcupados = asyncHandler(async (req, res) => {
   try {
     const { date } = req.query;
 
     if (!date) {
-      return res.status(400).json({ error: 'Fecha requerida' });
+      return res.status(400).json({
+        success: false,
+        message: 'La fecha es requerida'
+      });
     }
 
-    const citas = await Cita.find({ date });
-    const horarios = citas.map(c => c.time);
+    const horarios = await citaService.getHorariosOcupados(date);
 
-    res.json({ horarios });
-  } catch (err) {
-    console.error('Error al consultar horarios:', err);
-    res.status(500).json({ error: 'Error al consultar horarios ocupados.' });
-  }
-};
-
-/**
- * GET /api/citas
- * Obtener todas las citas (para panel de administración)
- */
-export const getAllCitas = async (req, res) => {
-  try {
-    const { date, page = 1, limit = 50 } = req.query;
-
-    const filter = date ? { date } : {};
-    const skip = (page - 1) * limit;
-
-    const citas = await Cita.find(filter)
-      .sort({ date: -1, time: -1 })
-      .skip(skip)
-      .limit(parseInt(limit));
-
-    const total = await Cita.countDocuments(filter);
-
-    res.json({
-      citas,
-      pagination: {
-        total,
-        page: parseInt(page),
-        limit: parseInt(limit),
-        pages: Math.ceil(total / limit)
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Horarios obtenidos',
+      data: {
+        fecha: date,
+        horarios
       }
     });
   } catch (err) {
-    console.error('Error al obtener citas:', err);
-    res.status(500).json({ error: 'Error al obtener citas.' });
+    console.error('❌ Error en getHorariosOcupados:', err.message);
+    
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: err.message || 'Error al obtener horarios'
+    });
   }
-};
+});
 
 /**
- * DELETE /api/citas/:id
- * Eliminar una cita
+ * GET /api/citas
+ * Obtener todas las citas (solo admin/gerente)
  */
-export const deleteCita = async (req, res) => {
+export const obtenerCitas = asyncHandler(async (req, res) => {
+  try {
+    const { page = 1, limit = 20, estado, fecha } = req.query;
+
+    const filtros = {};
+    if (estado) filtros.estado = estado;
+    if (fecha) {
+      const inicioDelDia = new Date(fecha);
+      const finDelDia = new Date(fecha);
+      finDelDia.setDate(finDelDia.getDate() + 1);
+      filtros.fecha = {
+        $gte: inicioDelDia,
+        $lt: finDelDia
+      };
+    }
+
+    const citas = await citaService.getCitas(filtros, page, limit);
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Citas obtenidas',
+      data: citas.docs,
+      paginacion: {
+        total: citas.total,
+        pagina: page,
+        totalPages: citas.pages,
+        hasPrevPage: citas.hasPrevPage(),
+        hasNextPage: citas.hasNextPage(),
+      }
+    });
+  } catch (err) {
+    console.error('❌ Error en obtenerCitas:', err.message);
+    
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: err.message || 'Error al obtener citas'
+    });
+  }
+});
+
+/**
+ * GET /api/citas/:id
+ * Obtener una cita por ID (solo admin)
+ */
+export const obtenerCitaPorId = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
 
-    const cita = await Cita.findByIdAndDelete(id);
+    const cita = await citaService.getCitaById(id);
 
-    if (!cita) {
-      return res.status(404).json({ error: 'Cita no encontrada.' });
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Cita obtenida',
+      data: cita
+    });
+  } catch (err) {
+    console.error('❌ Error en obtenerCitaPorId:', err.message);
+    
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: err.message || 'Error al obtener cita'
+    });
+  }
+});
+
+/**
+ * PUT /api/citas/:id
+ * Actualizar cita (solo admin/gerente)
+ */
+export const actualizarCita = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { error, value } = validateUpdateCita(req.body);
+
+    if (error) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validación fallida',
+        errors: error.details.map(detail => ({
+          field: detail.path.join('.'),
+          message: detail.message
+        }))
+      });
     }
 
-    res.json({ message: 'Cita eliminada exitosamente.' });
+    const cita = await citaService.updateCita(id, value);
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Cita actualizada',
+      data: cita
+    });
   } catch (err) {
-    console.error('Error al eliminar cita:', err);
-    res.status(500).json({ error: 'Error al eliminar cita.' });
+    console.error('❌ Error en actualizarCita:', err.message);
+    
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: err.message || 'Error al actualizar cita'
+    });
   }
-};
+});
+
+/**
+ * DELETE /api/citas/:id
+ * Cancelar cita (solo admin)
+ */
+export const cancelarCita = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await citaService.deleteCita(id);
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Cita cancelada',
+      data: { id }
+    });
+  } catch (err) {
+    console.error('❌ Error en cancelarCita:', err.message);
+    
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: err.message || 'Error al cancelar cita'
+    });
+  }
+});
+
+/**
+ * GET /api/citas/estadisticas/dia
+ * Obtener estadísticas del día (solo admin)
+ */
+export const getEstadisticasDia = asyncHandler(async (req, res) => {
+  try {
+    const { fecha } = req.query;
+
+    const stats = await citaService.getEstadisticasDia(fecha);
+
+    res.status(200).json({
+      success: true,
+      statusCode: 200,
+      message: 'Estadísticas obtenidas',
+      data: stats
+    });
+  } catch (err) {
+    console.error('❌ Error en getEstadisticasDia:', err.message);
+    
+    res.status(500).json({
+      success: false,
+      statusCode: 500,
+      message: err.message || 'Error al obtener estadísticas'
+    });
+  }
+});

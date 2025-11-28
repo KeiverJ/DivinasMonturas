@@ -1,11 +1,11 @@
-// src/app.js
-// Configuración central de Express con ES Modules
+import 'dotenv/config.js';
 
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 
 import { errorHandler } from './middleware/errorHandler.js';
+import config from './config/config.js';
 
 // Importar rutas
 import authRoutes from './routes/authRoutes.js';
@@ -18,9 +18,9 @@ const app = express();
  * MIDDLEWARE GLOBAL
  */
 
-// CORS - Permite solicitudes desde el frontend
+// CORS
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
+  origin: config.cors.origin,
   credentials: true,
   optionsSuccessStatus: 200
 }));
@@ -28,10 +28,8 @@ app.use(cors({
 // Logger HTTP
 app.use(morgan('combined'));
 
-// Parser JSON
+// ✅ IMPORTANTE: Parsers ANTES de las rutas
 app.use(express.json({ limit: '10mb' }));
-
-// Parser URL encoded
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 /**
@@ -50,10 +48,10 @@ app.get('/health', (req, res) => {
 // Rutas de autenticación
 app.use('/api/auth', authRoutes);
 
-// Rutas de productos (públicas y privadas)
+// Rutas de productos
 app.use('/api/productos', productRoutes);
 
-// Rutas de citas
+// ✅ Rutas de citas
 app.use('/api/citas', citaRoutes);
 
 /**
@@ -69,7 +67,6 @@ app.use((req, res) => {
 
 /**
  * MIDDLEWARE DE MANEJO DE ERRORES
- * DEBE SER EL ÚLTIMO MIDDLEWARE
  */
 app.use(errorHandler);
 

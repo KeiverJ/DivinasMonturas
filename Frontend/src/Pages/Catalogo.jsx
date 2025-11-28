@@ -425,7 +425,7 @@ export default function Catalogo() {
                   </h3>
 
                   <p className="text-gray-600 text-sm mb-5 line-clamp-2 leading-relaxed">
-                    {product.descripcion}
+
                   </p>
 
                   <div className="flex gap-2">
