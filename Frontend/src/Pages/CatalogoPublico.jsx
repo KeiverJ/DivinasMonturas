@@ -215,8 +215,6 @@ export default function CatalogoPublico() {
           </button>
         </div>
       )}
-
-      <Footer />
     </div>
   );
 }
