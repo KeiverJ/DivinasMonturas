@@ -1,5 +1,6 @@
 // src/Pages/Catalogo.jsx
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { productService } from '../services/productService.js';
 import ProductModal from '../Components/ProductModal';
@@ -8,6 +9,7 @@ import { FaPlus, FaFilter, FaBox, FaTags, FaEdit, FaTrash } from 'react-icons/fa
 
 export default function Catalogo() {
   const { user } = useAuth();
+  const location = useLocation();
   const [products, setProducts] = useState([]);
   const [filters, setFilters] = useState({});
   const [loading, setLoading] = useState(false);
@@ -18,6 +20,17 @@ export default function Catalogo() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [error, setError] = useState(null);
   const [activeFilters, setActiveFilters] = useState({});
+
+  // Leer filtro tipo desde la URL si existe
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tipo = params.get('tipo');
+    if (tipo) {
+      setActiveFilters(prev => ({ ...prev, tipo }));
+    }
+    // eslint-disable-next-line
+  }, [location.search]);
+
 
   useEffect(() => {
     loadProducts();
@@ -47,8 +60,16 @@ export default function Catalogo() {
     }
   };
 
+  // Mantener el filtro tipo si vino en la URL, solo quitarlo si el usuario lo elimina
   const handleFilterChange = (newFilter) => {
-    setActiveFilters(newFilter);
+    const params = new URLSearchParams(location.search);
+    const tipoUrl = params.get('tipo');
+    // Si el filtro tipo vino en la URL y el usuario no lo ha quitado, mantenerlo
+    if (tipoUrl && !('tipo' in newFilter)) {
+      setActiveFilters({ ...newFilter, tipo: tipoUrl });
+    } else {
+      setActiveFilters(newFilter);
+    }
     setPage(1);
   };
 
