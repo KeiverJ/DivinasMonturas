@@ -275,9 +275,8 @@ export default function Home() {
                 <button
                   key={index}
                   onClick={() => setCurrentSlide(index)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    index === currentSlide ? "w-8 bg-[#D4AF37]" : "bg-white/30"
-                  }`}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentSlide ? "w-8 bg-[#D4AF37]" : "bg-white/30"
+                    }`}
                 />
               ))}
             </div>
@@ -621,18 +620,19 @@ export default function Home() {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="flex justify-center"
               >
-                <div className="w-full max-w-[540px] overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300"
+                <div
+                  className="w-full overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 relative"
                   style={{
-                    height: '480px',
-                    maxHeight: '480px'
+                    maxWidth: '540px',
+                    paddingBottom: '130%', 
+                    height: 0
                   }}
                 >
                   <iframe
                     src={`${postUrl}embed/`}
-                    className="border-0 w-full"
+                    className="border-0 absolute top-0 left-0 w-full h-full"
                     style={{
-                      height: '700px',
-                      marginTop: '0'
+                      minHeight: '600px'
                     }}
                     scrolling="no"
                     allowTransparency="true"

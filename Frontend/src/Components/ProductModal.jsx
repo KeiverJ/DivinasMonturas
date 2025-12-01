@@ -11,7 +11,6 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
     material: '',
     genero: 'unisex',
   });
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [imageFile, setImageFile] = useState(null);
@@ -19,7 +18,16 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
 
   useEffect(() => {
     if (product) {
-      setFormData(product);
+      // ✅ Solo copiar los campos editables, no todo el objeto
+      setFormData({
+        nombre: product.nombre || '',
+        tipo: product.tipo || 'montura',
+        categoria: product.categoria || '',
+        marca: product.marca || '',
+        material: product.material || '',
+        genero: product.genero || 'unisex',
+      });
+
       // Si hay imagen en el producto, mostrarla
       if (product.imagenes?.principal) {
         setImagePreview(product.imagenes.principal);
@@ -54,7 +62,6 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
         setError('La imagen no debe superar 5MB');
         return;
       }
-
       setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -84,9 +91,12 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
         formDataToSend.append('image', imageFile);
       }
 
-      // Agregar otros campos
-      Object.keys(formData).forEach(key => {
-        formDataToSend.append(key, formData[key]);
+      // ✅ Solo agregar los campos editables, sin campos internos de MongoDB
+      const camposEditables = ['nombre', 'tipo', 'categoria', 'marca', 'material', 'genero'];
+      camposEditables.forEach(key => {
+        if (formData[key]) {
+          formDataToSend.append(key, formData[key]);
+        }
       });
 
       await onSubmit(formDataToSend);
@@ -209,7 +219,6 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
                         />
                       </label>
                     )}
-
                     {/* Info */}
                     <div className="flex-1 flex flex-col justify-center">
                       <p className="text-sm text-gray-600 mb-2">

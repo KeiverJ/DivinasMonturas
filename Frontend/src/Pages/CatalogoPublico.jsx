@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { productService } from '../services/productService';
 import ProductCard from '../Components/ProductCard';
 import Navbar from '../Components/Navbar';
+import { motion } from 'framer-motion';
+import { FaFilter } from 'react-icons/fa';
 
 export default function CatalogoPublico() {
   const [products, setProducts] = useState([]);
@@ -49,30 +51,38 @@ export default function CatalogoPublico() {
       <Navbar />
 
       {/* Header */}
-      <div className="text-center py-16 px-4">
-        <p className="text-sm text-gray-500 mb-2">Catálogo</p>
+      <div className="text-center py-16 px-4 mt-10">
         <h1 className="text-5xl font-serif mb-4">
-          <span className="text-black">Catálogo</span> <span className="text-yellow-600">Premium</span>
+          <span className="text-black">Nuestro</span> <span className="text-yellow-600">Catálogo</span>
         </h1>
         <p className="text-gray-600 max-w-2xl mx-auto">
           Descubre nuestra exclusiva colección de monturas de lujo, diseñadas para reflejar tu estilo único y sofisticado.
         </p>
       </div>
 
-      {/* Filtros */}
-      <div className="px-4 mb-8">
-        <button
+      {/* Filtros mejorados */}
+      <div className="max-w-7xl mx-auto px-4 mb-8">
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
           onClick={() => setShowFilters(!showFilters)}
-          className="flex items-center gap-2 bg-black text-white px-4 py-2 rounded hover:bg-gray-800"
+          className="flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300 hover:scale-105"
+          style={{ backgroundColor: '#000' }}
         >
-          ▼ Filtros
-        </button>
+          <FaFilter className="w-4 h-4" />
+          {showFilters ? 'Ocultar Filtros' : 'Mostrar Filtros'}
+        </motion.button>
 
         {showFilters && (
-          <div className="mt-4 bg-gray-100 p-6 rounded-lg grid grid-cols-1 md:grid-cols-5 gap-4">
-            {/* Filtro por tipo */}
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="mt-4 bg-white p-6 rounded-2xl grid grid-cols-1 md:grid-cols-5 gap-4 shadow-lg border border-gray-100"
+          >
             <div>
-              <label className="block font-semibold text-gray-700 mb-2">Tipo</label>
+              <label className="block font-semibold text-gray-700 mb-2 text-sm">Tipo</label>
               <select
                 onChange={(e) => {
                   if (e.target.value) {
@@ -82,7 +92,7 @@ export default function CatalogoPublico() {
                     handleFilterChange(rest);
                   }
                 }}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#D4AF37] transition-colors"
               >
                 <option value="">Todos</option>
                 {filters.tipos?.map(tipo => (
@@ -91,9 +101,8 @@ export default function CatalogoPublico() {
               </select>
             </div>
 
-            {/* Filtro por categoría */}
             <div>
-              <label className="block font-semibold text-gray-700 mb-2">Categoría</label>
+              <label className="block font-semibold text-gray-700 mb-2 text-sm">Categoría</label>
               <select
                 onChange={(e) => {
                   if (e.target.value) {
@@ -103,7 +112,7 @@ export default function CatalogoPublico() {
                     handleFilterChange(rest);
                   }
                 }}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#D4AF37] transition-colors"
               >
                 <option value="">Todas</option>
                 {filters.categorias?.map(cat => (
@@ -112,9 +121,8 @@ export default function CatalogoPublico() {
               </select>
             </div>
 
-            {/* Filtro por marca */}
             <div>
-              <label className="block font-semibold text-gray-700 mb-2">Marca</label>
+              <label className="block font-semibold text-gray-700 mb-2 text-sm">Marca</label>
               <select
                 onChange={(e) => {
                   if (e.target.value) {
@@ -124,7 +132,7 @@ export default function CatalogoPublico() {
                     handleFilterChange(rest);
                   }
                 }}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#D4AF37] transition-colors"
               >
                 <option value="">Todas</option>
                 {filters.marcas?.map(marca => (
@@ -133,9 +141,8 @@ export default function CatalogoPublico() {
               </select>
             </div>
 
-            {/* Filtro por material */}
             <div>
-              <label className="block font-semibold text-gray-700 mb-2">Material</label>
+              <label className="block font-semibold text-gray-700 mb-2 text-sm">Material</label>
               <select
                 onChange={(e) => {
                   if (e.target.value) {
@@ -145,7 +152,7 @@ export default function CatalogoPublico() {
                     handleFilterChange(rest);
                   }
                 }}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#D4AF37] transition-colors"
               >
                 <option value="">Todos</option>
                 {filters.materiales?.map(mat => (
@@ -154,9 +161,8 @@ export default function CatalogoPublico() {
               </select>
             </div>
 
-            {/* Filtro por género */}
             <div>
-              <label className="block font-semibold text-gray-700 mb-2">Género</label>
+              <label className="block font-semibold text-gray-700 mb-2 text-sm">Género</label>
               <select
                 onChange={(e) => {
                   if (e.target.value) {
@@ -166,7 +172,7 @@ export default function CatalogoPublico() {
                     handleFilterChange(rest);
                   }
                 }}
-                className="w-full p-2 border border-gray-300 rounded"
+                className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#D4AF37] transition-colors"
               >
                 <option value="">Todos</option>
                 {filters.generos?.map(genero => (
@@ -174,7 +180,7 @@ export default function CatalogoPublico() {
                 ))}
               </select>
             </div>
-          </div>
+          </motion.div>
         )}
       </div>
 

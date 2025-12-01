@@ -3,8 +3,14 @@
 
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Configurar dotenv con la ruta correcta del .env
+dotenv.config({ path: path.join(__dirname, '..', '..', '.env') });
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

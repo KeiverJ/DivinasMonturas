@@ -88,13 +88,13 @@ function DivinaVision() {
 
       <section className="relative h-screen flex items-center justify-center overflow-hidden pt-40 md:pt-20">
         <div
-            className="absolute inset-0 z-0"
-            style={{
-              backgroundImage: "url('/DivinaVisionLocal.jpg')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundAttachment: "fixed"
-            }}
+          className="absolute inset-0 z-0"
+          style={{
+            backgroundImage: "url('/DivinaVisionLocal.jpg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundAttachment: "fixed"
+          }}
         >
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70" />
         </div>
@@ -439,38 +439,81 @@ function DivinaVision() {
       </section>
 
       {/* CTA Final */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="p-12 rounded-2xl text-white relative overflow-hidden"
-            style={{ background: "linear-gradient(135deg, #1A628F, #0D3B5C)" }}
+            className="text-center mb-12"
           >
-            <div
-              className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl opacity-20"
-              style={{ backgroundColor: "#EF7272" }}
-            />
-            <div
-              className="absolute bottom-0 left-0 w-64 h-64 rounded-full blur-3xl opacity-20"
-              style={{ backgroundColor: "#D4AF37" }}
-            />
-            <div className="relative z-10 text-center">
-              <h2 className="font-serif mb-6" style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>
-                Encuentra tu <span style={{ color: "#EF7272" }}>Estilo</span>
-              </h2>
-              <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-                Visítanos y descubre la colección perfecta de gafas de sol para ti
-              </p>
-              <button
-                onClick={() => navigate('/catalogo')}
-                className="inline-block px-8 py-4 rounded-lg transition-all duration-300 bg-[#EF7272] text-white font-semibold hover:scale-105 hover:shadow-lg"
+            <h2 className="font-serif text-black mb-4" style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}>
+              Síguenos en <span style={{ color: "#EF7272" }}>Instagram</span>
+            </h2>
+            <a
+              href="https://www.instagram.com/divinavisioncucuta1/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-lg font-medium hover:opacity-80 transition-all duration-300"
+              style={{ color: "#EF7272" }}
+            >
+              <FaInstagram className="w-6 h-6" />
+              <span>@divinavisioncucuta1</span>
+            </a>
+            <p className="text-gray-600 mt-3">Descubre nuestras últimas colecciones y tendencias</p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            {instagramPosts.map((postUrl, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="flex justify-center"
               >
-                Explorar Colección
-              </button>
-            </div>
+                <div
+                  className="w-full overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 relative"
+                  style={{
+                    maxWidth: '540px',
+                    paddingBottom: '130%', 
+                    height: 0
+                  }}
+                >
+                  <iframe
+                    src={`${postUrl}embed/`}
+                    className="border-0 absolute top-0 left-0 w-full h-full"
+                    style={{
+                      minHeight: '600px'
+                    }}
+                    scrolling="no"
+                    allowTransparency="true"
+                    allow="encrypted-media"
+                    title={`Instagram Post ${index + 1}`}
+                  />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mt-10"
+          >
+            <a
+              href="https://www.instagram.com/divinavisioncucuta1/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-8 py-4 rounded-lg font-semibold transition-all duration-300 hover:scale-105 hover:shadow-xl"
+              style={{ backgroundColor: "#EF7272", color: "white" }}
+            >
+              Seguir en Instagram
+            </a>
           </motion.div>
         </div>
       </section>

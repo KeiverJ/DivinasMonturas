@@ -1,12 +1,20 @@
 import { FaFacebookF, FaInstagram, FaTiktok } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function Footer() {
+  const navigate = useNavigate();
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const handleAdminAccess = () => {
+    navigate("/login");
+  };
+
   return (
     <footer className="relative bg-black text-white mt-8">
-      
+
       <div className="absolute top-0 left-0 right-0 overflow-hidden leading-none">
         <svg
           className="relative block w-full h-12"
@@ -23,7 +31,7 @@ function Footer() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-          
+
           <div>
             <h3 className="font-serif mb-4" style={{ color: "#D4AF37" }}>
               DIVINAS MONTURAS
@@ -44,7 +52,7 @@ function Footer() {
             </div>
           </div>
 
-          
+
           <div>
             <h4 className="mb-4" style={{ color: "#D4AF37" }}>
               Enlaces Rápidos
@@ -64,7 +72,7 @@ function Footer() {
             </ul>
           </div>
 
-          
+
           <div>
             <h4 className="mb-4" style={{ color: "#D4AF37" }}>
               Contacto
@@ -90,7 +98,7 @@ function Footer() {
             </ul>
           </div>
 
-          
+
           <div>
             <h4 className="mb-4" style={{ color: "#D4AF37" }}>
               Horarios
@@ -111,10 +119,18 @@ function Footer() {
           </div>
         </div>
 
-        {/* Copyright */}
+        {/* Copyright con acceso discreto al login */}
         <div className="border-t border-white/10 pt-8 text-center">
           <p className="text-gray-400">
-            © 2025 Divinas Monturas. Todos los derechos reservados.
+            © 2025 Divinas Monturas. Todos los derechos reservados.{" "}
+            <button
+              onClick={handleAdminAccess}
+              className="inline-block text-gray-600 hover:text-[#D4AF37] transition-colors duration-300 text-xs ml-1"
+              aria-label="Acceso administrativo"
+              title="Admin"
+            >
+              ©
+            </button>
           </p>
         </div>
       </div>
