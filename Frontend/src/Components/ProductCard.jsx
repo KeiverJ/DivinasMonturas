@@ -1,10 +1,8 @@
-
-
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { FaWhatsapp } from "react-icons/fa";
 
-function ProductCard({ name, brand, price, image, category }) {
+function ProductCard({ name, brand, image, category }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -76,7 +74,6 @@ ${image}
     </div>
   );
 }
-
 
 ProductCard.propTypes = {
   name: PropTypes.string.isRequired,

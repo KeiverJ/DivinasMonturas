@@ -10,16 +10,17 @@ export default function CatalogoPublico() {
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState(null);
   const [showFilters, setShowFilters] = useState(false);
+  const [activeFilters, setActiveFilters] = useState({});
 
   useEffect(() => {
     loadProducts();
     loadFilters();
-  }, [page]);
+  }, [page, activeFilters]);
 
   const loadProducts = async () => {
     try {
       setLoading(true);
-      const response = await productService.getProducts({}, page, 9);
+      const response = await productService.getProducts(activeFilters, page, 9);
       setProducts(response.data);
       setPagination(response.paginacion);
     } catch (err) {
@@ -38,18 +39,9 @@ export default function CatalogoPublico() {
     }
   };
 
-  const loadProductsWithFilter = async (filter) => {
-    try {
-      setLoading(true);
-      const response = await productService.getProducts(filter, 1, 9);
-      setProducts(response.data);
-      setPagination(response.paginacion);
-      setPage(1);
-    } catch (err) {
-      console.error('Error cargando productos con filtro:', err);
-    } finally {
-      setLoading(false);
-    }
+  const handleFilterChange = (newFilter) => {
+    setActiveFilters(newFilter);
+    setPage(1);
   };
 
   return (
@@ -84,9 +76,10 @@ export default function CatalogoPublico() {
               <select
                 onChange={(e) => {
                   if (e.target.value) {
-                    loadProductsWithFilter({ tipo: e.target.value });
+                    handleFilterChange({ ...activeFilters, tipo: e.target.value });
                   } else {
-                    loadProducts();
+                    const { tipo, ...rest } = activeFilters;
+                    handleFilterChange(rest);
                   }
                 }}
                 className="w-full p-2 border border-gray-300 rounded"
@@ -104,9 +97,10 @@ export default function CatalogoPublico() {
               <select
                 onChange={(e) => {
                   if (e.target.value) {
-                    loadProductsWithFilter({ categoria: e.target.value });
+                    handleFilterChange({ ...activeFilters, categoria: e.target.value });
                   } else {
-                    loadProducts();
+                    const { categoria, ...rest } = activeFilters;
+                    handleFilterChange(rest);
                   }
                 }}
                 className="w-full p-2 border border-gray-300 rounded"
@@ -124,9 +118,10 @@ export default function CatalogoPublico() {
               <select
                 onChange={(e) => {
                   if (e.target.value) {
-                    loadProductsWithFilter({ marca: e.target.value });
+                    handleFilterChange({ ...activeFilters, marca: e.target.value });
                   } else {
-                    loadProducts();
+                    const { marca, ...rest } = activeFilters;
+                    handleFilterChange(rest);
                   }
                 }}
                 className="w-full p-2 border border-gray-300 rounded"
@@ -144,9 +139,10 @@ export default function CatalogoPublico() {
               <select
                 onChange={(e) => {
                   if (e.target.value) {
-                    loadProductsWithFilter({ material: e.target.value });
+                    handleFilterChange({ ...activeFilters, material: e.target.value });
                   } else {
-                    loadProducts();
+                    const { material, ...rest } = activeFilters;
+                    handleFilterChange(rest);
                   }
                 }}
                 className="w-full p-2 border border-gray-300 rounded"
@@ -164,9 +160,10 @@ export default function CatalogoPublico() {
               <select
                 onChange={(e) => {
                   if (e.target.value) {
-                    loadProductsWithFilter({ genero: e.target.value });
+                    handleFilterChange({ ...activeFilters, genero: e.target.value });
                   } else {
-                    loadProducts();
+                    const { genero, ...rest } = activeFilters;
+                    handleFilterChange(rest);
                   }
                 }}
                 className="w-full p-2 border border-gray-300 rounded"
@@ -201,16 +198,27 @@ export default function CatalogoPublico() {
           </div>
         )}
       </div>
-
-      {/* Paginación */}
+      
       {pagination && pagination.totalPages > 1 && (
-        <div className="flex justify-center gap-4 mb-12">
+        <div className="flex justify-center items-center gap-4 mb-12 px-4">
           <button
             onClick={() => setPage(page - 1)}
             disabled={!pagination.hasPrevPage}
-            className="border-2 border-yellow-600 text-yellow-600 px-6 py-2 rounded hover:bg-yellow-600 hover:text-white transition disabled:opacity-50"
+            className="px-6 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-white"
           >
-            Cargar Más Productos
+            ← Anterior
+          </button>
+
+          <span className="px-6 py-3 rounded-lg font-semibold bg-yellow-50 text-yellow-600 border border-yellow-200">
+            Página {pagination.pagina} de {pagination.totalPages}
+          </span>
+
+          <button
+            onClick={() => setPage(page + 1)}
+            disabled={!pagination.hasNextPage}
+            className="px-6 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-white"
+          >
+            Siguiente →
           </button>
         </div>
       )}

@@ -17,17 +17,18 @@ export default function Catalogo() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [error, setError] = useState(null);
+  const [activeFilters, setActiveFilters] = useState({});
 
   useEffect(() => {
     loadProducts();
     loadFilters();
-  }, [page]);
+  }, [page, activeFilters]);
 
   const loadProducts = async () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await productService.getProducts({}, page, 9);
+      const response = await productService.getProducts(activeFilters, page, 9);
       setProducts(response.data);
       setPagination(response.paginacion);
     } catch (err) {
@@ -46,19 +47,9 @@ export default function Catalogo() {
     }
   };
 
-  const loadProductsWithFilter = async (filterData) => {
-    try {
-      setLoading(true);
-      setError(null);
-      const response = await productService.getProducts(filterData, 1, 9);
-      setProducts(response.data);
-      setPagination(response.paginacion);
-      setPage(1);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+  const handleFilterChange = (newFilter) => {
+    setActiveFilters(newFilter);
+    setPage(1);
   };
 
   const handleEditClick = (product) => {
@@ -99,8 +90,8 @@ export default function Catalogo() {
   };
 
   // Calcular estadísticas
-  const totalProducts = products.length;
-  const uniqueCategories = [...new Set(products.map(p => p.categoria))].length;
+  const totalProducts = pagination?.total || 0;
+  const uniqueCategories = filters.categorias?.length || 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 pt-20">
@@ -229,9 +220,10 @@ export default function Catalogo() {
               <select
                 onChange={(e) => {
                   if (e.target.value) {
-                    loadProductsWithFilter({ tipo: e.target.value });
+                    handleFilterChange({ ...activeFilters, tipo: e.target.value });
                   } else {
-                    loadProducts();
+                    const { tipo, ...rest } = activeFilters;
+                    handleFilterChange(rest);
                   }
                 }}
                 className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#D4AF37] transition-colors"
@@ -248,9 +240,10 @@ export default function Catalogo() {
               <select
                 onChange={(e) => {
                   if (e.target.value) {
-                    loadProductsWithFilter({ categoria: e.target.value });
+                    handleFilterChange({ ...activeFilters, categoria: e.target.value });
                   } else {
-                    loadProducts();
+                    const { categoria, ...rest } = activeFilters;
+                    handleFilterChange(rest);
                   }
                 }}
                 className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#D4AF37] transition-colors"
@@ -267,9 +260,10 @@ export default function Catalogo() {
               <select
                 onChange={(e) => {
                   if (e.target.value) {
-                    loadProductsWithFilter({ marca: e.target.value });
+                    handleFilterChange({ ...activeFilters, marca: e.target.value });
                   } else {
-                    loadProducts();
+                    const { marca, ...rest } = activeFilters;
+                    handleFilterChange(rest);
                   }
                 }}
                 className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#D4AF37] transition-colors"
@@ -286,9 +280,10 @@ export default function Catalogo() {
               <select
                 onChange={(e) => {
                   if (e.target.value) {
-                    loadProductsWithFilter({ material: e.target.value });
+                    handleFilterChange({ ...activeFilters, material: e.target.value });
                   } else {
-                    loadProducts();
+                    const { material, ...rest } = activeFilters;
+                    handleFilterChange(rest);
                   }
                 }}
                 className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#D4AF37] transition-colors"
@@ -305,9 +300,10 @@ export default function Catalogo() {
               <select
                 onChange={(e) => {
                   if (e.target.value) {
-                    loadProductsWithFilter({ genero: e.target.value });
+                    handleFilterChange({ ...activeFilters, genero: e.target.value });
                   } else {
-                    loadProducts();
+                    const { genero, ...rest } = activeFilters;
+                    handleFilterChange(rest);
                   }
                 }}
                 className="w-full p-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-[#D4AF37] transition-colors"
