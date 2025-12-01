@@ -10,11 +10,8 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
     marca: '',
     material: '',
     genero: 'unisex',
-    color: [],
-    disponible: true,
   });
 
-  const [colorInput, setColorInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [imageFile, setImageFile] = useState(null);
@@ -35,13 +32,10 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
         marca: '',
         material: '',
         genero: 'unisex',
-        color: [],
-        disponible: true,
       });
       setImagePreview(null);
       setImageFile(null);
     }
-    setColorInput('');
     setError(null);
   }, [product, isOpen]);
 
@@ -76,23 +70,6 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
     setImagePreview(null);
   };
 
-  const handleAddColor = () => {
-    if (colorInput.trim() && !formData.color.includes(colorInput.trim())) {
-      setFormData({
-        ...formData,
-        color: [...formData.color, colorInput.trim()],
-      });
-      setColorInput('');
-    }
-  };
-
-  const handleRemoveColor = (colorToRemove) => {
-    setFormData({
-      ...formData,
-      color: formData.color.filter(c => c !== colorToRemove),
-    });
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -109,11 +86,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
 
       // Agregar otros campos
       Object.keys(formData).forEach(key => {
-        if (key === 'color') {
-          formDataToSend.append(key, JSON.stringify(formData[key]));
-        } else {
-          formDataToSend.append(key, formData[key]);
-        }
+        formDataToSend.append(key, formData[key]);
       });
 
       await onSubmit(formDataToSend);
@@ -395,102 +368,6 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
                       <option value="niña">Niña</option>
                       <option value="unisex">Unisex</option>
                     </select>
-                  </div>
-
-                  {/* Colores */}
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Colores
-                    </label>
-                    <div className="flex gap-2 mb-3">
-                      <input
-                        type="text"
-                        value={colorInput}
-                        onChange={(e) => setColorInput(e.target.value)}
-                        onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddColor())}
-                        className="flex-1 px-4 py-3 rounded-xl border-2 transition-all duration-300"
-                        style={{
-                          borderColor: 'rgba(212, 175, 55, 0.2)',
-                        }}
-                        onFocus={(e) => e.target.style.borderColor = '#D4AF37'}
-                        onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.2)'}
-                        placeholder="Escribe un color y presiona Enter"
-                        list="colores"
-                      />
-                      <motion.button
-                        type="button"
-                        onClick={handleAddColor}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="px-6 py-3 rounded-xl font-semibold text-white flex items-center gap-2"
-                        style={{ backgroundColor: '#D4AF37' }}
-                      >
-                        <FaPlus className="w-4 h-4" />
-                        Agregar
-                      </motion.button>
-                      <datalist id="colores">
-                        {filters.colores?.map(color => (
-                          <option key={color} value={color} />
-                        ))}
-                      </datalist>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {formData.color.map(color => (
-                        <motion.span
-                          key={color}
-                          initial={{ scale: 0 }}
-                          animate={{ scale: 1 }}
-                          exit={{ scale: 0 }}
-                          className="px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2"
-                          style={{
-                            backgroundColor: 'rgba(212, 175, 55, 0.1)',
-                            color: '#D4AF37',
-                            border: '1px solid rgba(212, 175, 55, 0.3)',
-                          }}
-                        >
-                          {color}
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveColor(color)}
-                            className="hover:scale-110 transition-transform"
-                          >
-                            <FaTimes className="w-3 h-3" />
-                          </button>
-                        </motion.span>
-                      ))}
-                    </div>
-                  </div>
-
-
-                  {/* Disponible */}
-                  <div className="md:col-span-2">
-                    <label className="flex items-center gap-3 cursor-pointer group">
-                      <div className="relative">
-                        <input
-                          type="checkbox"
-                          name="disponible"
-                          checked={formData.disponible}
-                          onChange={handleChange}
-                          className="sr-only"
-                        />
-                        <div
-                          className="w-12 h-6 rounded-full transition-all duration-300"
-                          style={{
-                            backgroundColor: formData.disponible ? '#D4AF37' : '#E5E7EB',
-                          }}
-                        >
-                          <div
-                            className="absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-300"
-                            style={{
-                              transform: formData.disponible ? 'translateX(24px)' : 'translateX(0)',
-                            }}
-                          />
-                        </div>
-                      </div>
-                      <span className="text-sm font-semibold text-gray-700">
-                        Producto disponible
-                      </span>
-                    </label>
                   </div>
                 </div>
               </form>

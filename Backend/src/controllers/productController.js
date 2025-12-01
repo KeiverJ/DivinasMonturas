@@ -14,20 +14,6 @@ export const crearProducto = asyncHandler(async (req, res) => {
   console.log('📦 Datos recibidos:', req.body);
   console.log('🖼️ Archivo recibido:', req.file ? 'Sí' : 'No');
 
-  // Parsear el color si viene como JSON string
-  if (req.body.color && typeof req.body.color === 'string') {
-    try {
-      req.body.color = JSON.parse(req.body.color);
-    } catch (e) {
-      req.body.color = [];
-    }
-  }
-
-  // Convertir disponible de string a boolean
-  if (typeof req.body.disponible === 'string') {
-    req.body.disponible = req.body.disponible === 'true';
-  }
-
   console.log('📦 Datos después de parsear:', req.body);
 
   const { error, value } = validateCreateProduct(req.body);
@@ -68,9 +54,7 @@ export const crearProducto = asyncHandler(async (req, res) => {
  * - marca: Victoria Rose, Mistic, Gorillaz, etc
  * - material: acetato, metálica, tr90, aluminio, flex, etc
  * - genero: dama, caballero, niño, niña, unisex
- * - color: color específico
  * - busqueda: búsqueda por texto
- * - disponible: true/false
  */
 export const obtenerProductos = asyncHandler(async (req, res) => {
   const {
@@ -81,8 +65,6 @@ export const obtenerProductos = asyncHandler(async (req, res) => {
     marca,
     material,
     genero,
-    color,
-    disponible,
     busqueda
   } = req.query;
   
@@ -92,8 +74,6 @@ export const obtenerProductos = asyncHandler(async (req, res) => {
     ...(marca && { marca }),
     ...(material && { material }),
     ...(genero && { genero }),
-    ...(color && { color }),
-    ...(disponible && { disponible: disponible === 'true' }),
     ...(busqueda && { busqueda }),
   };
   
@@ -135,20 +115,6 @@ export const obtenerProductoPorId = asyncHandler(async (req, res) => {
  */
 export const actualizarProducto = asyncHandler(async (req, res) => {
   const { id } = req.params;
-
-  // Parsear el color si viene como JSON string
-  if (req.body.color && typeof req.body.color === 'string') {
-    try {
-      req.body.color = JSON.parse(req.body.color);
-    } catch (e) {
-      req.body.color = [];
-    }
-  }
-
-  // Convertir disponible de string a boolean
-  if (typeof req.body.disponible === 'string') {
-    req.body.disponible = req.body.disponible === 'true';
-  }
 
   const { error, value } = validateUpdateProduct(req.body);
   if (error) {

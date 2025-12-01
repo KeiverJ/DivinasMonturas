@@ -40,7 +40,7 @@ class ProductService {
   
   /**
    * Obtener productos con filtros y paginación
-   * Filtros soportados: tipo, categoria, marca, material, genero, color, disponible, busqueda
+   * Filtros soportados: tipo, categoria, marca, material, genero, busqueda
    */
   async getProductos(filters = {}, page = 1, limit = 12) {
     try {
@@ -52,8 +52,6 @@ class ProductService {
       if (filters.marca) query.marca = filters.marca;
       if (filters.material) query.material = filters.material;
       if (filters.genero) query.genero = filters.genero;
-      if (filters.color) query.color = { $in: [filters.color] };
-      if (filters.disponible !== undefined) query.disponible = filters.disponible;
       
       // Búsqueda por texto
       if (filters.busqueda) {
@@ -176,17 +174,16 @@ class ProductService {
   
   /**
    * Obtener filtros disponibles para búsqueda avanzada
-   * Retorna categorías, marcas, materiales, géneros y colores únicos
+   * Retorna categorías, marcas, materiales y géneros únicos
    */
   async getAvailableFilters() {
     try {
-      const [tipos, categorias, marcas, materiales, generos, colores] = await Promise.all([
+      const [tipos, categorias, marcas, materiales, generos] = await Promise.all([
         Product.distinct('tipo'),
         Product.distinct('categoria'),
         Product.distinct('marca'),
         Product.distinct('material'),
         Product.distinct('genero'),
-        Product.distinct('color'),
       ]);
       
       return {
@@ -195,7 +192,6 @@ class ProductService {
         marcas: marcas.filter(Boolean),
         materiales: materiales.filter(Boolean),
         generos: generos.filter(Boolean),
-        colores: colores.filter(Boolean),
       };
     } catch (error) {
       throw new Error(`Error al obtener filtros: ${error.message}`);

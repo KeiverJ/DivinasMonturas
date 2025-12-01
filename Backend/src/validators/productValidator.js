@@ -54,24 +54,10 @@ const createProductSchema = Joi.object({
       'any.only': 'El género debe ser: dama, caballero, niño, niña o unisex'
     }),
   
-  color: Joi.array()
-    .items(Joi.string())
-    .optional()
-    .messages({
-      'array.base': 'Los colores deben ser un array'
-    }),
-  
-  disponible: Joi.boolean()
-    .default(true),
-  
   imagenes: Joi.object({
     principal: Joi.string().uri().optional(),
     adicionales: Joi.array().items(Joi.string().uri()).optional()
-  }).optional(),
-  
-  etiquetas: Joi.array()
-    .items(Joi.string())
-    .optional(),
+  }).optional()
 });
 
 const updateProductSchema = Joi.object({
@@ -105,21 +91,10 @@ const updateProductSchema = Joi.object({
     .valid('dama', 'caballero', 'niño', 'niña', 'unisex')
     .optional(),
   
-  color: Joi.array()
-    .items(Joi.string())
-    .optional(),
-  
-  disponible: Joi.boolean()
-    .optional(),
-  
   imagenes: Joi.object({
     principal: Joi.string().uri().optional(),
     adicionales: Joi.array().items(Joi.string().uri()).optional()
-  }).optional(),
-  
-  etiquetas: Joi.array()
-    .items(Joi.string())
-    .optional(),
+  }).optional()
 });
 
 export const validateCreateProduct = (data) => {
