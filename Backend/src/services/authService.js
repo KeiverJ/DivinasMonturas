@@ -1,7 +1,7 @@
 // src/services/authService.js
 import jwt from 'jsonwebtoken';
 import bcryptjs from 'bcryptjs';
-import User from '../models/user.js';
+import User from '../models/User.js';
 import config from '../config/config.js';
 
 class AuthService {
