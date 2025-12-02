@@ -178,20 +178,27 @@ class ProductService {
    */
   async getAvailableFilters() {
     try {
-      const [tipos, categorias, marcas, materiales, generos] = await Promise.all([
+      const [tipos, categorias, marcas, materiales, generos, colores] = await Promise.all([
         Product.distinct('tipo'),
         Product.distinct('categoria'),
         Product.distinct('marca'),
         Product.distinct('material'),
         Product.distinct('genero'),
+        Product.distinct('color'),
       ]);
-      
+
+      // Normaliza: trim, filtra valores vacíos/null/undefined, y deduplica
+      const normalize = (arr) => Array.from(new Set((arr || [])
+        .map(v => (v === null || v === undefined) ? '' : String(v).trim())
+        .filter(v => v !== '')));
+
       return {
-        tipos: tipos.filter(Boolean),
-        categorias: categorias.filter(Boolean),
-        marcas: marcas.filter(Boolean),
-        materiales: materiales.filter(Boolean),
-        generos: generos.filter(Boolean),
+        tipos: normalize(tipos),
+        categorias: normalize(categorias),
+        marcas: normalize(marcas),
+        materiales: normalize(materiales),
+        generos: normalize(generos),
+        colores: normalize(colores),
       };
     } catch (error) {
       throw new Error(`Error al obtener filtros: ${error.message}`);

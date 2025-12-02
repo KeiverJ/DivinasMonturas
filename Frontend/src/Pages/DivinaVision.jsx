@@ -291,7 +291,7 @@ function DivinaVision() {
           </div>
           <div className="text-center mt-12">
             <button
-              onClick={() => navigate('/catalogo?tipo=lentes')}
+              onClick={() => navigate('/catalogo?tipo=lentes', { state: { tipo: 'lentes' } })}
               className="inline-block px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
               style={{ backgroundColor: "#1A628F", color: "white" }}
             >
