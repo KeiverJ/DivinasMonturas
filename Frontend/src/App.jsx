@@ -16,6 +16,7 @@ import DivinaVision from './Pages/DivinaVision.jsx';
 import Mayoristas from './Pages/Mayoristas.jsx';
 import Login from './Pages/Login.jsx';
 import CatalogoPublico from './Pages/CatalogoPublico.jsx';
+import CatalogoDivinaVision from './Pages/CatalogoDivinaVision.jsx';
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
@@ -32,6 +33,7 @@ function AppContent() {
           <Route path="/about" element={<About />} />
           <Route path="/citas" element={<Citas />} />
           <Route path="/divinavision" element={<DivinaVision />} />
+          <Route path="/catalogo-divinavision" element={<CatalogoDivinaVision />} />
           <Route path="/mayoristas" element={<Mayoristas />} />
 
           {/*Páginas para personal de empresa nada más*/}

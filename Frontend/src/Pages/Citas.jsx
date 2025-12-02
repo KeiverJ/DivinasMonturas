@@ -257,16 +257,21 @@ function Citas() {
                   ) : (
                     timeSlots.map((time) => {
                       const ocupado = horariosOcupados.includes(time);
+                      let buttonClass =
+                        "px-3 sm:px-4 py-3 rounded-lg border-2 transition-all duration-300 text-sm sm:text-base ";
+                      if (ocupado) {
+                        buttonClass += "border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed";
+                      } else if (selectedTime === time) {
+                        buttonClass += "border-[#D4AF37] bg-[#D4AF37] text-black font-semibold";
+                      } else {
+                        buttonClass += "border-gray-200 hover:border-[#D4AF37] hover:bg-[#D4AF37]/10";
+                      }
                       return (
                         <button
                           key={time}
                           type="button"
                           onClick={() => !ocupado && setSelectedTime(time)}
-                          className={`px-3 sm:px-4 py-3 rounded-lg border-2 transition-all duration-300 text-sm sm:text-base ${ocupado
-                            ? "border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed"
-                            : selectedTime === time
-                              ? "border-[#D4AF37] bg-[#D4AF37] text-black font-semibold"
-                              : "border-gray-200 hover:border-[#D4AF37] hover:bg-[#D4AF37]/10"}`}
+                          className={buttonClass}
                           disabled={ocupado}
                         >
                           {time}
@@ -352,8 +357,9 @@ function Citas() {
                   <label htmlFor="prescripcion" className="block text-gray-700 mb-2 font-semibold">
                     Subir Prescripción (Opcional)
                   </label>
-                  <div
-                    className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#D4AF37] transition-colors cursor-pointer"
+                  <button
+                    type="button"
+                    className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#D4AF37] transition-colors cursor-pointer w-full"
                     onClick={() => document.getElementById('prescripcion').click()}
                   >
                     <FaUpload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
@@ -369,7 +375,7 @@ function Citas() {
                     </p>
                     <p className="text-xs text-gray-400 mt-1">PDF, JPG, PNG (Max 5MB)</p>
                     {file && <p className="text-xs text-green-600 mt-2">✓ {file.name}</p>}
-                  </div>
+                  </button>
                 </div>
 
                 <div>

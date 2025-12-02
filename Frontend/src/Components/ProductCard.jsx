@@ -2,7 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { FaWhatsapp } from "react-icons/fa";
 
-function ProductCard({ name, brand, image, category }) {
+function ProductCard({ name, brand, image, category, borderColor = "#D4AF37" }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -12,7 +12,7 @@ function ProductCard({ name, brand, image, category }) {
       onMouseLeave={() => setIsHovered(false)}
       style={{
         boxShadow: isHovered
-          ? "0 20px 40px rgba(212, 175, 55, 0.2)"
+          ? `0 20px 40px ${borderColor}33` // 20% opacity
           : "0 4px 6px rgba(0, 0, 0, 0.1)",
       }}
       tabIndex={0}
@@ -68,18 +68,20 @@ ${image}
         className={`absolute inset-0 rounded-xl pointer-events-none transition-opacity duration-300 ${isHovered ? "opacity-100" : "opacity-0"
           }`}
         style={{
-          border: "2px solid #D4AF37",
+          border: `2px solid ${borderColor}`,
         }}
       />
     </div>
   );
 }
 
+
 ProductCard.propTypes = {
   name: PropTypes.string.isRequired,
   brand: PropTypes.string.isRequired,
   image: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
+  borderColor: PropTypes.string,
 };
 
 export default ProductCard;

@@ -41,8 +41,8 @@ function DivinaVision() {
       setLoadingCollections(true);
       setErrorCollections(null);
       try {
-        // Solo tipo lentes (gafas de sol)
-        const res = await productService.getProducts({ tipo: "lentes" }, 1, 4);
+        // Solo tipo gafas (gafas de sol)
+        const res = await productService.getProducts({ tipo: "gafas" }, 1, 4);
         // Mapear a formato esperado
         const mapped = res.data.map(product => ({
           name: product.nombre,
@@ -158,7 +158,7 @@ function DivinaVision() {
           >
             <button
               type="button"
-              onClick={() => navigate('/catalogo?tipo=lentes')}
+              onClick={() => navigate('/catalogo?tipo=gafas')}
               className="px-8 py-4 rounded-lg font-semibold transition-all duration-300 bg-[#EF7272] text-white shadow-lg hover:shadow-xl hover:bg-[#e35a5a] hover:scale-105"
             >
               Ver Colección
@@ -272,7 +272,7 @@ function DivinaVision() {
                       style={{ background: "linear-gradient(to top, rgba(26, 98, 143, 0.8), transparent)" }}
                     >
                       <a
-                        href={`https://wa.me/573134095006?text=Hola! Estoy interesado en las gafas ${collection.name}`}
+                        href={`https://wa.me/573134095006?text=${encodeURIComponent(`¡Hola!\n\nEstoy interesado en obtener más información sobre estas gafas:\n\n*${collection.name}*\nCategoría: *${collection.description}*\n\n📸 Aquí puedes ver la imagen del producto:\n${collection.image}\n\n¡Quedo atento/a!`)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-300 bg-[#25D366] text-white shadow-lg hover:shadow-xl hover:bg-[#128C7E] hover:scale-105"
@@ -291,7 +291,7 @@ function DivinaVision() {
           </div>
           <div className="text-center mt-12">
             <button
-              onClick={() => navigate('/catalogo?tipo=lentes', { state: { tipo: 'lentes' } })}
+              onClick={() => navigate('/catalogo-divinavision')}
               className="inline-block px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
               style={{ backgroundColor: "#1A628F", color: "white" }}
             >
@@ -431,7 +431,7 @@ function DivinaVision() {
                       minHeight: '600px'
                     }}
                     scrolling="no"
-                    allowTransparency="true"
+                    allowtransparency="true"
                     allow="encrypted-media"
                     title={`Instagram Post ${index + 1}`}
                   />
@@ -487,7 +487,7 @@ function DivinaVision() {
                 Visítanos y descubre la colección perfecta de gafas de sol para ti
               </p>
               <button
-                onClick={() => navigate('/catalogo?tipo=lentes')}
+                onClick={() => navigate('/catalogo-divinavision')}
                 className="inline-block px-8 py-4 rounded-lg transition-all duration-300 bg-[#EF7272] text-white font-semibold hover:scale-105 hover:shadow-lg"
               >
                 Explorar Colección

@@ -7,9 +7,16 @@ import ProductModal from '../Components/ProductModal';
 import { motion } from 'framer-motion';
 import { FaPlus, FaFilter, FaBox, FaTags, FaEdit, FaTrash } from 'react-icons/fa';
 
+
 export default function Catalogo() {
   const { user } = useAuth();
   const location = useLocation();
+  // Inicializar activeFilters con el filtro tipo de la URL si existe
+  const getInitialFilters = () => {
+    const params = new URLSearchParams(window.location.search);
+    const tipo = params.get('tipo');
+    return tipo ? { tipo } : {};
+  };
   const [products, setProducts] = useState([]);
   const [filters, setFilters] = useState({});
   const [loading, setLoading] = useState(false);
@@ -19,7 +26,7 @@ export default function Catalogo() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [error, setError] = useState(null);
-  const [activeFilters, setActiveFilters] = useState({});
+  const [activeFilters, setActiveFilters] = useState(getInitialFilters());
 
   // Leer filtro tipo desde la URL si existe
   useEffect(() => {
@@ -239,6 +246,7 @@ export default function Catalogo() {
             <div>
               <label className="block font-semibold text-gray-700 mb-2 text-sm">Tipo</label>
               <select
+                value={activeFilters.tipo || ''}
                 onChange={(e) => {
                   if (e.target.value) {
                     handleFilterChange({ ...activeFilters, tipo: e.target.value });
