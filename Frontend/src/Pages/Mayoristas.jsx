@@ -25,16 +25,26 @@ function Mayoristas() {
     setError(null);
 
     try {
-      // Aquí iría la integración con el servicio de correo
-      // Por ahora simulamos el envío
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      // En producción, aquí se enviaría el correo con los datos del formulario
-      console.log('Datos del mayorista:', formData);
-
+      // Enviar datos al backend
+      const res = await fetch('/api/mayoristas', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nombre: formData.nombre,
+          email: formData.correo,
+          telefono: formData.telefono,
+          mensaje: `Dirección: ${formData.direccion}\nNIT: ${formData.nit}\nRedes: ${formData.redes}`
+        })
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || 'Error al enviar la solicitud.');
+      }
       setIsSubmitted(true);
     } catch (err) {
-      setError('Error al enviar la solicitud. Intenta de nuevo.');
+      setError(err.message || 'Error al enviar la solicitud. Intenta de nuevo.');
       console.error('Error:', err);
     } finally {
       setLoading(false);
@@ -98,25 +108,25 @@ function Mayoristas() {
           </p>
 
           <div className="bg-white rounded-xl p-6 sm:p-8 border-2 border-[#D4AF37]/20 mb-6 sm:mb-8 text-left">
-            <h3 className="mb-4 text-black font-semibold text-lg">Datos Recibidos</h3>
+            <h3 className="mb-4 text-black text-lg">Datos Recibidos</h3>
             <div className="space-y-3">
               <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0">
                 <span className="text-gray-600 text-sm sm:text-base">Nombre:</span>
-                <span className="text-black text-sm sm:text-base font-medium">{formData.nombre}</span>
+                <span className="text-black text-sm sm:text-base">{formData.nombre}</span>
               </div>
               <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0">
                 <span className="text-gray-600 text-sm sm:text-base">Correo:</span>
-                <span className="text-black text-sm sm:text-base font-medium break-all">{formData.correo}</span>
+                <span className="text-black text-sm sm:text-base break-all">{formData.correo}</span>
               </div>
               <div className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-0">
                 <span className="text-gray-600 text-sm sm:text-base">Teléfono:</span>
-                <span className="text-black text-sm sm:text-base font-medium">{formData.telefono}</span>
+                <span className="text-black text-sm sm:text-base">{formData.telefono}</span>
               </div>
             </div>
           </div>
 
           <div className="bg-[#F5F5DC]/30 rounded-lg p-6 mb-8">
-            <h4 className="mb-3 text-black font-semibold">Próximos Pasos</h4>
+            <h4 className="mb-3 text-black">Próximos Pasos</h4>
             <ul className="text-sm text-gray-700 space-y-2 text-left">
               <li>• Revisaremos tu información y documentación</li>
               <li>• Te contactaremos para validar los datos</li>
@@ -137,7 +147,7 @@ function Mayoristas() {
                 redes: ""
               });
             }}
-            className="px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base rounded-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:scale-105 font-semibold"
+            className="px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base rounded-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:scale-105"
             style={{ backgroundColor: "#D4AF37", color: "#000" }}
           >
             Nueva Solicitud
@@ -148,7 +158,7 @@ function Mayoristas() {
   }
 
   return (
-    <div id="mayoristas" className="min-h-screen pt-32 md:pt-36 pb-20">
+    <div id="mayoristas" className="min-h-screen pt-16 md:pt-20 pb-20">
       <section className="relative h-[50vh] sm:h-[60vh] flex items-center justify-center overflow-hidden mb-20">
         <div
           className="absolute inset-0 z-0"
@@ -261,7 +271,7 @@ function Mayoristas() {
                   <div className="relative inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B4941F] text-black mb-3 sm:mb-4 shadow-lg">
                     <span className="text-xl sm:text-2xl font-bold">{step.number}</span>
                   </div>
-                  <h3 className="mb-2 text-black font-semibold text-base sm:text-lg">{step.title}</h3>
+                  <h3 className="mb-2 text-black text-base sm:text-lg">{step.title}</h3>
                   <p className="text-gray-600 text-sm sm:text-base">{step.description}</p>
                 </motion.div>
               ))}
@@ -295,7 +305,7 @@ function Mayoristas() {
             <div className="bg-white rounded-xl p-6 sm:p-8 border-2 border-gray-100">
               <div className="space-y-5 sm:space-y-6">
                 <div>
-                  <label htmlFor="nombre" className="block text-gray-700 mb-2 font-semibold flex items-center gap-2 text-sm sm:text-base">
+                  <label htmlFor="nombre" className="block text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
                     <FaBuilding className="w-4 h-4 text-[#D4AF37]" />
                     Nombre del Negocio o Persona *
                   </label>
@@ -310,7 +320,7 @@ function Mayoristas() {
                 </div>
 
                 <div>
-                  <label htmlFor="correo" className="block text-gray-700 mb-2 font-semibold flex items-center gap-2 text-sm sm:text-base">
+                  <label htmlFor="correo" className="block text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
                     <FaEnvelope className="w-4 h-4 text-[#D4AF37]" />
                     Correo Electrónico *
                   </label>
@@ -325,7 +335,7 @@ function Mayoristas() {
                 </div>
 
                 <div>
-                  <label htmlFor="telefono" className="block text-gray-700 mb-2 font-semibold flex items-center gap-2 text-sm sm:text-base">
+                  <label htmlFor="telefono" className="block text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
                     <FaPhone className="w-4 h-4 text-[#D4AF37]" />
                     Teléfono *
                   </label>
@@ -340,7 +350,7 @@ function Mayoristas() {
                 </div>
 
                 <div>
-                  <label htmlFor="direccion" className="block text-gray-700 mb-2 font-semibold flex items-center gap-2 text-sm sm:text-base">
+                  <label htmlFor="direccion" className="block text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
                     <FaMapMarkerAlt className="w-4 h-4 text-[#D4AF37]" />
                     Dirección *
                   </label>
@@ -355,7 +365,7 @@ function Mayoristas() {
                 </div>
 
                 <div>
-                  <label htmlFor="nit" className="block text-gray-700 mb-2 font-semibold flex items-center gap-2 text-sm sm:text-base">
+                  <label htmlFor="nit" className="block text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
                     <FaIdCard className="w-4 h-4 text-[#D4AF37]" />
                     NIT (Opcional)
                   </label>
@@ -370,7 +380,7 @@ function Mayoristas() {
                 </div>
 
                 <div>
-                  <label htmlFor="redes" className="block text-gray-700 mb-2 font-semibold flex items-center gap-2 text-sm sm:text-base">
+                  <label htmlFor="redes" className="block text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
                     <FaInstagram className="w-4 h-4 text-[#D4AF37]" />
                     Redes Sociales
                   </label>
@@ -387,7 +397,7 @@ function Mayoristas() {
                 <button
                   onClick={handleSubmit}
                   disabled={loading}
-                  className="w-full py-3 sm:py-4 text-base sm:text-lg rounded-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed font-semibold"
+                  className="w-full py-3 sm:py-4 text-base sm:text-lg rounded-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{ backgroundColor: "#D4AF37", color: "#000" }}
                 >
                   {loading ? "Enviando..." : "Enviar Solicitud"}

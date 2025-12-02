@@ -88,6 +88,10 @@ function Citas() {
       setError('Por favor selecciona fecha y hora');
       return;
     }
+    if (!formData.sintomas || formData.sintomas.trim() === "") {
+      setError('Por favor describe tus síntomas o motivo de consulta');
+      return;
+    }
 
     setLoading(true);
     setError(null);
@@ -370,7 +374,7 @@ function Citas() {
 
                 <div>
                   <label htmlFor="sintomas" className="block text-gray-700 mb-2 font-semibold">
-                    Síntomas o Motivo de Consulta
+                    Síntomas o Motivo de Consulta * 
                   </label>
                   <textarea
                     id="sintomas"

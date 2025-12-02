@@ -26,7 +26,7 @@ export function About() {
   ];
 
   return (
-    <div id="acerca" className="min-h-screen pt-32 md:pt-36 bg-white">
+    <div id="acerca" className="min-h-screen pt-16 md:pt-20 bg-white">
 
       <section className="relative min-h-[300px] sm:min-h-[340px] md:min-h-[420px] flex items-center justify-center overflow-hidden mb-20">
         <div
