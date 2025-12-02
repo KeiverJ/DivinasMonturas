@@ -11,6 +11,7 @@ import config from './config/config.js';
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import citaRoutes from './routes/citaRoutes.js';
+import mayoristaRoutes from './routes/mayoristaRoutes.js';
 
 const app = express();
 
@@ -53,6 +54,9 @@ app.use('/api/productos', productRoutes);
 
 // ✅ Rutas de citas
 app.use('/api/citas', citaRoutes);
+
+// ✅ Rutas de mayoristas
+app.use('/api/mayoristas', mayoristaRoutes);
 
 /**
  * MANEJO DE RUTAS NO ENCONTRADAS

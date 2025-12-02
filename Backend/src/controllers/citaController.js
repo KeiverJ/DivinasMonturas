@@ -2,6 +2,7 @@
 import { asyncHandler } from '../middleware/errorHandler.js';
 import citaService from '../services/citaService.js';
 import { validateCreateCita, validateUpdateCita } from '../validators/citaValidator.js';
+import { sendCitaEmail } from '../services/emailService.js';
 
 /**
  * POST /api/citas
@@ -27,8 +28,18 @@ export const crearCita = asyncHandler(async (req, res) => {
 
     console.log('✅ Validación pasada, creando cita...');
     const cita = await citaService.createCita(value, req.file);
-    
     console.log('✅ Cita creada:', cita);
+
+    // Enviar correo de cita
+    await sendCitaEmail({
+      nombre: value.nombre,
+      email: value.email,
+      telefono: value.telefono,
+      fecha: value.fecha,
+      hora: value.hora,
+      primeraVisita: value.primeraVisita,
+      sintomas: value.sintomas
+    });
 
     res.status(201).json({
       success: true,
