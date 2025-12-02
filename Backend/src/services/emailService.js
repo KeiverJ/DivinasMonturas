@@ -2,7 +2,7 @@
 export async function sendCitaEmail(data) {
   // Correo para la empresa (admin)
   await sendEmail({
-    to: 'keivercj@gmail.com',
+    to: 'divinavision@gmail.com',
     subject: 'Nueva cita agendada',
     text: `Nueva cita registrada\n\nNombre: ${data.nombre}\nEmail: ${data.email}\nTeléfono: ${data.telefono}\nFecha: ${data.fecha}\nHora: ${data.hora}\nPrimera visita: ${data.primeraVisita ? 'Sí' : 'No'}\nSíntomas: ${data.sintomas || '-'}\n`,
     html: `
@@ -112,7 +112,7 @@ async function sendEmail(options) {
 export async function sendMayoristaEmail(data) {
   // Email para la empresa (HTML profesional)
   await sendEmail({
-    to: 'keivercj@gmail.com',
+    to: 'divinavision@gmail.com',
     subject: 'Nueva solicitud de mayorista',
     text: `Nueva solicitud de mayorista recibida\n\nNombre: ${data.nombre}\nEmail: ${data.email}\nTeléfono: ${data.telefono}\nMensaje: ${data.mensaje}\nFecha/Hora: ${(new Date()).toLocaleString('es-ES')}`,
     html: `
