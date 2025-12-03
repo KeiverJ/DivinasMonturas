@@ -2,6 +2,9 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { FaCheckCircle, FaBuilding, FaEnvelope, FaPhone, FaMapMarkerAlt, FaIdCard, FaInstagram } from "react-icons/fa";
 
+// ✅ AGREGAR ESTO AL INICIO
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 function Mayoristas() {
   const [formData, setFormData] = useState({
     nombre: "",
@@ -25,8 +28,8 @@ function Mayoristas() {
     setError(null);
 
     try {
-      // Enviar datos al backend
-      const res = await fetch('/api/mayoristas', {
+      // ✅ CAMBIAR ESTA LÍNEA - Usar BASE_URL
+      const res = await fetch(`${BASE_URL}/api/mayoristas`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -38,10 +41,12 @@ function Mayoristas() {
           mensaje: `Dirección: ${formData.direccion}\nNIT: ${formData.nit}\nRedes: ${formData.redes}`
         })
       });
+
       if (!res.ok) {
         const data = await res.json();
         throw new Error(data.message || 'Error al enviar la solicitud.');
       }
+
       setIsSubmitted(true);
     } catch (err) {
       setError(err.message || 'Error al enviar la solicitud. Intenta de nuevo.');
@@ -106,7 +111,6 @@ function Mayoristas() {
           <p className="text-gray-600 mb-8">
             Tu solicitud de registro mayorista ha sido recibida exitosamente. Nos pondremos en contacto contigo en las próximas 24-48 horas.
           </p>
-
           <div className="bg-white rounded-xl p-6 sm:p-8 border-2 border-[#D4AF37]/20 mb-6 sm:mb-8 text-left">
             <h3 className="mb-4 text-black text-lg">Datos Recibidos</h3>
             <div className="space-y-3">
@@ -124,7 +128,6 @@ function Mayoristas() {
               </div>
             </div>
           </div>
-
           <div className="bg-[#F5F5DC]/30 rounded-lg p-6 mb-8">
             <h4 className="mb-3 text-black">Próximos Pasos</h4>
             <ul className="text-sm text-gray-700 space-y-2 text-left">
@@ -134,7 +137,6 @@ function Mayoristas() {
               <li>• Podrás comenzar a realizar pedidos con precios especiales</li>
             </ul>
           </div>
-
           <button
             onClick={() => {
               setIsSubmitted(false);
@@ -223,6 +225,7 @@ function Mayoristas() {
               Para procesar tu solicitud necesitamos la siguiente información
             </p>
           </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -256,6 +259,7 @@ function Mayoristas() {
               Cuatro simples pasos para convertirte en distribuidor autorizado
             </p>
           </motion.div>
+
           <div className="relative">
             <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-linear-to-r from-transparent via-[#D4AF37] to-transparent -translate-y-1/2" />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
