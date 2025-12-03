@@ -54,6 +54,7 @@ function DivinaVision() {
         const shuffled = mapped.sort(() => Math.random() - 0.5);
         setCollections(shuffled);
       } catch (err) {
+        console.error("Error al cargar las gafas de sol:", err);
         setErrorCollections("No se pudieron cargar las gafas de sol");
       } finally {
         setLoadingCollections(false);
@@ -79,13 +80,13 @@ function DivinaVision() {
     document.body.appendChild(script);
 
     script.onload = () => {
-      if (window.instgrm) {
-        window.instgrm.Embeds.process();
+      if (globalThis.instgrm) {
+        globalThis.instgrm.Embeds.process();
       }
     };
 
     return () => {
-      document.body.removeChild(script);
+      script.remove();
     };
   }, []);
 
@@ -102,7 +103,7 @@ function DivinaVision() {
             backgroundAttachment: "fixed"
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/70 via-black/50 to-black/70" />
         </div>
 
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto flex flex-col items-center justify-center py-12">
@@ -163,13 +164,15 @@ function DivinaVision() {
             >
               Ver Colección
             </button>
-            <button
-              type="button"
-              onClick={() => navigate('/contacto')}
-              className="px-8 py-4 rounded-lg font-semibold transition-all duration-300 border-2 border-white/70 text-white hover:bg-white hover:text-[#1A628F] hover:scale-105"
+            <a
+              href="https://wa.me/573134095006?text=Hola,%20quiero%20m%C3%A1s%20informaci%C3%B3n%20acerca%20de%20tus%20gafas%20de%20sol."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-4 rounded-lg font-semibold transition-all duration-300 border-2 border-white/70 text-white hover:bg-white hover:text-[#1A628F] hover:scale-105 flex items-center gap-2"
             >
+              <FaWhatsapp className="w-5 h-5" />
               Contáctanos
-            </button>
+            </a>
           </motion.div>
 
           <motion.div
@@ -206,7 +209,7 @@ function DivinaVision() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {benefits.map((benefit, index) => (
               <motion.div
-                key={index}
+                key={benefit.title}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -244,51 +247,79 @@ function DivinaVision() {
               Descubre nuestros estilos más populares y encuentra el tuyo
             </p>
           </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {loadingCollections ? (
-              <div className="col-span-4 text-center text-gray-500">Cargando gafas de sol...</div>
-            ) : errorCollections ? (
-              <div className="col-span-4 text-center text-red-500">{errorCollections}</div>
-            ) : collections.length === 0 ? (
-              <div className="col-span-4 text-center text-gray-500">No hay gafas de sol disponibles.</div>
-            ) : (
-              collections.map((collection, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group cursor-pointer"
-                >
-                  <div className="relative overflow-hidden rounded-xl mb-4 aspect-square">
-                    <img
-                      src={collection.image}
-                      alt={collection.name}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
-                      style={{ background: "linear-gradient(to top, rgba(26, 98, 143, 0.8), transparent)" }}
-                    >
-                      <a
-                        href={`https://wa.me/573134095006?text=${encodeURIComponent(`¡Hola!\n\nEstoy interesado en obtener más información sobre estas gafas:\n\n*${collection.name}*\nCategoría: *${collection.description}*\n\n📸 Aquí puedes ver la imagen del producto:\n${collection.image}\n\n¡Quedo atento/a!`)}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-300 bg-[#25D366] text-white shadow-lg hover:shadow-xl hover:bg-[#128C7E] hover:scale-105"
+          {/* Refactored rendering logic for collections */}
+          {(() => {
+            let collectionsContent;
+            if (loadingCollections) {
+              collectionsContent = (
+                <div className="col-span-4 text-center text-gray-500">Cargando gafas de sol...</div>
+              );
+            } else if (errorCollections) {
+              collectionsContent = (
+                <div className="col-span-4 text-center text-red-500">{errorCollections}</div>
+              );
+            } else if (collections.length === 0) {
+              collectionsContent = (
+                <div className="col-span-4 text-center text-gray-500">No hay gafas de sol disponibles.</div>
+              );
+            } else {
+              collectionsContent = collections.map((collection, index) => {
+                // Refactor WhatsApp message construction
+                const whatsappMessage =
+                  "¡Hola!\n\nEstoy interesado en obtener más información sobre estas gafas:\n\n" +
+                  `*${collection.name}*\n` +
+                  `Categoría: *${collection.description}*\n\n` +
+                  "📸 Aquí puedes ver la imagen del producto:\n" +
+                  `${collection.image}\n\n` +
+                  "¡Quedo atento/a!";
+                const whatsappUrl = `https://wa.me/573134095006?text=${encodeURIComponent(whatsappMessage)}`;
+
+                // Usar id si existe, si no, nombre+índice
+                const key = collection._id ? collection._id : `${collection.name}-${index}`;
+
+                return (
+                  <motion.div
+                    key={key}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="group cursor-pointer"
+                  >
+                    <div className="relative overflow-hidden rounded-xl mb-4 aspect-square">
+                      <img
+                        src={collection.image}
+                        alt={collection.name}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div
+                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                        style={{ background: "linear-gradient(to top, rgba(26, 98, 143, 0.8), transparent)" }}
                       >
-                        <FaWhatsapp className="w-6 h-6" />
-                        Consultar por WhatsApp
-                      </a>
+                        <a
+                          href={whatsappUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-300 bg-[#25D366] text-white shadow-lg hover:shadow-xl hover:bg-[#128C7E] hover:scale-105"
+                        >
+                          <FaWhatsapp className="w-6 h-6" />
+                          Consultar por WhatsApp
+                        </a>
+                      </div>
                     </div>
-                  </div>
-                  <h3 className="mb-2 text-black font-semibold text-lg">{collection.name}</h3>
-                  <p className="text-gray-600 text-sm mb-2">{collection.description}</p>
-                  <p className="text-[#1A628F] font-semibold">{collection.price}</p>
-                </motion.div>
-              ))
-            )}
-          </div>
+                    <h3 className="mb-2 text-black font-semibold text-lg">{collection.name}</h3>
+                    <p className="text-gray-600 text-sm mb-2">{collection.description}</p>
+                    <p className="text-[#1A628F] font-semibold">{collection.price}</p>
+                  </motion.div>
+                );
+              });
+            }
+            return (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {collectionsContent}
+              </div>
+            );
+          })()}
           <div className="text-center mt-12">
             <button
               onClick={() => navigate('/catalogo-divinavision')}
@@ -409,7 +440,7 @@ function DivinaVision() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
             {instagramPosts.map((postUrl, index) => (
               <motion.div
-                key={index}
+                key={postUrl}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -431,7 +462,6 @@ function DivinaVision() {
                       minHeight: '600px'
                     }}
                     scrolling="no"
-                    allowtransparency="true"
                     allow="encrypted-media"
                     title={`Instagram Post ${index + 1}`}
                   />

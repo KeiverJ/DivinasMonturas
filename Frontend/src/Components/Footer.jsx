@@ -13,7 +13,7 @@ function Footer() {
   };
 
   return (
-    <footer className="relative bg-black text-white mt-8">
+    <footer className="relative bg-black text-white">
 
       <div className="absolute top-0 left-0 right-0 overflow-hidden leading-none">
         <svg
@@ -58,17 +58,24 @@ function Footer() {
               Enlaces Rápidos
             </h4>
             <ul className="space-y-3">
-              {["Inicio", "Catálogo", "Acerca de", "Mayoristas", "Política de Privacidad"].map(
-                (link) => (
-                  <li key={link}>
-                    <button type="button" className="text-gray-400 hover:text-[#D4AF37] transition-colors duration-300 inline-flex items-center group bg-transparent">
-                      <span className="group-hover:translate-x-1 transition-transform duration-300">
-                        {link}
-                      </span>
-                    </button>
-                  </li>
-                )
-              )}
+              {[
+                {label: "Inicio", path: "/"},
+                {label: "Catálogo", path: "/catalogo"},
+                {label: "Acerca de", path: "/about"},
+                {label: "Mayoristas", path: "/mayoristas"}
+              ].map(({label, path}) => (
+                <li key={label}>
+                  <button
+                    type="button"
+                    className="text-gray-400 hover:text-[#D4AF37] transition-colors duration-300 inline-flex items-center group bg-transparent"
+                    onClick={() => navigate(path)}
+                  >
+                    <span className="group-hover:translate-x-1 transition-transform duration-300">
+                      {label}
+                    </span>
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -84,8 +91,8 @@ function Footer() {
               </li>
               <li className="flex items-start space-x-3">
                 <span className="w-5 h-5 text-[#D4AF37] mt-0.5">📞</span>
-                <a href="https://wa.me/573151449003" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#D4AF37] transition-colors">
-                  +57 315 144 9003
+                <a href="https://wa.me/573134095006" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#D4AF37] transition-colors">
+                  +57 313 409 5006
                 </a>
               </li>
               <li className="flex items-start space-x-3">

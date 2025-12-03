@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaTimes, FaImage, FaPlus, FaTrash } from 'react-icons/fa';
+import { FaTimes, FaImage, FaTrash } from 'react-icons/fa';
 
 export default function ProductModal({ isOpen, onClose, onSubmit, product = null, filters = {} }) {
   const [formData, setFormData] = useState({
@@ -18,7 +18,6 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
 
   useEffect(() => {
     if (product) {
-      // ✅ Solo copiar los campos editables, no todo el objeto
       setFormData({
         nombre: product.nombre || '',
         tipo: product.tipo || 'montura',
@@ -113,7 +112,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -128,11 +127,11 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-hidden shadow-2xl"
+            className="relative bg-white rounded-3xl w-full max-w-4xl sm:max-w-4xl max-h-[90vh] overflow-hidden shadow-2xl border-2 border-[rgba(212,175,55,0.2)]"
             style={{ border: '2px solid rgba(212, 175, 55, 0.2)' }}
           >
             {/* Header */}
-            <div className="sticky top-0 z-10 px-8 py-6 border-b border-gray-100"
+            <div className="sticky top-0 z-10 px-4 sm:px-8 py-4 sm:py-6 border-b border-gray-100"
               style={{
                 background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.05), rgba(244, 229, 184, 0.05))',
               }}>
@@ -162,7 +161,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
             </div>
 
             {/* Content */}
-            <div className="overflow-y-auto max-h-[calc(90vh-180px)] px-8 py-6 pb-8">
+            <div className="overflow-y-auto max-h-[calc(90vh-180px)] px-4 sm:px-8 py-4 sm:py-6 pb-8">
               {error && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
@@ -232,19 +231,20 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
                 </div>
 
                 {/* Grid de campos */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
                   {/* Nombre */}
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="nombre" className="block text-sm font-semibold text-gray-700 mb-2">
                       Nombre *
                     </label>
                     <input
+                      id="nombre"
                       type="text"
                       name="nombre"
                       value={formData.nombre}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:outline-none transition-all duration-300"
+                      className="w-full min-w-0 px-4 py-3 rounded-xl border-2 border-gray-200 focus:outline-none transition-all duration-300"
                       style={{
                         borderColor: 'rgba(212, 175, 55, 0.2)',
                       }}
@@ -255,7 +255,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
                   </div>
 
                   {/* Tipo */}
-                  <div>
+                  <div className="min-w-0">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Tipo *
                     </label>
@@ -263,7 +263,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
                       name="tipo"
                       value={formData.tipo}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border-2 transition-all duration-300"
+                      className="w-full min-w-0 px-4 py-3 rounded-xl border-2 transition-all duration-300"
                       style={{
                         borderColor: 'rgba(212, 175, 55, 0.2)',
                       }}
@@ -277,7 +277,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
                   </div>
 
                   {/* Categoría */}
-                  <div>
+                  <div className="min-w-0">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Categoría *
                     </label>
@@ -287,7 +287,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
                       value={formData.categoria}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 rounded-xl border-2 transition-all duration-300"
+                      className="w-full min-w-0 px-4 py-3 rounded-xl border-2 transition-all duration-300"
                       style={{
                         borderColor: 'rgba(212, 175, 55, 0.2)',
                       }}
@@ -304,16 +304,17 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
                   </div>
 
                   {/* Marca */}
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <div className="min-w-0">
+                    <label htmlFor="marca" className="block text-sm font-semibold text-gray-700 mb-2">
                       Marca
                     </label>
                     <input
+                      id="marca"
                       type="text"
                       name="marca"
                       value={formData.marca}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border-2 transition-all duration-300"
+                      className="w-full min-w-0 px-4 py-3 rounded-xl border-2 transition-all duration-300"
                       style={{
                         borderColor: 'rgba(212, 175, 55, 0.2)',
                       }}
@@ -330,7 +331,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
                   </div>
 
                   {/* Material */}
-                  <div>
+                  <div className="min-w-0">
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Material
                     </label>
@@ -339,7 +340,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
                       name="material"
                       value={formData.material}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border-2 transition-all duration-300"
+                      className="w-full min-w-0 px-4 py-3 rounded-xl border-2 transition-all duration-300"
                       style={{
                         borderColor: 'rgba(212, 175, 55, 0.2)',
                       }}
@@ -356,15 +357,16 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
                   </div>
 
                   {/* Género */}
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <div className="min-w-0">
+                    <label htmlFor="genero" className="block text-sm font-semibold text-gray-700 mb-2">
                       Género
                     </label>
                     <select
+                      id="genero"
                       name="genero"
                       value={formData.genero}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border-2 transition-all duration-300"
+                      className="w-full min-w-0 px-4 py-3 rounded-xl border-2 transition-all duration-300"
                       style={{
                         borderColor: 'rgba(212, 175, 55, 0.2)',
                       }}
@@ -383,7 +385,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
             </div>
 
             {/* Footer */}
-            <div className="sticky bottom-0 px-8 py-6 border-t border-gray-100 bg-white">
+            <div className="sticky bottom-0 px-4 sm:px-8 py-4 sm:py-6 border-t border-gray-100 bg-white">
               <div className="flex gap-4">
                 <motion.button
                   type="button"

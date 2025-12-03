@@ -1,6 +1,6 @@
 // src/Components/NavbarAdmin.jsx
 import { useState, useEffect } from "react";
-import { ShoppingCart, LogOut, User } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import { FaInstagram, FaFacebook, FaTiktok } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
@@ -42,7 +42,7 @@ function NavbarAdmin() {
   const navLinks = [
     { id: "inicio", label: "Inicio", to: "/" },
     { id: "catalogo", label: "Gestión de Catálogo", to: "/catalogo-admin" },
-    { id: "citas", label: "Citas", to: "/citas" },
+    { id: "gestion-citas", label: "Gestión de Citas", to: "/citas-admin" },
   ];
 
   return (

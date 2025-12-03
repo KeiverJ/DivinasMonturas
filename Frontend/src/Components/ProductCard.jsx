@@ -6,7 +6,7 @@ function ProductCard({ name, brand, image, category, borderColor = "#D4AF37" }) 
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div
+    <fieldset
       className="group relative bg-white rounded-xl overflow-hidden transition-all duration-300 hover:shadow-2xl"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -15,8 +15,6 @@ function ProductCard({ name, brand, image, category, borderColor = "#D4AF37" }) 
           ? `0 20px 40px ${borderColor}33` // 20% opacity
           : "0 4px 6px rgba(0, 0, 0, 0.1)",
       }}
-      tabIndex={0}
-      role="group"
       aria-label={`Tarjeta de producto: ${name}`}
     >
 
@@ -71,11 +69,9 @@ ${image}
           border: `2px solid ${borderColor}`,
         }}
       />
-    </div>
+    </fieldset>
   );
 }
-
-
 ProductCard.propTypes = {
   name: PropTypes.string.isRequired,
   brand: PropTypes.string.isRequired,

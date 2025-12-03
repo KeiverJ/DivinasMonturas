@@ -168,7 +168,7 @@ function Mayoristas() {
             backgroundPosition: "center",
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/80" />
+          <div className="absolute inset-0 bg-linear-to-r from-black/80 via-black/60 to-black/80" />
         </div>
         <div className="relative z-10 text-center px-4 max-w-4xl">
           <motion.h1
@@ -231,8 +231,8 @@ function Mayoristas() {
             className="max-w-3xl mx-auto bg-white rounded-xl p-6 sm:p-8 border-2 border-[#D4AF37]/20"
           >
             <div className="space-y-3 sm:space-y-4">
-              {requirements.map((requirement, index) => (
-                <div key={index} className="flex items-start gap-3 sm:gap-4">
+              {requirements.map((requirement) => (
+                <div key={requirement} className="flex items-start gap-3 sm:gap-4">
                   <FaCheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-[#D4AF37] shrink-0 mt-0.5" />
                   <p className="text-gray-700 text-sm sm:text-base">{requirement}</p>
                 </div>
@@ -257,18 +257,18 @@ function Mayoristas() {
             </p>
           </motion.div>
           <div className="relative">
-            <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent -translate-y-1/2" />
+            <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-linear-to-r from-transparent via-[#D4AF37] to-transparent -translate-y-1/2" />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {steps.map((step, index) => (
                 <motion.div
-                  key={index}
+                  key={step.number}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   className="relative text-center"
                 >
-                  <div className="relative inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B4941F] text-black mb-3 sm:mb-4 shadow-lg">
+                  <div className="relative inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-linear-to-br from-[#D4AF37] to-[#B4941F] text-black mb-3 sm:mb-4 shadow-lg">
                     <span className="text-xl sm:text-2xl font-bold">{step.number}</span>
                   </div>
                   <h3 className="mb-2 text-black text-base sm:text-lg">{step.title}</h3>
@@ -305,7 +305,7 @@ function Mayoristas() {
             <div className="bg-white rounded-xl p-6 sm:p-8 border-2 border-gray-100">
               <div className="space-y-5 sm:space-y-6">
                 <div>
-                  <label htmlFor="nombre" className="block text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
+                  <label htmlFor="nombre" className="text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
                     <FaBuilding className="w-4 h-4 text-[#D4AF37]" />
                     Nombre del Negocio o Persona *
                   </label>
@@ -320,7 +320,7 @@ function Mayoristas() {
                 </div>
 
                 <div>
-                  <label htmlFor="correo" className="block text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
+                  <label htmlFor="correo" className="text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
                     <FaEnvelope className="w-4 h-4 text-[#D4AF37]" />
                     Correo Electrónico *
                   </label>
@@ -335,7 +335,7 @@ function Mayoristas() {
                 </div>
 
                 <div>
-                  <label htmlFor="telefono" className="block text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
+                  <label htmlFor="telefono" className="text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
                     <FaPhone className="w-4 h-4 text-[#D4AF37]" />
                     Teléfono *
                   </label>
@@ -350,7 +350,7 @@ function Mayoristas() {
                 </div>
 
                 <div>
-                  <label htmlFor="direccion" className="block text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
+                  <label htmlFor="direccion" className="text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
                     <FaMapMarkerAlt className="w-4 h-4 text-[#D4AF37]" />
                     Dirección *
                   </label>
@@ -365,7 +365,7 @@ function Mayoristas() {
                 </div>
 
                 <div>
-                  <label htmlFor="nit" className="block text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
+                  <label htmlFor="nit" className="text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
                     <FaIdCard className="w-4 h-4 text-[#D4AF37]" />
                     NIT (Opcional)
                   </label>
@@ -380,7 +380,7 @@ function Mayoristas() {
                 </div>
 
                 <div>
-                  <label htmlFor="redes" className="block text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
+                  <label htmlFor="redes" className="text-gray-700 mb-2 flex items-center gap-2 text-sm sm:text-base">
                     <FaInstagram className="w-4 h-4 text-[#D4AF37]" />
                     Redes Sociales
                   </label>

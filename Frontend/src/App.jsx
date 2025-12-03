@@ -1,4 +1,4 @@
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import NavbarPublico from './Components/Navbar.jsx';
 import NavbarAdmin from './Components/NavbarAdmin.jsx';
 import Footer from './Components/Footer.jsx';
@@ -9,9 +9,9 @@ import { useAuth } from './hooks/useAuth';
 import Home from './Pages/Home.jsx';
 import Catalogo from './Pages/Catalogo.jsx';
 import Reserva from './Pages/Reserva.jsx';
-import Contacto from './Pages/Contacto.jsx';
 import About from './Pages/About.jsx';
 import Citas from './Pages/Citas.jsx';
+import CitasAdmin from './Pages/CitasAdmin.jsx';
 import DivinaVision from './Pages/DivinaVision.jsx';
 import Mayoristas from './Pages/Mayoristas.jsx';
 import Login from './Pages/Login.jsx';
@@ -29,7 +29,6 @@ function AppContent() {
           <Route path="/" element={<Home />} />
           <Route path="/catalogo" element={<CatalogoPublico />} />
           <Route path="/reserva" element={<Reserva />} />
-          <Route path="/contacto" element={<Contacto />} />
           <Route path="/about" element={<About />} />
           <Route path="/citas" element={<Citas />} />
           <Route path="/divinavision" element={<DivinaVision />} />
@@ -41,6 +40,11 @@ function AppContent() {
           <Route path="/catalogo-admin" element={
             <ProtectedRoute>
               <Catalogo />
+            </ProtectedRoute>
+          } />
+          <Route path="/citas-admin" element={
+            <ProtectedRoute>
+              <CitasAdmin />
             </ProtectedRoute>
           } />
         </Routes>

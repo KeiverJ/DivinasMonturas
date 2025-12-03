@@ -17,6 +17,7 @@ export default function CatalogoPublico() {
   useEffect(() => {
     loadProducts();
     loadFilters();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [page, activeFilters]);
 
   const loadProducts = async () => {
@@ -82,8 +83,9 @@ export default function CatalogoPublico() {
             className="mt-4 bg-white p-6 rounded-2xl grid grid-cols-1 md:grid-cols-5 gap-4 shadow-lg border border-gray-100"
           >
             <div>
-              <label className="block font-semibold text-gray-700 mb-2 text-sm">Tipo</label>
+              <label htmlFor="tipo-select" className="block font-semibold text-gray-700 mb-2 text-sm">Tipo</label>
               <select
+                id="tipo-select"
                 onChange={(e) => {
                   if (e.target.value) {
                     handleFilterChange({ ...activeFilters, tipo: e.target.value });
@@ -102,8 +104,9 @@ export default function CatalogoPublico() {
             </div>
 
             <div>
-              <label className="block font-semibold text-gray-700 mb-2 text-sm">Categoría</label>
+              <label htmlFor="categoria-select" className="block font-semibold text-gray-700 mb-2 text-sm">Categoría</label>
               <select
+                id="categoria-select"
                 onChange={(e) => {
                   if (e.target.value) {
                     handleFilterChange({ ...activeFilters, categoria: e.target.value });
@@ -122,8 +125,9 @@ export default function CatalogoPublico() {
             </div>
 
             <div>
-              <label className="block font-semibold text-gray-700 mb-2 text-sm">Marca</label>
+              <label htmlFor="marca-select" className="block font-semibold text-gray-700 mb-2 text-sm">Marca</label>
               <select
+                id="marca-select"
                 onChange={(e) => {
                   if (e.target.value) {
                     handleFilterChange({ ...activeFilters, marca: e.target.value });
@@ -142,8 +146,9 @@ export default function CatalogoPublico() {
             </div>
 
             <div>
-              <label className="block font-semibold text-gray-700 mb-2 text-sm">Material</label>
+              <label htmlFor="material-select" className="block font-semibold text-gray-700 mb-2 text-sm">Material</label>
               <select
+                id="material-select"
                 onChange={(e) => {
                   if (e.target.value) {
                     handleFilterChange({ ...activeFilters, material: e.target.value });
@@ -162,8 +167,9 @@ export default function CatalogoPublico() {
             </div>
 
             <div>
-              <label className="block font-semibold text-gray-700 mb-2 text-sm">Género</label>
+              <label htmlFor="genero-select" className="block font-semibold text-gray-700 mb-2 text-sm">Género</label>
               <select
+                id="genero-select"
                 onChange={(e) => {
                   if (e.target.value) {
                     handleFilterChange({ ...activeFilters, genero: e.target.value });
@@ -186,23 +192,27 @@ export default function CatalogoPublico() {
 
       {/* Grid de productos */}
       <div className="max-w-7xl mx-auto px-4 pb-12">
-        {loading ? (
-          <div className="text-center py-12">Cargando productos...</div>
-        ) : products.length === 0 ? (
-          <div className="text-center py-12 text-gray-600">No hay productos disponibles.</div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map(product => (
-              <ProductCard
-                key={product._id}
-                name={product.nombre}
-                brand={product.marca || 'Sin marca'}
-                image={product.imagenes?.principal || 'https://via.placeholder.com/400x400?text=Sin+imagen'}
-                category={product.categoria}
-              />
-            ))}
-          </div>
-        )}
+        {(() => {
+          if (loading) {
+            return <div className="text-center py-12">Cargando productos...</div>;
+          }
+          if (products.length === 0) {
+            return <div className="text-center py-12 text-gray-600">No hay productos disponibles.</div>;
+          }
+          return (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {products.map(product => (
+                <ProductCard
+                  key={product._id}
+                  name={product.nombre}
+                  brand={product.marca || 'Sin marca'}
+                  image={product.imagenes?.principal || 'https://via.placeholder.com/400x400?text=Sin+imagen'}
+                  category={product.categoria}
+                />
+              ))}
+            </div>
+          );
+        })()}
       </div>
       
       {pagination && pagination.totalPages > 1 && (

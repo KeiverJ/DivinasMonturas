@@ -1,7 +1,6 @@
 // src/Pages/Catalogo.jsx
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
 import { productService } from '../services/productService.js';
 import ProductModal from '../Components/ProductModal';
 import { motion } from 'framer-motion';
@@ -9,11 +8,10 @@ import { FaPlus, FaFilter, FaBox, FaTags, FaEdit, FaTrash } from 'react-icons/fa
 
 
 export default function Catalogo() {
-  const { user } = useAuth();
   const location = useLocation();
   // Inicializar activeFilters con el filtro tipo de la URL si existe
   const getInitialFilters = () => {
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(globalThis.location?.search || '');
     const tipo = params.get('tipo');
     return tipo ? { tipo } : {};
   };
@@ -42,6 +40,7 @@ export default function Catalogo() {
   useEffect(() => {
     loadProducts();
     loadFilters();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [page, activeFilters]);
 
   const loadProducts = async () => {
@@ -122,9 +121,9 @@ export default function Catalogo() {
   const uniqueCategories = filters.categorias?.length || 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 pt-20">
+    <div className="min-h-screen bg-linear-to-b from-gray-50 via-white to-gray-50 pt-20">
       {/* Header Premium */}
-      <div className="relative bg-gradient-to-br from-black via-gray-900 to-black text-white py-20 px-4 overflow-hidden">
+      <div className="relative bg-linear-to-br from-black via-gray-900 to-black text-white py-20 px-4 overflow-hidden">
         {/* Efectos de fondo */}
         <div className="absolute top-0 left-0 w-96 h-96 bg-[#D4AF37]/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#D4AF37]/10 rounded-full blur-3xl" />
@@ -244,8 +243,9 @@ export default function Catalogo() {
             className="mt-4 bg-white p-6 rounded-2xl grid grid-cols-1 md:grid-cols-5 gap-4 shadow-lg border border-gray-100"
           >
             <div>
-              <label className="block font-semibold text-gray-700 mb-2 text-sm">Tipo</label>
+              <label htmlFor="tipo-filter" className="block font-semibold text-gray-700 mb-2 text-sm">Tipo</label>
               <select
+                id="tipo-filter"
                 value={activeFilters.tipo || ''}
                 onChange={(e) => {
                   if (e.target.value) {
@@ -265,8 +265,9 @@ export default function Catalogo() {
             </div>
 
             <div>
-              <label className="block font-semibold text-gray-700 mb-2 text-sm">Categoría</label>
+              <label htmlFor="categoria-filter" className="block font-semibold text-gray-700 mb-2 text-sm">Categoría</label>
               <select
+                id="categoria-filter"
                 onChange={(e) => {
                   if (e.target.value) {
                     handleFilterChange({ ...activeFilters, categoria: e.target.value });
@@ -285,8 +286,9 @@ export default function Catalogo() {
             </div>
 
             <div>
-              <label className="block font-semibold text-gray-700 mb-2 text-sm">Marca</label>
+              <label htmlFor="marca-filter" className="block font-semibold text-gray-700 mb-2 text-sm">Marca</label>
               <select
+                id="marca-filter"
                 onChange={(e) => {
                   if (e.target.value) {
                     handleFilterChange({ ...activeFilters, marca: e.target.value });
@@ -305,8 +307,9 @@ export default function Catalogo() {
             </div>
 
             <div>
-              <label className="block font-semibold text-gray-700 mb-2 text-sm">Material</label>
+              <label htmlFor="material-filter" className="block font-semibold text-gray-700 mb-2 text-sm">Material</label>
               <select
+                id="material-filter"
                 onChange={(e) => {
                   if (e.target.value) {
                     handleFilterChange({ ...activeFilters, material: e.target.value });
@@ -325,8 +328,9 @@ export default function Catalogo() {
             </div>
 
             <div>
-              <label className="block font-semibold text-gray-700 mb-2 text-sm">Género</label>
+              <label htmlFor="genero-filter" className="block font-semibold text-gray-700 mb-2 text-sm">Género</label>
               <select
+                id="genero-filter"
                 onChange={(e) => {
                   if (e.target.value) {
                     handleFilterChange({ ...activeFilters, genero: e.target.value });
@@ -349,170 +353,178 @@ export default function Catalogo() {
 
       {/* Grid de productos */}
       <div className="max-w-7xl mx-auto px-4 pb-12">
-        {loading ? (
-          <div className="text-center py-20">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#D4AF37]"></div>
-            <p className="mt-4 text-gray-600 font-medium">Cargando productos...</p>
-          </div>
-        ) : products.length === 0 ? (
-          <div className="text-center py-20">
-            <FaBox className="w-16 h-16 mx-auto mb-4 text-gray-300" />
-            <p className="text-gray-600 text-lg">No hay productos. Crea el primero.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {products.map((product, index) => (
-              <motion.div
-                key={product._id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="group relative bg-white rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.02]"
-                style={{
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-                  border: '2px solid transparent',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.boxShadow = '0 20px 50px rgba(212, 175, 55, 0.25)';
-                  e.currentTarget.style.border = '2px solid rgba(212, 175, 55, 0.5)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
-                  e.currentTarget.style.border = '2px solid transparent';
-                }}
-              >
-                {/* Shimmer Effect */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10">
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      background: 'linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent)',
-                      animation: 'shimmer 2s infinite',
-                    }}
-                  />
-                </div>
-
-                <div className="relative overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100 aspect-[3/4]">
-                  <img
-                    src={product.imagenes?.principal || 'https://via.placeholder.com/300x400?text=Sin+imagen'}
-                    alt={product.nombre}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-
-                  {/* Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                  {/* Top Badges */}
-                  <div className="absolute top-4 left-4 px-4 py-2 rounded-full text-xs font-bold backdrop-blur-xl shadow-lg"
-                    style={{
-                      backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                      color: '#fff',
-                      border: '1px solid rgba(255, 255, 255, 0.1)'
-                    }}>
-                    {product.tipo}
-                  </div>
-                  <div className="absolute top-4 right-4 px-4 py-2 rounded-full text-xs font-bold backdrop-blur-xl shadow-lg"
-                    style={{
-                      backgroundColor: '#D4AF37',
-                      color: '#000',
-                      border: '1px solid rgba(255, 255, 255, 0.3)'
-                    }}>
-                    Admin
-                  </div>
-
-                  {/* Marca Badge */}
-                  {product.marca && (
-                    <div className="absolute bottom-4 left-4 px-4 py-2 rounded-full text-xs font-semibold backdrop-blur-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        {(() => {
+          if (loading) {
+            return (
+              <div className="text-center py-20">
+                <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#D4AF37]"></div>
+                <p className="mt-4 text-gray-600 font-medium">Cargando productos...</p>
+              </div>
+            );
+          }
+          if (products.length === 0) {
+            return (
+              <div className="text-center py-20">
+                <FaBox className="w-16 h-16 mx-auto mb-4 text-gray-300" />
+                <p className="text-gray-600 text-lg">No hay productos. Crea el primero.</p>
+              </div>
+            );
+          }
+          return (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {products.map((product, index) => (
+                <motion.div
+                  key={product._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="group relative bg-white rounded-3xl overflow-hidden transition-all duration-500 hover:scale-[1.02]"
+                  style={{
+                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+                    border: '2px solid transparent',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.boxShadow = '0 20px 50px rgba(212, 175, 55, 0.25)';
+                    e.currentTarget.style.border = '2px solid rgba(212, 175, 55, 0.5)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
+                    e.currentTarget.style.border = '2px solid transparent';
+                  }}
+                >
+                  {/* Shimmer Effect */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10">
+                    <div
+                      className="absolute inset-0"
                       style={{
-                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                        color: '#000',
-                        border: '1px solid rgba(212, 175, 55, 0.3)'
-                      }}>
-                      {product.marca}
-                    </div>
-                  )}
-                </div>
+                        background: 'linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent)',
+                        animation: 'shimmer 2s infinite',
+                      }}
+                    />
+                  </div>
 
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs font-bold tracking-wider uppercase" style={{ color: '#D4AF37' }}>
-                      {product.categoria}
-                    </span>
-                    {product.precio && (
-                      <span className="text-sm font-bold text-gray-900">
-                        ${product.precio?.toLocaleString?.() ?? product.precio}
-                      </span>
+                  <div className="relative overflow-hidden bg-linear-to-br from-gray-50 to-gray-100 aspect-3/4">
+                    <img
+                      src={product.imagenes?.principal || 'https://via.placeholder.com/300x400?text=Sin+imagen'}
+                      alt={product.nombre}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                    {/* Top Badges */}
+                    <div className="absolute top-4 left-4 px-4 py-2 rounded-full text-xs font-bold backdrop-blur-xl shadow-lg"
+                      style={{
+                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                        color: '#fff',
+                        border: '1px solid rgba(255, 255, 255, 0.1)'
+                      }}>
+                      {product.tipo}
+                    </div>
+                    <div className="absolute top-4 right-4 px-4 py-2 rounded-full text-xs font-bold backdrop-blur-xl shadow-lg"
+                      style={{
+                        backgroundColor: '#D4AF37',
+                        color: '#000',
+                        border: '1px solid rgba(255, 255, 255, 0.3)'
+                      }}>
+                      Admin
+                    </div>
+
+                    {/* Marca Badge */}
+                    {product.marca && (
+                      <div className="absolute bottom-4 left-4 px-4 py-2 rounded-full text-xs font-semibold backdrop-blur-xl shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                        style={{
+                          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                          color: '#000',
+                          border: '1px solid rgba(212, 175, 55, 0.3)'
+                        }}>
+                        {product.marca}
+                      </div>
                     )}
                   </div>
 
-                  <h3 className="text-xl font-bold text-black mb-3 group-hover:text-[#D4AF37] transition-colors duration-300 line-clamp-2">
-                    {product.nombre}
-                  </h3>
+                  <div className="p-6">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-xs font-bold tracking-wider uppercase" style={{ color: '#D4AF37' }}>
+                        {product.categoria}
+                      </span>
+                      {product.precio && (
+                        <span className="text-sm font-bold text-gray-900">
+                          ${product.precio?.toLocaleString?.() ?? product.precio}
+                        </span>
+                      )}
+                    </div>
 
-                  <p className="text-gray-600 text-sm mb-5 line-clamp-2 leading-relaxed">
+                    <h3 className="text-xl font-bold text-black mb-3 group-hover:text-[#D4AF37] transition-colors duration-300 line-clamp-2">
+                      {product.nombre}
+                    </h3>
 
-                  </p>
+                    <p className="text-gray-600 text-sm mb-5 line-clamp-2 leading-relaxed">
 
-                  <div className="flex gap-2">
-                    <motion.button
-                      onClick={() => handleEditClick(product)}
-                      whileHover={{ scale: 1.03, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="flex-1 group/btn relative px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-300 overflow-hidden"
-                      style={{
-                        backgroundColor: 'rgba(212, 175, 55, 0.1)',
-                        color: '#D4AF37',
-                        border: '1.5px solid rgba(212, 175, 55, 0.3)'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = '#D4AF37';
-                        e.currentTarget.style.color = '#000';
-                        e.currentTarget.style.borderColor = '#D4AF37';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'rgba(212, 175, 55, 0.1)';
-                        e.currentTarget.style.color = '#D4AF37';
-                        e.currentTarget.style.borderColor = 'rgba(212, 175, 55, 0.3)';
-                      }}
-                    >
-                      <div className="flex items-center justify-center gap-2">
-                        <FaEdit className="w-3.5 h-3.5" />
-                        <span>Editar</span>
-                      </div>
-                    </motion.button>
+                    </p>
 
-                    <motion.button
-                      onClick={() => handleDelete(product._id)}
-                      whileHover={{ scale: 1.03, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="flex-1 group/btn relative px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-300 overflow-hidden"
-                      style={{
-                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
-                        color: '#DC2626',
-                        border: '1.5px solid rgba(220, 38, 38, 0.3)'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = '#DC2626';
-                        e.currentTarget.style.color = '#fff';
-                        e.currentTarget.style.borderColor = '#DC2626';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.1)';
-                        e.currentTarget.style.color = '#DC2626';
-                        e.currentTarget.style.borderColor = 'rgba(220, 38, 38, 0.3)';
-                      }}
-                    >
-                      <div className="flex items-center justify-center gap-2">
-                        <FaTrash className="w-3.5 h-3.5" />
-                        <span>Eliminar</span>
-                      </div>
-                    </motion.button>
+                    <div className="flex gap-2">
+                      <motion.button
+                        onClick={() => handleEditClick(product)}
+                        whileHover={{ scale: 1.03, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="flex-1 group/btn relative px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-300 overflow-hidden"
+                        style={{
+                          backgroundColor: 'rgba(212, 175, 55, 0.1)',
+                          color: '#D4AF37',
+                          border: '1.5px solid rgba(212, 175, 55, 0.3)'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#D4AF37';
+                          e.currentTarget.style.color = '#000';
+                          e.currentTarget.style.borderColor = '#D4AF37';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = 'rgba(212, 175, 55, 0.1)';
+                          e.currentTarget.style.color = '#D4AF37';
+                          e.currentTarget.style.borderColor = 'rgba(212, 175, 55, 0.3)';
+                        }}
+                      >
+                        <div className="flex items-center justify-center gap-2">
+                          <FaEdit className="w-3.5 h-3.5" />
+                          <span>Editar</span>
+                        </div>
+                      </motion.button>
+
+                      <motion.button
+                        onClick={() => handleDelete(product._id)}
+                        whileHover={{ scale: 1.03, y: -2 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="flex-1 group/btn relative px-4 py-2.5 rounded-lg font-medium text-sm transition-all duration-300 overflow-hidden"
+                        style={{
+                          backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                          color: '#DC2626',
+                          border: '1.5px solid rgba(220, 38, 38, 0.3)'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundColor = '#DC2626';
+                          e.currentTarget.style.color = '#fff';
+                          e.currentTarget.style.borderColor = '#DC2626';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundColor = 'rgba(220, 38, 38, 0.1)';
+                          e.currentTarget.style.color = '#DC2626';
+                          e.currentTarget.style.borderColor = 'rgba(220, 38, 38, 0.3)';
+                        }}
+                      >
+                        <div className="flex items-center justify-center gap-2">
+                          <FaTrash className="w-3.5 h-3.5" />
+                          <span>Eliminar</span>
+                        </div>
+                      </motion.button>
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
+                </motion.div>
+              ))}
+            </div>
+          );
+        })()}
       </div>
 
       {/* Paginación */}

@@ -4,6 +4,22 @@ import { motion } from "framer-motion";
 import { FaCalendarAlt, FaClock, FaCheckCircle, FaMapMarkerAlt, FaFileAlt, FaUpload } from "react-icons/fa";
 import { citasService } from "../services/citasService";
 
+function generateSlots(start, end) {
+  const slots = [];
+  let [h, m] = start.split(":").map(Number);
+  let [eh, em] = end.split(":").map(Number);
+
+  while (h < eh || (h === eh && m <= em)) {
+    const ampm = h < 12 ? "AM" : "PM";
+    let displayH = h % 12 === 0 ? 12 : h % 12;
+    slots.push(`${displayH}:${m.toString().padStart(2, "0")} ${ampm}`);
+    m += 30;
+    if (m >= 60) { h++; m = 0; }
+    if (h > eh || (h === eh && m > em)) break;
+  }
+  return slots;
+}
+
 function Citas() {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedTime, setSelectedTime] = useState("");
@@ -56,22 +72,6 @@ function Citas() {
       slots = generateSlots("09:00", "16:00");
     }
     
-    return slots;
-  }
-
-  function generateSlots(start, end) {
-    const slots = [];
-    let [h, m] = start.split(":").map(Number);
-    let [eh, em] = end.split(":").map(Number);
-    
-    while (h < eh || (h === eh && m <= em)) {
-      const ampm = h < 12 ? "AM" : "PM";
-      let displayH = h % 12 === 0 ? 12 : h % 12;
-      slots.push(`${displayH}:${m.toString().padStart(2, "0")} ${ampm}`);
-      m += 30;
-      if (m >= 60) { h++; m = 0; }
-      if (h > eh || (h === eh && m > em)) break;
-    }
     return slots;
   }
 

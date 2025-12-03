@@ -23,6 +23,7 @@ export default function CatalogoDivinaVision() {
     // Siempre usar paginación estándar (20 productos por página)
     loadProducts(page, 20);
     loadFilters();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [page, activeFilters]);
 
   const loadProducts = async (pageToUse = 1, limitToUse = 20) => {
@@ -44,7 +45,7 @@ export default function CatalogoDivinaVision() {
       const response = await productService.getFilters();
       setFilters(response.data || {});
     } catch (err) {
-      console.error('Error cargando filtros:', err);
+      // Error cargando filtros
     }
   };
 
@@ -86,20 +87,13 @@ export default function CatalogoDivinaVision() {
   };
 
   // DEBUG extra: mostrar productos filtrados por cada categoría
-  useEffect(() => {
-    if (products.length > 0 && (!activeFilters.categoria || activeFilters.categoria === '')) {
-      const aaa = products.filter(p => esSolAAA(p.categoria));
-      const eco = products.filter(p => esSolEconomicas(p.categoria));
-      console.log('Productos Sol AAA:', aaa);
-      console.log('Productos Sol Económicas:', eco);
-    }
-  }, [products, activeFilters.categoria]);
+  // Eliminado debug de productos por categoría
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1A628F]/10 via-white to-[#1A628F]/10 pt-20">
+<div className="min-h-screen bg-linear-to-b from-[#1A628F]/10 via-white to-[#1A628F]/10 pt-20">
       {/* Header Divina Visión */}
-      <div className="relative bg-gradient-to-br from-[#1A628F] via-[#0D3B5C] to-[#1A628F] text-white py-20 px-4 overflow-hidden">
+      <div className="relative bg-linear-to-br from-[#1A628F] via-[#0D3B5C] to-[#1A628F] text-white py-20 px-4 overflow-hidden">
         {/* Efectos de fondo */}
         <div className="absolute top-0 left-0 w-96 h-96 bg-[#D4AF37]/10 rounded-full blur-3xl" />
         <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#D4AF37]/10 rounded-full blur-3xl" />
