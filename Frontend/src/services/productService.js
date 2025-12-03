@@ -1,5 +1,5 @@
 // src/services/productService.js
-const API_URL = 'http://localhost:5000/api/productos';
+const API_URL = 'https://divinasmonturas.onrender.com';
 
 export const productService = {
   // Obtener token del localStorage

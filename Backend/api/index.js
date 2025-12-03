@@ -6,10 +6,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Importar rutas
-import authRoutes from "../Backend/src/routes/authRoutes.js";
-import productRoutes from "../Backend/src/routes/productRoutes.js";
-import citaRoutes from "../Backend/src/routes/citaRoutes.js";
-import mayoristaRoutes from "../Backend/src/routes/mayoristaRoutes.js";
+import authRoutes from "../src/routes/authRoutes.js";
+import productRoutes from "../src/routes/productRoutes.js";
+import citaRoutes from "../src/routes/citaRoutes.js";
+import mayoristaRoutes from "../src/routes/mayoristaRoutes.js";
 
 const app = express();
 
