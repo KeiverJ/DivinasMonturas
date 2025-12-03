@@ -27,8 +27,7 @@ export const citasService = {
       sintomas: citaData.sintomas,
     };
 
-    console.log("📤 Enviando datos:", datosAEnviar);
-
+    // En producción no registramos datos sensibles en consola
     const response = await fetch(API_URL, {
       method: "POST",
       headers: {

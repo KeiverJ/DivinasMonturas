@@ -10,15 +10,8 @@ import { validateCreateProduct, validateUpdateProduct } from '../validators/prod
  * Crear un nuevo producto
  */
 export const crearProducto = asyncHandler(async (req, res) => {
-  // Log para debug
-  console.log('📦 Datos recibidos:', req.body);
-  console.log('🖼️ Archivo recibido:', req.file ? 'Sí' : 'No');
-
-  console.log('📦 Datos después de parsear:', req.body);
-
   const { error, value } = validateCreateProduct(req.body);
   if (error) {
-    console.log('❌ Error de validación:', error.details);
     return res.status(400).json({
       success: false,
       message: 'Validación fallida',

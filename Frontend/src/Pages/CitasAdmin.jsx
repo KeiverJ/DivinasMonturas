@@ -44,7 +44,6 @@ export default function CitasAdmin() {
         if (!globalThis.confirm('¿Seguro que deseas eliminar esta cita?')) return;
         try {
             const res = await citasService.cancelarCita(id);
-            console.log('Respuesta eliminar:', res);
             if (res?.success) {
                 setSuccess('Cita eliminada correctamente');
                 fetchCitas();

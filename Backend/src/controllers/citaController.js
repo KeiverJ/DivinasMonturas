@@ -10,12 +10,8 @@ import { sendCitaEmail } from '../services/emailService.js';
  */
 export const crearCita = asyncHandler(async (req, res) => {
   try {
-    console.log('📝 Datos recibidos:', req.body);
-    console.log('📁 Archivo:', req.file);
-
     const { error, value } = validateCreateCita(req.body);
     if (error) {
-      console.log('❌ Error de validación:', error.details);
       return res.status(400).json({
         success: false,
         message: 'Validación fallida',
@@ -26,9 +22,7 @@ export const crearCita = asyncHandler(async (req, res) => {
       });
     }
 
-    console.log('✅ Validación pasada, creando cita...');
     const cita = await citaService.createCita(value, req.file);
-    console.log('✅ Cita creada:', cita);
 
     // Enviar correo de cita
     await sendCitaEmail({

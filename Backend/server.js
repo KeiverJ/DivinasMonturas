@@ -11,9 +11,8 @@ const result = dotenv.config({ path: join(__dirname, ".env") });
 
 if (result.error) {
   console.error("Error cargando .env:", result.error);
-} else {
-  console.log("✅ Variables de entorno cargadas correctamente");
-  console.log("MONGODB_URI definida:", !!process.env.MONGODB_URI);
+  } else {
+  console.info("✅ Variables de entorno cargadas correctamente");
 }
 
 // IMPORTANTE: Importar DESPUÉS de cargar dotenv
@@ -30,20 +29,11 @@ const startServer = async () => {
     // Solo iniciar servidor si NO estamos en Vercel
     if (process.env.VERCEL !== "1") {
       const server = app.listen(config.port, () => {
-        console.log(`
-╔════════════════════════════════════════╗
-║   🕶️  API TIENDA DE LENTES              ║
-║                                        ║
-║   Servidor corriendo en puerto: ${config.port}   ║
-║   Entorno: ${config.nodeEnv}                 ║
-║                                        ║
-║   Visita: http://localhost:${config.port}        ║
-╚════════════════════════════════════════╝
-                `);
+        console.info(`Servidor iniciado — puerto: ${config.port}, entorno: ${config.nodeEnv}`);
       });
 
       process.on("SIGINT", async () => {
-        console.log("\n⏹️  Cerrando servidor...");
+        console.info("\n⏹️  Cerrando servidor...");
         server.close(async () => {
           await disconnectDatabase();
           process.exit(0);
