@@ -55,7 +55,7 @@ ${image}
 ¡Quedo atento/a!
   `;
 
-              const url = `https://wa.me/573203713761?text=${encodeURIComponent(mensaje)}`;
+              const url = `https://wa.me/573134095006?text=${encodeURIComponent(mensaje)}`;
               window.open(url, "_blank");
             }}>
             <FaWhatsapp className="w-4 h-4" />
