@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Award, Heart, Star, Users, Eye, Target } from "lucide-react";
 
 export function About() {
@@ -238,19 +239,20 @@ export function About() {
                 Descubre por qué miles de clientes en Cúcuta confían en nosotros para su salud visual y estilo
               </p>
               <div className="flex gap-4 justify-center flex-wrap">
-                <a
-                  href="/catalogo"
+                <Link
+                  to="/catalogo"
                   className="inline-block px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] hover:scale-105"
                   style={{ backgroundColor: "#D4AF37", color: "#000" }}
                 >
                   Explorar Monturas
-                </a>
-                <a
-                  href="/citas"
-                  className="inline-block px-8 py-4 rounded-lg border-2 border-white text-white hover:bg-white hover:text-black transition-all duration-300"
+                </Link>
+                <Link
+                  to="/citas"
+                  className="inline-block px-8 py-4 rounded-lg transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] hover:scale-105"
+                  style={{ backgroundColor: "#D4AF37", color: "#000" }}
                 >
                   Agendar Cita
-                </a>
+                </Link>
               </div>
             </div>
           </motion.div>

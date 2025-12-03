@@ -1,4 +1,5 @@
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import ScrollToTop from './Components/ScrollToTop.jsx';
 import NavbarPublico from './Components/Navbar.jsx';
 import NavbarAdmin from './Components/NavbarAdmin.jsx';
 import Footer from './Components/Footer.jsx';
@@ -53,7 +54,10 @@ function AppContent() {
 function App() {
   return (
     <AuthProvider>
-      <AppContent />
+      <BrowserRouter>
+        <ScrollToTop />
+        <AppContent />
+      </BrowserRouter>
     </AuthProvider>
   )
 }
