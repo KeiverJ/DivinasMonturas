@@ -20,7 +20,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
     if (product) {
       setFormData({
         nombre: product.nombre || '',
-        tipo: product.tipo || 'montura',
+        tipo: product.tipo === 'lentes' ? 'gafas' : (product.tipo || 'montura'),
         categoria: product.categoria || '',
         marca: product.marca || '',
         material: product.material || '',
@@ -90,13 +90,12 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
         formDataToSend.append('image', imageFile);
       }
 
-      // ✅ Solo agregar los campos editables, sin campos internos de MongoDB
       const camposEditables = ['nombre', 'tipo', 'categoria', 'marca', 'material', 'genero'];
-      camposEditables.forEach(key => {
+      for (const key of camposEditables) {
         if (formData[key]) {
           formDataToSend.append(key, formData[key]);
         }
-      });
+      }
 
       await onSubmit(formDataToSend);
       onClose();
@@ -108,6 +107,16 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
   };
 
   if (!isOpen) return null;
+
+  // Extract button label logic
+  let buttonLabel;
+  if (loading) {
+    buttonLabel = 'Guardando...';
+  } else if (product) {
+    buttonLabel = 'Actualizar Producto';
+  } else {
+    buttonLabel = 'Crear Producto';
+  }
 
   return (
     <AnimatePresence>
@@ -175,7 +184,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
               <form onSubmit={handleSubmit} className="space-y-6 pb-4">
                 {/* Imagen Upload */}
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  <label htmlFor="imagen-principal" className="block text-sm font-semibold text-gray-700 mb-3">
                     Imagen Principal *
                   </label>
                   <div className="flex gap-4">
@@ -199,6 +208,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
                       </div>
                     ) : (
                       <label
+                        htmlFor="imagen-principal"
                         className="w-40 h-40 flex flex-col items-center justify-center rounded-2xl border-2 border-dashed cursor-pointer transition-all duration-300 hover:scale-105"
                         style={{
                           borderColor: 'rgba(212, 175, 55, 0.3)',
@@ -211,6 +221,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
                         </span>
                         <span className="text-xs text-gray-400 mt-1">Max 5MB</span>
                         <input
+                          id="imagen-principal"
                           type="file"
                           accept="image/*"
                           onChange={handleImageChange}
@@ -256,10 +267,11 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
 
                   {/* Tipo */}
                   <div className="min-w-0">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="tipo" className="block text-sm font-semibold text-gray-700 mb-2">
                       Tipo *
                     </label>
                     <select
+                      id="tipo"
                       name="tipo"
                       value={formData.tipo}
                       onChange={handleChange}
@@ -271,17 +283,18 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
                       onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.2)'}
                     >
                       <option value="montura">Montura</option>
-                      <option value="lentes">Lentes</option>
+                      <option value="gafas">Gafas</option>
                       <option value="accesorios">Accesorios</option>
                     </select>
                   </div>
 
                   {/* Categoría */}
                   <div className="min-w-0">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="categoria" className="block text-sm font-semibold text-gray-700 mb-2">
                       Categoría *
                     </label>
                     <input
+                      id="categoria"
                       type="text"
                       name="categoria"
                       value={formData.categoria}
@@ -332,10 +345,11 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
 
                   {/* Material */}
                   <div className="min-w-0">
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    <label htmlFor="material" className="block text-sm font-semibold text-gray-700 mb-2">
                       Material
                     </label>
                     <input
+                      id="material"
                       type="text"
                       name="material"
                       value={formData.material}
@@ -409,7 +423,7 @@ export default function ProductModal({ isOpen, onClose, onSubmit, product = null
                   className="flex-1 px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300 disabled:opacity-50"
                   style={{ backgroundColor: '#D4AF37' }}
                 >
-                  {loading ? 'Guardando...' : product ? 'Actualizar Producto' : 'Crear Producto'}
+                  {buttonLabel}
                 </motion.button>
               </div>
             </div>

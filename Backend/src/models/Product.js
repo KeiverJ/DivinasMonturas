@@ -13,8 +13,8 @@ const productSchema = new mongoose.Schema(
     tipo: {
       type: String,
       enum: {
-        values: ['montura', 'lentes', 'accesorios'],
-        message: 'El tipo debe ser: montura, lentes o accesorios'
+        values: ['montura', 'gafas', 'accesorios'],
+        message: 'El tipo debe ser: montura, gafas o accesorios'
       },
       required: [true, 'El tipo es requerido'],
       index: true,

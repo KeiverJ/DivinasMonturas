@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FaChevronLeft, FaChevronRight, FaStar, FaQuoteLeft, FaEye, FaGlasses, FaShieldAlt, FaCreditCard, FaPercentage, FaClock, FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
+import { FaEye, FaGlasses, FaShieldAlt, FaCreditCard, FaPercentage, FaClock, FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
 import ProductCard from "../Components/ProductCard";
 import { productService } from "../services/productService";
 
 export default function Home() {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [setCurrentSlide] = useState(0);
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -99,12 +99,6 @@ export default function Home() {
     },
   ];
 
-  const team = [
-    { name: "Equipo de Optometría", role: "Profesionales Certificados", credentials: "Expertos en salud visual y atención personalizada", image: "https://images.unsplash.com/photo-1631507623112-0092cef9c70d?w=400" },
-    { name: "Especialistas en Monturas", role: "Asesores de Imagen", credentials: "Te ayudamos a encontrar el estilo perfecto para ti", image: "https://images.unsplash.com/photo-1758206524001-56b1b1ec72cf?w=400" },
-    { name: "Servicio al Cliente", role: "Atención Personalizada", credentials: "Comprometidos con tu satisfacción y comodidad", image: "https://images.unsplash.com/photo-1694892463534-dade2296283d?w=400" },
-  ];
-
   const instagramPosts = [
     "https://www.instagram.com/p/DPwKeS2juWM/",
     "https://www.instagram.com/reel/DNWDsezu2Gv/",
@@ -128,8 +122,8 @@ export default function Home() {
     document.body.appendChild(script);
 
     script.onload = () => {
-      if (window.instgrm) {
-        window.instgrm.Embeds.process();
+      if (globalThis.instgrm) {
+        globalThis.instgrm.Embeds.process();
       }
     };
 
@@ -151,7 +145,7 @@ export default function Home() {
             backgroundAttachment: "fixed",
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/60 via-black/40 to-black/60" />
         </div>
         <div className="relative z-20 text-center px-4 animate-fade-in-up">
           <h1
@@ -437,7 +431,7 @@ export default function Home() {
               <div className="space-y-4">
                 <div className="p-5 rounded-lg border border-gray-200 hover:border-[#D4AF37] transition-all duration-300 group">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: "rgba(212, 175, 55, 0.1)" }}>
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: "rgba(212, 175, 55, 0.1)" }}>
                       <FaMapMarkerAlt className="w-5 h-5" style={{ color: "#D4AF37" }} />
                     </div>
                     <div className="flex-1">
@@ -450,7 +444,7 @@ export default function Home() {
 
                 <div className="p-5 rounded-lg border border-gray-200 hover:border-[#D4AF37] transition-all duration-300 group">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: "rgba(212, 175, 55, 0.1)" }}>
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: "rgba(212, 175, 55, 0.1)" }}>
                       <FaPhone className="w-5 h-5" style={{ color: "#D4AF37" }} />
                     </div>
                     <div className="flex-1">
@@ -461,7 +455,7 @@ export default function Home() {
                         rel="noopener noreferrer"
                         className="text-gray-700 hover:text-[#D4AF37] transition-colors text-sm font-medium inline-flex items-center gap-2"
                       >
-                        +57 315 144 9003
+                        +57 315 144 9003&nbsp;
                         <span className="text-xs">→</span>
                       </a>
                       <p className="text-gray-500 text-xs mt-1">Escríbenos, estamos para ayudarte</p>
@@ -471,7 +465,7 @@ export default function Home() {
 
                 <div className="p-5 rounded-lg border border-gray-200 hover:border-[#D4AF37] transition-all duration-300 group">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: "rgba(212, 175, 55, 0.1)" }}>
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300" style={{ backgroundColor: "rgba(212, 175, 55, 0.1)" }}>
                       <FaEnvelope className="w-5 h-5" style={{ color: "#D4AF37" }} />
                     </div>
                     <div className="flex-1">
@@ -521,7 +515,7 @@ export default function Home() {
                   className="w-full overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 relative"
                   style={{
                     maxWidth: '540px',
-                    paddingBottom: '130%', 
+                    paddingBottom: '130%',
                     height: 0
                   }}
                 >
@@ -532,7 +526,7 @@ export default function Home() {
                       minHeight: '600px'
                     }}
                     scrolling="no"
-                    allowTransparency="true"
+                    allowtransparency="true"
                     allow="encrypted-media"
                     title={`Instagram Post ${index + 1}`}
                   />

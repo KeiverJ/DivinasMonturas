@@ -13,10 +13,10 @@ const createProductSchema = Joi.object({
   
   tipo: Joi.string()
     .required()
-    .valid('montura', 'lentes', 'accesorios')
+    .valid('montura', 'gafas', 'accesorios')
     .messages({
       'any.required': 'El tipo es obligatorio',
-      'any.only': 'El tipo debe ser: montura, lentes o accesorios'
+      'any.only': 'El tipo debe ser: montura, gafas o accesorios'
     }),
   
   categoria: Joi.string()
@@ -67,7 +67,7 @@ const updateProductSchema = Joi.object({
     .optional(),
 
   tipo: Joi.string()
-    .valid('montura', 'lentes', 'accesorios')
+    .valid('montura', 'gafas', 'accesorios')
     .optional(),
 
   categoria: Joi.string()
