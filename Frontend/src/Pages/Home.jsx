@@ -79,23 +79,23 @@ export default function Home() {
   const paymentMethods = [
     {
       name: "Nequi",
-      logo: "/logos/nequi.jpg"
+      logo: "https://res.cloudinary.com/du2ulpgqh/image/upload/v1764725058/divinasmonturas/logos/vp43jrsciwm45isr04t3.jpg"
     },
     {
       name: "Bancolombia",
-      logo: "/logos/bancolombia.jpg"
+      logo: "https://res.cloudinary.com/du2ulpgqh/image/upload/v1764725056/divinasmonturas/logos/yxsyr50tdhui8ac9d50d.jpg"
     },
     {
       name: "Daviplata",
-      logo: "/logos/daviplata.png"
+      logo: "https://res.cloudinary.com/du2ulpgqh/image/upload/v1764725057/divinasmonturas/logos/bjlkreveycby3bchzeba.png"
     },
     {
       name: "Sistecredito",
-      logo: "/logos/sistecredito.png"
+      logo: "https://res.cloudinary.com/du2ulpgqh/image/upload/v1764725059/divinasmonturas/logos/uvd6wggrxjpnqg4ozlkn.png"
     },
     {
       name: "Addi",
-      logo: "/logos/addi.png"
+      logo: "https://res.cloudinary.com/du2ulpgqh/image/upload/v1764725056/divinasmonturas/logos/h0u6hv14l6mvi0rqxbfw.png"
     },
   ];
 
