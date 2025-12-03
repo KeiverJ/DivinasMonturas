@@ -2,9 +2,15 @@
 export async function sendCitaEmail(data) {
   // Correo para la empresa (admin)
   await sendEmail({
-    to: 'divinavision@gmail.com',
-    subject: 'Nueva cita agendada',
-    text: `Nueva cita registrada\n\nNombre: ${data.nombre}\nEmail: ${data.email}\nTeléfono: ${data.telefono}\nFecha: ${data.fecha}\nHora: ${data.hora}\nPrimera visita: ${data.primeraVisita ? 'Sí' : 'No'}\nSíntomas: ${data.sintomas || '-'}\n`,
+    to: "keivercj@gmail.com",
+    subject: "Nueva cita agendada",
+    text: `Nueva cita registrada\n\nNombre: ${data.nombre}\nEmail: ${
+      data.email
+    }\nTeléfono: ${data.telefono}\nFecha: ${data.fecha}\nHora: ${
+      data.hora
+    }\nPrimera visita: ${data.primeraVisita ? "Sí" : "No"}\nSíntomas: ${
+      data.sintomas || "-"
+    }\n`,
     html: `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f5; padding: 0; margin: 0;">
         <table width="100%" style="max-width: 650px; margin: 40px auto; background: #fff; border-radius: 18px; box-shadow: 0 8px 32px rgba(212,175,55,0.15); overflow: hidden;">
@@ -18,13 +24,27 @@ export async function sendCitaEmail(data) {
             <td style='padding: 38px 32px;'>
               <h2 style='color: #222; font-size: 1.25rem; margin-bottom: 18px; font-family: serif;'>Datos del Paciente</h2>
               <table style='width: 100%; border-collapse: collapse; margin-bottom: 24px;'>
-                <tr><td style='padding: 10px; color: #444; font-weight: bold; width: 140px;'>Nombre:</td><td style='padding: 10px; color: #222;'>${data.nombre}</td></tr>
-                <tr><td style='padding: 10px; color: #444; font-weight: bold;'>Correo:</td><td style='padding: 10px; color: #222;'>${data.email}</td></tr>
-                <tr><td style='padding: 10px; color: #444; font-weight: bold;'>Teléfono:</td><td style='padding: 10px; color: #222;'>${data.telefono}</td></tr>
-                <tr><td style='padding: 10px; color: #444; font-weight: bold;'>Fecha:</td><td style='padding: 10px; color: #222;'>${data.fecha}</td></tr>
-                <tr><td style='padding: 10px; color: #444; font-weight: bold;'>Hora:</td><td style='padding: 10px; color: #222;'>${data.hora}</td></tr>
-                <tr><td style='padding: 10px; color: #444; font-weight: bold;'>Primera visita:</td><td style='padding: 10px; color: #222;'>${data.primeraVisita ? 'Sí' : 'No'}</td></tr>
-                <tr><td style='padding: 10px; color: #444; font-weight: bold;'>Síntomas:</td><td style='padding: 10px; color: #222; white-space: pre-line;'>${data.sintomas || '-'}</td></tr>
+                <tr><td style='padding: 10px; color: #444; font-weight: bold; width: 140px;'>Nombre:</td><td style='padding: 10px; color: #222;'>${
+                  data.nombre
+                }</td></tr>
+                <tr><td style='padding: 10px; color: #444; font-weight: bold;'>Correo:</td><td style='padding: 10px; color: #222;'>${
+                  data.email
+                }</td></tr>
+                <tr><td style='padding: 10px; color: #444; font-weight: bold;'>Teléfono:</td><td style='padding: 10px; color: #222;'>${
+                  data.telefono
+                }</td></tr>
+                <tr><td style='padding: 10px; color: #444; font-weight: bold;'>Fecha:</td><td style='padding: 10px; color: #222;'>${
+                  data.fecha
+                }</td></tr>
+                <tr><td style='padding: 10px; color: #444; font-weight: bold;'>Hora:</td><td style='padding: 10px; color: #222;'>${
+                  data.hora
+                }</td></tr>
+                <tr><td style='padding: 10px; color: #444; font-weight: bold;'>Primera visita:</td><td style='padding: 10px; color: #222;'>${
+                  data.primeraVisita ? "Sí" : "No"
+                }</td></tr>
+                <tr><td style='padding: 10px; color: #444; font-weight: bold;'>Síntomas:</td><td style='padding: 10px; color: #222; white-space: pre-line;'>${
+                  data.sintomas || "-"
+                }</td></tr>
               </table>
               <div style='background: #fffbe6; border-radius: 10px; padding: 20px; color: #B4941F; font-size: 1.05rem; margin-bottom: 22px; text-align:center;'>
                 <b>Recuerda:</b> Puedes gestionar esta cita desde el sistema o responder a este correo para dudas.
@@ -36,13 +56,13 @@ export async function sendCitaEmail(data) {
           </tr>
         </table>
       </div>
-    `
+    `,
   });
 
   // Correo para el cliente (paciente)
   await sendEmail({
     to: data.email,
-    subject: '¡Tu cita en Divinas Monturas está confirmada!',
+    subject: "¡Tu cita en Divinas Monturas está confirmada!",
     text: `Hola ${data.nombre},\nTu cita ha sido agendada exitosamente.\n\nFecha: ${data.fecha}\nHora: ${data.hora}\nDirección: Cúcuta, Norte de Santander\nTeléfono: +57 (310) 123-4567\n\nPor favor, llega 10 minutos antes y trae tu documento de identidad.`,
     html: `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f7f7f7; padding: 0; margin: 0;">
@@ -87,22 +107,22 @@ export async function sendCitaEmail(data) {
           </tr>
         </table>
       </div>
-    `
+    `,
   });
 }
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from "url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // src/services/emailService.js
-import nodemailer from 'nodemailer';
-import path from 'path';
+import nodemailer from "nodemailer";
+import path from "path";
 
 // Configuración del transporter de nodemailer
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: "gmail",
   auth: {
-    user: 'divinocorreovm@gmail.com', // Cambia por tu correo
-    pass: 'hnop algp wajc vqhc' // Cambia por tu app password
-  }
+    user: "divinocorreovm@gmail.com", // Cambia por tu correo
+    pass: "hnop algp wajc vqhc", // Cambia por tu app password
+  },
 });
 
 // Función para enviar correos
@@ -112,9 +132,13 @@ async function sendEmail(options) {
 export async function sendMayoristaEmail(data) {
   // Email para la empresa (HTML profesional)
   await sendEmail({
-    to: 'divinavision@gmail.com',
-    subject: 'Nueva solicitud de mayorista',
-    text: `Nueva solicitud de mayorista recibida\n\nNombre: ${data.nombre}\nEmail: ${data.email}\nTeléfono: ${data.telefono}\nMensaje: ${data.mensaje}\nFecha/Hora: ${(new Date()).toLocaleString('es-ES')}`,
+    to: "keivercj@gmail.com",
+    subject: "Nueva solicitud de mayorista",
+    text: `Nueva solicitud de mayorista recibida\n\nNombre: ${
+      data.nombre
+    }\nEmail: ${data.email}\nTeléfono: ${data.telefono}\nMensaje: ${
+      data.mensaje
+    }\nFecha/Hora: ${new Date().toLocaleString("es-ES")}`,
     html: `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f5; padding: 0; margin: 0;">
         <table width="100%" style="max-width: 650px; margin: 40px auto; background: #fff; border-radius: 18px; box-shadow: 0 8px 32px rgba(212,175,55,0.15); overflow: hidden;">
@@ -128,11 +152,21 @@ export async function sendMayoristaEmail(data) {
             <td style="padding: 38px 32px;">
               <h2 style="color: #222; font-size: 1.25rem; margin-bottom: 18px; font-family: serif;">Datos del Solicitante</h2>
               <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
-                <tr><td style="padding: 10px; color: #444; font-weight: bold; width: 140px;">Nombre:</td><td style="padding: 10px; color: #222;">${data.nombre}</td></tr>
-                <tr><td style="padding: 10px; color: #444; font-weight: bold;">Correo:</td><td style="padding: 10px; color: #222;">${data.email}</td></tr>
-                <tr><td style="padding: 10px; color: #444; font-weight: bold;">Teléfono:</td><td style="padding: 10px; color: #222;">${data.telefono}</td></tr>
-                <tr><td style="padding: 10px; color: #444; font-weight: bold;">Mensaje:</td><td style="padding: 10px; color: #222; white-space: pre-line;">${data.mensaje}</td></tr>
-                <tr><td style="padding: 10px; color: #444; font-weight: bold;">Fecha/Hora:</td><td style="padding: 10px; color: #222;">${(new Date()).toLocaleString('es-ES')}</td></tr>
+                <tr><td style="padding: 10px; color: #444; font-weight: bold; width: 140px;">Nombre:</td><td style="padding: 10px; color: #222;">${
+                  data.nombre
+                }</td></tr>
+                <tr><td style="padding: 10px; color: #444; font-weight: bold;">Correo:</td><td style="padding: 10px; color: #222;">${
+                  data.email
+                }</td></tr>
+                <tr><td style="padding: 10px; color: #444; font-weight: bold;">Teléfono:</td><td style="padding: 10px; color: #222;">${
+                  data.telefono
+                }</td></tr>
+                <tr><td style="padding: 10px; color: #444; font-weight: bold;">Mensaje:</td><td style="padding: 10px; color: #222; white-space: pre-line;">${
+                  data.mensaje
+                }</td></tr>
+                <tr><td style="padding: 10px; color: #444; font-weight: bold;">Fecha/Hora:</td><td style="padding: 10px; color: #222;">${new Date().toLocaleString(
+                  "es-ES"
+                )}</td></tr>
               </table>
               <div style="margin-top: 18px; color: #888; font-size: 0.98rem; text-align:center;">
                 Si tienes dudas, responde a este correo o contacta a <a href="mailto:keivercj@gmail.com" style="color:#D4AF37; text-decoration:underline;">keivercj@gmail.com</a>
@@ -146,12 +180,12 @@ export async function sendMayoristaEmail(data) {
           </tr>
         </table>
       </div>
-    `
+    `,
   });
   // Correo para el cliente (diseño mejorado)
   await sendEmail({
     to: data.email,
-    subject: '¡Gracias por tu interés en ser mayorista de Divinas Monturas!',
+    subject: "¡Gracias por tu interés en ser mayorista de Divinas Monturas!",
     text: `Hola ${data.nombre},\n\n¡Gracias por tu interés en convertirte en mayorista! Hemos recibido tu solicitud y nuestro equipo la revisará en breve.\n\nPronto nos pondremos en contacto contigo para continuar el proceso.\n\nSi tienes dudas, escríbenos a keivercj@gmail.com\n\nDivinas Monturas`,
     html: `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f7f7f7; padding: 0; margin: 0;">
@@ -190,7 +224,6 @@ export async function sendMayoristaEmail(data) {
           </tr>
         </table>
       </div>
-    `
+    `,
   });
 }
-
