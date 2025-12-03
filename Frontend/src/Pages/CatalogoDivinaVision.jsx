@@ -256,13 +256,13 @@ export default function CatalogoDivinaVision() {
             </div>
             {/* Paginación */}
             {pagination && pagination.totalPages > 1 && (
-              <div className="flex justify-center items-center gap-4 mb-12 px-4 mt-12">
+              <div className="flex justify-center items-center gap-4 mb-12 px-4 mt-12 text-center">
                 <motion.button
                   whileHover={{ scale: 1.08 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => setPage(page - 1)}
                   disabled={!pagination.hasPrevPage}
-                  className="px-7 py-3 rounded-2xl font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md border-2"
+                  className="px-4 sm:px-7 py-2 sm:py-3 text-sm sm:text-base rounded-2xl font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md border-2 text-center"
                   style={{
                     background: pagination.hasPrevPage ? '#1A628F' : '#ccc',
                     color: '#fff',
@@ -273,7 +273,7 @@ export default function CatalogoDivinaVision() {
                 </motion.button>
 
                 <span
-                  className="px-7 py-3 rounded-2xl font-semibold shadow border-2"
+                  className="px-4 sm:px-7 py-2 sm:py-3 text-sm sm:text-base rounded-2xl font-semibold shadow border-2 text-center flex items-center justify-center"
                   style={{
                     background: '#fff',
                     color: '#1A628F',
@@ -288,7 +288,7 @@ export default function CatalogoDivinaVision() {
                   whileTap={{ scale: 0.97 }}
                   onClick={() => setPage(page + 1)}
                   disabled={!pagination.hasNextPage}
-                  className="px-7 py-3 rounded-2xl font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md border-2"
+                  className="px-4 sm:px-7 py-2 sm:py-3 text-sm sm:text-base rounded-2xl font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-md border-2 text-center"
                   style={{
                     background: pagination.hasNextPage ? '#1A628F' : '#ccc',
                     color: '#fff',

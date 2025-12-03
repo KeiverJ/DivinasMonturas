@@ -517,19 +517,19 @@ export default function Catalogo() {
 
       {/* Paginación */}
       {pagination && pagination.totalPages > 1 && (
-        <div className="flex justify-center items-center gap-4 mb-12 px-4">
+        <div className="flex justify-center items-center gap-4 mb-12 px-4 text-center">
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => setPage(page - 1)}
             disabled={!pagination.hasPrevPage}
-            className="px-6 py-3 rounded-xl font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-xl font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-center"
             style={{ backgroundColor: pagination.hasPrevPage ? '#000' : '#ccc', color: '#fff' }}
           >
             ← Anterior
           </motion.button>
 
-          <span className="px-6 py-3 rounded-xl font-semibold" style={{ backgroundColor: 'rgba(212, 175, 55, 0.1)', color: '#D4AF37' }}>
+          <span className="px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-xl font-semibold text-center flex items-center justify-center" style={{ backgroundColor: 'rgba(212, 175, 55, 0.1)', color: '#D4AF37' }}>
             Página {pagination.pagina} de {pagination.totalPages}
           </span>
 
@@ -538,7 +538,7 @@ export default function Catalogo() {
             whileTap={{ scale: 0.95 }}
             onClick={() => setPage(page + 1)}
             disabled={!pagination.hasNextPage}
-            className="px-6 py-3 rounded-xl font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-xl font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed text-center"
             style={{ backgroundColor: pagination.hasNextPage ? '#000' : '#ccc', color: '#fff' }}
           >
             Siguiente →

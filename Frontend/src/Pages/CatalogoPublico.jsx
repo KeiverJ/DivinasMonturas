@@ -206,23 +206,23 @@ export default function CatalogoPublico() {
       </div>
       
       {pagination && pagination.totalPages > 1 && (
-        <div className="flex justify-center items-center gap-4 mb-12 px-4">
+        <div className="flex justify-center items-center gap-4 mb-12 px-4 text-center">
           <button
             onClick={() => setPage(page - 1)}
             disabled={!pagination.hasPrevPage}
-            className="px-6 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-white"
+            className="px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-white text-center"
           >
             ← Anterior
           </button>
 
-          <span className="px-6 py-3 rounded-lg font-semibold bg-yellow-50 text-yellow-600 border border-yellow-200">
+          <span className="px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-lg font-semibold bg-yellow-50 text-yellow-600 border border-yellow-200 text-center flex items-center justify-center">
             Página {pagination.pagina} de {pagination.totalPages}
           </span>
 
           <button
             onClick={() => setPage(page + 1)}
             disabled={!pagination.hasNextPage}
-            className="px-6 py-3 rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-white"
+            className="px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base rounded-lg font-semibold transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-yellow-600 text-yellow-600 hover:bg-yellow-600 hover:text-white text-center"
           >
             Siguiente →
           </button>

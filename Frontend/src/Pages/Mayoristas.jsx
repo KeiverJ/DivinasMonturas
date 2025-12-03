@@ -186,7 +186,7 @@ function Mayoristas() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 px-4"
           >
-            Únete a nuestra red exclusiva de distribuidores y haz crecer tu negocio con las mejores monturas de lujo
+            Únete a nuestra red exclusiva de distribuidores y haz crecer tu negocio con las mejores monturas del mercado.
           </motion.p>
           <motion.a
             initial={{ opacity: 0, y: 30 }}
