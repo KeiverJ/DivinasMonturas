@@ -91,8 +91,8 @@ function Footer() {
               </li>
               <li className="flex items-start space-x-3">
                 <span className="w-5 h-5 text-[#D4AF37] mt-0.5">📞</span>
-                <a href="https://wa.me/573134095006" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#D4AF37] transition-colors">
-                  +57 313 409 5006
+                <a href="https://wa.me/573151494003" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#D4AF37] transition-colors">
+                  +57 315 149 4003
                 </a>
               </li>
               <li className="flex items-start space-x-3">

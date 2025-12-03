@@ -216,6 +216,7 @@ export default function CatalogoDivinaVision() {
                     image={product.imagenes?.principal || '/no-image.jpg'}
                     category={product.categoria}
                     borderColor="#1A628F"
+                    tipo={product.tipo}
                   />
                   {user && (
                     <div className="flex gap-2 mt-2">

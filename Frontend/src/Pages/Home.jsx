@@ -449,15 +449,15 @@ export default function Home() {
                     </div>
                     <div className="flex-1">
                       <p className="font-semibold text-black mb-2">WhatsApp</p>
-                      <a
-                        href="https://wa.me/573151449003"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-gray-700 hover:text-[#D4AF37] transition-colors text-sm font-medium inline-flex items-center gap-2"
-                      >
-                        +57 315 144 9003&nbsp;
-                        <span className="text-xs">→</span>
-                      </a>
+                          <a
+                            href="https://wa.me/573151494003"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-gray-700 hover:text-[#D4AF37] transition-colors text-sm font-medium inline-flex items-center gap-2"
+                          >
+                            +57 315 149 4003&nbsp;
+                            <span className="text-xs">→</span>
+                          </a>
                       <p className="text-gray-500 text-xs mt-1">Escríbenos, estamos para ayudarte</p>
                     </div>
                   </div>

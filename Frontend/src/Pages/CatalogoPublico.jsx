@@ -208,6 +208,7 @@ export default function CatalogoPublico() {
                   brand={product.marca || 'Sin marca'}
                   image={product.imagenes?.principal || 'https://via.placeholder.com/400x400?text=Sin+imagen'}
                   category={product.categoria}
+                  tipo={product.tipo}
                 />
               ))}
             </div>

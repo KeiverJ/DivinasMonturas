@@ -2,7 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { FaWhatsapp } from "react-icons/fa";
 
-function ProductCard({ name, brand, image, category, borderColor = "#D4AF37" }) {
+function ProductCard({ name, brand, image, category, borderColor = "#D4AF37", tipo }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -53,7 +53,14 @@ ${image}
 ¡Quedo atento/a!
   `;
 
-              const url = `https://wa.me/573134095006?text=${encodeURIComponent(mensaje)}`;
+              // Selecciona el número según el tipo
+              let numeroWhatsapp = "";
+              if (tipo && tipo.toLowerCase() === "gafas") {
+                numeroWhatsapp = "3134095006"; // Divina Visión
+              } else {
+                numeroWhatsapp = "3151494003"; // Divinas Monturas
+              }
+              const url = `https://wa.me/57${numeroWhatsapp}?text=${encodeURIComponent(mensaje)}`;
               window.open(url, "_blank");
             }}>
             <FaWhatsapp className="w-4 h-4" />
@@ -78,6 +85,7 @@ ProductCard.propTypes = {
   image: PropTypes.string.isRequired,
   category: PropTypes.string.isRequired,
   borderColor: PropTypes.string,
+  tipo: PropTypes.string,
 };
 
 export default ProductCard;
