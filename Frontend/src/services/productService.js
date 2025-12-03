@@ -1,17 +1,18 @@
 // src/services/productService.js
-const API_URL = 'https://divinasmonturas.onrender.com';
+const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+const API_URL = `${BASE_URL}/api/productos`;
 
 export const productService = {
   // Obtener token del localStorage
   getAuthHeader(isFormData = false) {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     const headers = {
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     };
 
     // No agregar Content-Type para FormData (el browser lo hace automáticamente)
     if (!isFormData) {
-      headers['Content-Type'] = 'application/json';
+      headers["Content-Type"] = "application/json";
     }
 
     return headers;
@@ -27,11 +28,11 @@ export const productService = {
       });
 
       const response = await fetch(`${API_URL}?${params}`, {
-        method: 'GET',
+        method: "GET",
       });
 
       if (!response.ok) {
-        throw new Error('Error al obtener productos');
+        throw new Error("Error al obtener productos");
       }
 
       return response.json();
@@ -46,7 +47,7 @@ export const productService = {
       const response = await fetch(`${API_URL}/${id}`);
 
       if (!response.ok) {
-        throw new Error('Producto no encontrado');
+        throw new Error("Producto no encontrado");
       }
 
       return response.json();
@@ -62,14 +63,14 @@ export const productService = {
       const isFormData = productData instanceof FormData;
 
       const response = await fetch(API_URL, {
-        method: 'POST',
+        method: "POST",
         headers: this.getAuthHeader(isFormData),
         body: isFormData ? productData : JSON.stringify(productData),
       });
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || 'Error al crear producto');
+        throw new Error(error.message || "Error al crear producto");
       }
 
       return response.json();
@@ -85,14 +86,14 @@ export const productService = {
       const isFormData = productData instanceof FormData;
 
       const response = await fetch(`${API_URL}/${id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: this.getAuthHeader(isFormData),
         body: isFormData ? productData : JSON.stringify(productData),
       });
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || 'Error al actualizar producto');
+        throw new Error(error.message || "Error al actualizar producto");
       }
 
       return response.json();
@@ -105,13 +106,13 @@ export const productService = {
   async deleteProduct(id) {
     try {
       const response = await fetch(`${API_URL}/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
         headers: this.getAuthHeader(),
       });
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.message || 'Error al eliminar producto');
+        throw new Error(error.message || "Error al eliminar producto");
       }
 
       return response.json();
@@ -126,7 +127,7 @@ export const productService = {
       const response = await fetch(`${API_URL}/filtros/disponibles`);
 
       if (!response.ok) {
-        throw new Error('Error al obtener filtros');
+        throw new Error("Error al obtener filtros");
       }
 
       return response.json();
