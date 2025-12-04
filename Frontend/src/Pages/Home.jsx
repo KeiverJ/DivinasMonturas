@@ -471,10 +471,10 @@ export default function Home() {
                     <div className="flex-1">
                       <p className="font-semibold text-black mb-2">Email</p>
                       <a
-                        href="mailto:divinavision@gmail.com"
+                        href="mailto:divinavisioncucuta1@gmail.com"
                         className="text-gray-700 hover:text-[#D4AF37] transition-colors text-sm font-medium"
                       >
-                        divinavision@gmail.com
+                        divinavisioncucuta1@gmail.com
                       </a>
                     </div>
                   </div>
