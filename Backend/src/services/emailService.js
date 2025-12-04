@@ -5,20 +5,12 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Función para enviar correos
 async function sendEmail(options) {
-  try {
-    const result = await resend.emails.send({
-      from: "Divinas Monturas <onboarding@resend.dev>",
-      to: options.to,
-      subject: options.subject,
-      html: options.html,
-    });
-
-    console.log("✅ Email enviado:", result);
-    return result;
-  } catch (error) {
-    console.error("❌ Error en Resend:", error);
-    throw error;
-  }
+  return await resend.emails.send({
+    from: "Divinas Monturas <noreply@divinasmonturas.com>",
+    to: options.to,
+    subject: options.subject,
+    html: options.html,
+  });
 }
 
 // Enviar correo de mayorista

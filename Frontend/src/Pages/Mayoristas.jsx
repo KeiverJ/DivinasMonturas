@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { FaCheckCircle, FaBuilding, FaEnvelope, FaPhone, FaMapMarkerAlt, FaIdCard, FaInstagram } from "react-icons/fa";
 
-// ✅ AGREGAR ESTO AL INICIO
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
 function Mayoristas() {
