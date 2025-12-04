@@ -17,7 +17,7 @@ async function sendEmail(options) {
 export async function sendMayoristaEmail(data) {
   // Email para la empresa (HTML profesional)
   await sendEmail({
-    to: "keivercj@gmail.com",
+    to: "divinavisioncucuta1@gmail.com",
     subject: "Nueva solicitud de mayorista",
     html: `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f5; padding: 0; margin: 0;">
@@ -49,13 +49,13 @@ export async function sendMayoristaEmail(data) {
                 )}</td></tr>
               </table>
               <div style="margin-top: 18px; color: #888; font-size: 0.98rem; text-align:center;">
-                Si tienes dudas, responde a este correo o contacta a <a href="mailto:keivercj@gmail.com" style="color:#D4AF37; text-decoration:underline;">keivercj@gmail.com</a>
+                Si tienes dudas, responde a este correo o contacta a <a href="mailto:divinavisioncucuta1@gmail.com" style="color:#D4AF37; text-decoration:underline;">divinavisioncucuta1@gmail.com</a>
               </div>
             </td>
           </tr>
           <tr>
             <td style="background: #222; color: #fff; text-align: center; padding: 22px 12px; font-size: 1rem;">
-              Divinas Monturas &copy; 2025 | <a href="mailto:keivercj@gmail.com" style="color: #D4AF37; text-decoration: underline;">Contacto</a>
+              Divinas Monturas &copy; 2025 | <a href="mailto:divinavisioncucuta1@gmail.com" style="color: #D4AF37; text-decoration: underline;">Contacto</a>
             </td>
           </tr>
         </table>
@@ -90,7 +90,7 @@ export async function sendMayoristaEmail(data) {
                 </ul>
               </div>
               <div style="background: #fffbe6; border-radius: 8px; padding: 18px; color: #B4941F; font-size: 1rem; margin-bottom: 18px; text-align:center;">
-                <b>¿Dudas?</b> Escríbenos a <a href="mailto:keivercj@gmail.com" style="color:#D4AF37; text-decoration:underline;">keivercj@gmail.com</a>
+                <b>¿Dudas?</b> Escríbenos a <a href="mailto:divinavisioncucuta1@gmail.com" style="color:#D4AF37; text-decoration:underline;">divinavisioncucuta1@gmail.com</a>
               </div>
               <div style="text-align: center; margin-top: 32px;">
                 <a href="https://divinasmonturas.com" style="display: inline-block; background: #D4AF37; color: #fff; font-weight: bold; padding: 14px 38px; border-radius: 8px; text-decoration: none; font-size: 1.1rem; letter-spacing: 1px;">Visitar Divinas Monturas</a>
@@ -99,7 +99,7 @@ export async function sendMayoristaEmail(data) {
           </tr>
           <tr>
             <td style="background: #222; color: #fff; text-align: center; padding: 20px 12px; font-size: 1rem;">
-              Divinas Monturas &copy; 2025 | <a href="mailto:keivercj@gmail.com" style="color: #D4AF37; text-decoration: underline;">Contacto</a>
+              Divinas Monturas &copy; 2025 | <a href="mailto:divinavisioncucuta1@gmail.com" style="color: #D4AF37; text-decoration: underline;">Contacto</a>
             </td>
           </tr>
         </table>
@@ -112,7 +112,7 @@ export async function sendMayoristaEmail(data) {
 export async function sendCitaEmail(data) {
   // Correo para la empresa (admin)
   await sendEmail({
-    to: "keivercj@gmail.com",
+    to: "divinavisioncucuta1@gmail.com",
     subject: "Nueva cita agendada",
     html: `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f5; padding: 0; margin: 0;">
@@ -153,7 +153,7 @@ export async function sendCitaEmail(data) {
                 <b>Recuerda:</b> Puedes gestionar esta cita desde el sistema o responder a este correo para dudas.
               </div>
               <div style='margin-top: 18px; color: #888; font-size: 0.98rem; text-align:center;'>
-                Divinas Monturas &copy; 2025 | <a href='mailto:keivercj@gmail.com' style='color:#D4AF37; text-decoration:underline;'>Contacto</a>
+                Divinas Monturas &copy; 2025 | <a href='mailto:divinavisioncucuta1@gmail.com' style='color:#D4AF37; text-decoration:underline;'>Contacto</a>
               </div>
             </td>
           </tr>
@@ -195,7 +195,7 @@ export async function sendCitaEmail(data) {
                 </ul>
               </div>
               <div style="background: #fffbe6; border-radius: 8px; padding: 18px; color: #B4941F; font-size: 1rem; margin-bottom: 18px; text-align:center;">
-                ¿Tienes dudas? Escríbenos a <a href="mailto:keivercj@gmail.com" style="color:#D4AF37; text-decoration:underline;">keivercj@gmail.com</a>
+                ¿Tienes dudas? Escríbenos a <a href="mailto:divinavisioncucuta1@gmail.com" style="color:#D4AF37; text-decoration:underline;">divinavisioncucuta1@gmail.com</a>
               </div>
               <div style="text-align: center; margin-top: 32px;">
                 <a href="https://divinasmonturas.com" style="display: inline-block; background: #D4AF37; color: #fff; font-weight: bold; padding: 16px 44px; border-radius: 10px; text-decoration: none; font-size: 1.15rem; letter-spacing: 1px;">Ver más servicios</a>
@@ -204,7 +204,7 @@ export async function sendCitaEmail(data) {
           </tr>
           <tr>
             <td style="background: #222; color: #fff; text-align: center; padding: 22px 12px; font-size: 1rem;">
-              Divinas Monturas &copy; 2025 | <a href="mailto:keivercj@gmail.com" style="color: #D4AF37; text-decoration: underline;">Contacto</a>
+              Divinas Monturas &copy; 2025 | <a href="mailto:divinavisioncucuta1@gmail.com" style="color: #D4AF37; text-decoration: underline;">Contacto</a>
             </td>
           </tr>
         </table>

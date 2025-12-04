@@ -87,7 +87,7 @@ function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start space-x-3">
                 <span className="w-5 h-5 text-[#D4AF37] mt-0.5">✉️</span>
-                <p className="text-gray-400">divinavision@gmail.com</p>
+                <p className="text-gray-400">divinavisioncucuta1@gmail.com</p>
               </li>
               <li className="flex items-start space-x-3">
                 <span className="w-5 h-5 text-[#D4AF37] mt-0.5">📞</span>
