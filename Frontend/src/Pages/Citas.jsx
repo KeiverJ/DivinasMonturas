@@ -61,15 +61,18 @@ function Citas() {
     const day = date.getDay(); // 0=Dom, 1=Lun, ..., 6=Sáb
     let slots = [];
     
-    if (day >= 1 && day <= 5) {
+    if (day >= 0 && day <= 4) {
       // Lun-Vie: 9:00-12:00, 14:30-18:00
       slots = [
         ...generateSlots("09:00", "12:00"),
         ...generateSlots("14:30", "18:00")
       ];
-    } else if (day === 6) {
+    } else if (day === 5) {
       // Sáb: 9:00-16:00
       slots = generateSlots("09:00", "16:00");
+    } else if (day === 6) {
+      // Dom: sin horarios disponibles
+      slots = [];
     }
     
     return slots;
@@ -252,7 +255,10 @@ function Citas() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {timeSlots.length === 0 ? (
                     <p className="col-span-3 text-gray-600 text-center py-4">
-                      No hay horarios disponibles para este día
+                      {new Date(selectedDate).getDay() === 6 
+                        ? "El domingo no hay citas ni horarios disponibles"
+                        : "No hay horarios disponibles para este día"
+                      }
                     </p>
                   ) : (
                     timeSlots.map((time) => {
